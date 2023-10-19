@@ -1,6 +1,7 @@
 package com.example.firebaseecom
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -45,6 +46,10 @@ class ProductListAdapter(private val context: Context) :
         Glide.with(context)
             .load(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
+        holder.itemView.setOnClickListener{
+            context.startActivity(Intent(context,ProductDetailsActivity::class.java))
+        }
+
     }
 
     override fun getItemCount(): Int {

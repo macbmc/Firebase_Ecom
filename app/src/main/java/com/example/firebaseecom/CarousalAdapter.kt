@@ -20,8 +20,14 @@ class CarousalAdapter(val context: Context):RecyclerView.Adapter<CarousalAdapter
         this.imageList=imageList
         notifyDataSetChanged()
     }
-    class CarousalViewHolder(carousalBinding: AdCorousalViewBinding):RecyclerView.ViewHolder(carousalBinding.root)
+    class CarousalViewHolder(val carousalBinding: AdCorousalViewBinding,val context: Context):RecyclerView.ViewHolder(carousalBinding.root)
     {
+        fun bind(imageUrl:String){
+            Glide.with(context)
+                .load(imageUrl)
+                .error(R.drawable.placeholder_image)
+                .into(carousalBinding.adView)
+        }
 
     }
 
@@ -32,15 +38,12 @@ class CarousalAdapter(val context: Context):RecyclerView.Adapter<CarousalAdapter
     ): CarousalViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         carousalBinding = DataBindingUtil.inflate(inflater,R.layout.ad_corousal_view,parent,false)
-        return CarousalViewHolder(carousalBinding)
+        return CarousalViewHolder(carousalBinding,context)
 
     }
 
     override fun onBindViewHolder(holder:CarousalViewHolder, position: Int) {
-        Glide.with(context)
-            .load(imageList[position])
-            .error(R.drawable.placeholder_image)
-            .into(holder.itemView.findViewById(R.id.adView))
+        holder.bind(imageList[position])
 
     }
 

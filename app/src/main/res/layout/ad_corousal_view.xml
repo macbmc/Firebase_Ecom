@@ -3,9 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable
-            name="adView"
-            type="com.example.firebaseecom.ProductModel" />
 
     </data>
 <LinearLayout
