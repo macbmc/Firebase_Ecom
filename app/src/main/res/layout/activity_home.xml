@@ -8,6 +8,9 @@
     <data>
 
     </data>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,6 +65,15 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <!--<com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/navigation_drawer" />-->
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -79,7 +91,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:layout_marginTop="76dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
@@ -150,4 +162,5 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         tools:layout_editor_absoluteX="-30dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

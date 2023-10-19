@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077054970649",
+    "project_id": "fir-ecom-73217",
+    "storage_bucket": "fir-ecom-73217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077054970649:android:e73f0e14051e462dbb0388",
+        "android_client_info": {
+          "package_name": "com.example.firebaseecom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPyGZkoSXIgKg0_1QGaZktkb-13ux3U2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

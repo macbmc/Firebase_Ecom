@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="productDetails"
+            type="com.example.firebaseecom.ProductModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout 
     android:id="@+id/homeProductPrice"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/homeProductView"
@@ -22,22 +29,31 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
-        android:text="Title"
+        android:text="@{productDetails.component1()}"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeProductView" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/productPriceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="16dp"
-        android:text="Price"
+        android:text="@{productDetails.component2()}"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeProductTitle" />
 
+    <ImageButton
+        android:id="@+id/homeLikedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/homeProductView"
+        app:layout_constraintTop_toTopOf="@+id/homeProductView"
+        app:srcCompat="@drawable/ic_thumbsup" />
     <ImageButton
         android:id="@+id/homeLikeButton"
         android:layout_width="wrap_content"
@@ -45,5 +61,6 @@
         android:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/homeProductView"
         app:layout_constraintTop_toTopOf="@+id/homeProductView"
-        app:srcCompat="@drawable/ic_thumbsup" />
+        app:srcCompat="@drawable/ic_thumpsupnormal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
