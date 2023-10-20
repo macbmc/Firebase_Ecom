@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 
 
@@ -45,11 +45,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding=DataBindingUtil.setContentView(this,R.layout.activity_home)
-
-        val adView=homeBinding.adView
+        val adView = homeBinding.carousalView
         val carousalAdapter = CarousalAdapter(this@HomeActivity)
         adView.adapter=carousalAdapter
-        carousalAdapter.setCarousal(imageList)
+        adView.layoutManager = LinearLayoutManager(this@HomeActivity,LinearLayoutManager.HORIZONTAL,
+            false)
+        carousalAdapter.setAd(imageList)
+
+
 
 
         val homeItemView=homeBinding.homeItemView

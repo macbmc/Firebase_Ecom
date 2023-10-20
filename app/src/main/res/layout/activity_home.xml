@@ -20,8 +20,8 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/homeToolBar"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:minHeight="?attr/actionBarSize"
@@ -59,19 +59,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/cartHomeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_cart" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!--<com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/navigation_drawer" />-->
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,14 +92,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="76dp"
-            android:orientation="horizontal"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carousalView"
+           android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.73"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
