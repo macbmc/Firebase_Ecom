@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -57,4 +58,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))//firebase
     implementation ("com.google.android.material:material:1.2.0-alpha05")//NavMenu
     implementation("com.google.firebase:firebase-firestore:24.9.0")//cloudFirestore
+
+    implementation ("com.google.dagger:hilt-android:2.40")//hilt
+    kapt ("com.google.dagger:hilt-android-compiler:2.40")
 }

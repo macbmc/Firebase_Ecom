@@ -1,4 +1,4 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.model
 
 data class ProductModel
     (

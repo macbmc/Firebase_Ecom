@@ -7,7 +7,7 @@
     <data>
         <variable
             name="productDetails"
-            type="com.example.firebaseecom.ProductModel" />
+            type="com.example.firebaseecom.model.ProductModel" />
     </data>
 
 

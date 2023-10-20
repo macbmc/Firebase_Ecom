@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.databinding.ProductListViewBinding
+import com.example.firebaseecom.model.ProductModel
 
 class ProductListAdapter(private val context: Context) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {

@@ -6,6 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.databinding.ActivityHomeBinding
+import com.example.firebaseecom.model.ProductModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 
 class HomeActivity : AppCompatActivity() {
