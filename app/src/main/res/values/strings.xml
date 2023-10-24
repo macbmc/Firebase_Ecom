@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FirebaseEcom</string>
+    <string name="app_name">EKart</string>
     <string name="homeToolBar">homeToolBar</string>
     <string name="item_description">Item Description :</string>
 </resources>

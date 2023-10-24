@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".authUI.SignUpActivity">
+
+    <TextView
+        android:id="@+id/appNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:fontFamily="@font/arbutus"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/loginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appNameTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="83dp"
+        android:fontFamily="@font/arbutus"
+        android:text="SignUp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editSignupEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginTitle"
+        android:layout_marginTop="109dp"
+        android:ems="10"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edittext_layout"
+        android:inputType="text"
+        android:hint="Email"/>
+
+    <EditText
+        android:id="@+id/editSignUpPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSignUpPhone"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/edittext_layout"
+        android:ems="10"
+        android:hint="Password"
+        android:layout_centerHorizontal="true"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/sign_up_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSignUpPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:backgroundTint="@color/buttonColor"
+        android:text="SignUp" />
+
+    <TextView
+        android:id="@+id/toSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSignUpPassword"
+        android:layout_alignStart="@+id/editSignUpPassword"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="15dp"
+        android:text="Already have an account? Login"
+        android:textColor="@color/linkTextColor" />
+
+    <EditText
+        android:id="@+id/editSignUpPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSignupEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:background="@drawable/edittext_layout"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:inputType="phone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginTitle"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginTop="29dp" />
+
+</RelativeLayout>
+</layout>

@@ -1,4 +1,4 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.homeUI
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

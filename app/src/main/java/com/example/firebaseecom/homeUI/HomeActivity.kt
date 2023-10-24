@@ -1,10 +1,15 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.homeUI
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.firebaseecom.R
+import com.example.firebaseecom.authUI.AuthViewModel
+import com.example.firebaseecom.authUI.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.model.ProductModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +53,7 @@ class HomeActivity : AppCompatActivity() {
     var imageList:List<String> = listOf("R.drawable.placeholder_image","R.drawable.placeholder_image")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeBinding=DataBindingUtil.setContentView(this,R.layout.activity_home)
+        homeBinding=DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
         val carousalAdapter = CarousalAdapter(this@HomeActivity)
         adView.adapter=carousalAdapter
@@ -64,6 +69,12 @@ class HomeActivity : AppCompatActivity() {
         homeItemView.layoutManager=GridLayoutManager(this@HomeActivity,2)
         homeItemView.adapter = adapter
         adapter.setProduct(demoProduct)
+
+        homeBinding.cartHomeButton.setOnClickListener(){
+            val authViewModel= ViewModelProvider(this@HomeActivity).get(AuthViewModel::class.java)
+            authViewModel.logout()
+            startActivity(Intent(this@HomeActivity,SignUpActivity::class.java))
+        }
 
 
 

@@ -1,4 +1,4 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.homeUI
 
 import android.content.Context
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
 class CarousalAdapter(private val context: Context):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
@@ -27,10 +28,11 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ):CarousalViewHolder {
+    ): CarousalViewHolder {
 
         val layoutInflater = LayoutInflater.from(parent.context)
-        adCorousalViewBinding = DataBindingUtil.inflate(layoutInflater,R.layout.ad_corousal_view,parent
+        adCorousalViewBinding = DataBindingUtil.inflate(layoutInflater,
+            R.layout.ad_corousal_view,parent
             ,false)
         return CarousalViewHolder(adCorousalViewBinding)
 

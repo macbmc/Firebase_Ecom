@@ -1,4 +1,4 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.homeUI
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.firebaseecom.ProductDetailsActivity
+import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.model.ProductModel
 
@@ -48,7 +50,7 @@ class ProductListAdapter(private val context: Context) :
             .load(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener{
-            context.startActivity(Intent(context,ProductDetailsActivity::class.java))
+            context.startActivity(Intent(context, ProductDetailsActivity::class.java))
         }
 
     }
