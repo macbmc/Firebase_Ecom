@@ -1,5 +1,6 @@
 package com.example.firebaseecom
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.firebaseecom.model.ProductModel
 import com.example.firebaseecom.model.State
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(@ApplicationContext val context: ApplicationContext):ViewModel() {
+class HomeViewModel @Inject constructor(@ApplicationContext val context: Context):ViewModel() {
 
     private var _products : MutableStateFlow<State<List<ProductModel>>> = MutableStateFlow(State.loading())
 
