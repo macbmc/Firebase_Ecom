@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
             "R.drawable.placeholder_image.jpg",
             "45",
             "Hellooooo",
-            productReview = listOf(ProductModel.Review("user1","content1"))
+            productReview = listOf(ProductModel.Review("user1","content1")),
 
         ),
         ProductModel(
@@ -70,12 +70,11 @@ class HomeActivity : AppCompatActivity() {
         homeItemView.adapter = adapter
         adapter.setProduct(demoProduct)
 
-        homeBinding.cartHomeButton.setOnClickListener(){
+        homeBinding.profButton.setOnClickListener(){
             val authViewModel= ViewModelProvider(this@HomeActivity).get(AuthViewModel::class.java)
             authViewModel.logout()
             startActivity(Intent(this@HomeActivity,SignUpActivity::class.java))
         }
-
 
 
 

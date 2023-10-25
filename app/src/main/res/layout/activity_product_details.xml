@@ -14,7 +14,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="1000dp"
-    tools:context=".ProductDetailsActivity">
+    tools:context=".detailsUI.ProductDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"

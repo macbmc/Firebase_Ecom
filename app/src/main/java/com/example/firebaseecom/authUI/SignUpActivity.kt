@@ -34,7 +34,7 @@ class SignUpActivity : AppCompatActivity() {
             signUpButton.setOnClickListener {
                 lifecycleScope.launch {
                     authViewModel.apply {
-                        signUp(editSignupEmail.text.toString(), editSignUpPassword.text.toString())
+                        signUp(editSignupEmail.text.toString(), editSignUpPassword.text.toString(),editSignUpPhone.text.toString())
                         signUpAuth.collect {
                             when (it) {
                                 is Resource.Loading -> {

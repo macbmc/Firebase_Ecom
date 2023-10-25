@@ -1,173 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".homeUI.HomeActivity">
     <data>
 
     </data>
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:contentDescription="@string/homeToolBar"
-    tools:context=".homeUI.HomeActivity">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/homeToolBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/white"
+                    android:backgroundTint="@color/white"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="407dp"
+                        android:layout_height="wrap_content"
+                        tools:layout_editor_absoluteX="1dp"
+                        tools:layout_editor_absoluteY="5dp">
+
+                        <ImageButton
+                            android:id="@+id/searchHomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="16dp"
+                            android:backgroundTint="@color/white"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_search"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/optionHomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/white"
+                            android:src="@drawable/ic_options"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/cartHomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="24dp"
+                            android:backgroundTint="@color/white"
+                            app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_cart" />
 
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/homeToolBar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="407dp"
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/carousalView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_centerHorizontal="true"/>
+
+                <ImageButton
+                    android:id="@+id/catButton3"
+                    android:layout_width="54dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_below="@+id/carousalView"
+                    android:background="@drawable/border"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <ImageButton
+                    android:id="@+id/catButton2"
+                    android:layout_width="54dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/carousalView"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_toStartOf="@+id/catButton3"
+                    android:background="@drawable/border"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <ImageButton
+                    android:id="@+id/catButton1"
+                    android:layout_width="54dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/carousalView"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_toStartOf="@+id/catButton2"
+                    android:background="@drawable/border"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/homeItemView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/catButton2"
+                    android:layout_marginTop="30dp" />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="5dp">
+            android:layout_below="@+id/catButton2"
+            android:layout_marginTop="330dp"
+            android:id="@+id/view"
+            android:background="@color/buttonColor">
+
+        <ImageButton
+            android:id="@+id/profButton"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="25dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_prof" />
 
             <ImageButton
-                android:id="@+id/searchHomeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/white"
-                android:scaleType="center"
-                android:src="@drawable/ic_search"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/wishButton"
+                android:layout_width="54dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toStartOf="@+id/profButton"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_wish" />
 
-            <ImageButton
-                android:id="@+id/optionHomeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_options"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/sellButton"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="100dp"
+            android:layout_toStartOf="@+id/wishButton"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_sell" />
+            </RelativeLayout>
 
-            <ImageButton
-                android:id="@+id/cartHomeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
-                android:backgroundTint="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cart" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </com.google.android.material.appbar.MaterialToolbar>
-
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/homeToolBar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:paddingLeft="26dp"
-        android:paddingRight="26dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/carousalView"
-           android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.73"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="54dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="52dp"
-        android:background="@drawable/border"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
-        app:layout_constraintHorizontal_bias="0.695"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="54dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="56dp"
-        android:background="@drawable/border"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton5"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="54dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="48dp"
-        android:layout_toStartOf="@+id/imageButton4"
-        android:background="@drawable/border"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="54dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@+id/imageButton3"
-        android:background="@drawable/border"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeItemView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:layout_editor_absoluteX="-30dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+</RelativeLayout>
 </layout>

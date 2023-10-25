@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     authViewModel.apply {
                         logIn(editTextUsername.text.toString(), editTextPassword.text.toString())
-                        logiAuth.collect{
+                        loginAuth.collect{
                             when(it)
                             {
                                 is Resource.Loading ->

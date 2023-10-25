@@ -1,10 +1,9 @@
-package com.example.firebaseecom
+package com.example.firebaseecom.repositories
 
 import android.util.Log
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 

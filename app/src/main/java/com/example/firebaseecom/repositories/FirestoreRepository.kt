@@ -1,0 +1,86 @@
+package com.example.firebaseecom.repositories
+
+import android.util.Log
+import com.example.firebaseecom.model.UserModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
+
+interface FirestoreRepository {
+    val currentUser: FirebaseUser?
+    suspend fun addToUsers(userModel: UserModel): Int
+    suspend fun getFromUsers():UserModel
+
+    /*suspend fun addToProducts(productModel: ProductModel):Int
+
+    suspend fun getFromProducts(cat:String)
+
+    suspend fun addToWishlist(productModel: ProductModel):Int
+
+    suspend fun addToCart(productModel: ProductModel):Int
+
+    suspend fun addToOrders(productModel: ProductModel):Int
+    */
+
+}
+
+class FirestoreRepositoryImpl @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
+) : FirestoreRepository {
+    override val currentUser: FirebaseUser?
+        get() = firebaseAuth.currentUser
+
+    override suspend fun addToUsers(userModel: UserModel): Int {
+        var status = 400
+        val user = hashMapOf(
+            "displayName" to userModel.userName,
+            "email" to userModel.userEmail,
+            "imageUrl" to userModel.userImg,
+            "phNumber" to userModel.phNo
+        )
+        try {
+            val doc = firestore.collection("users").document(currentUser!!.uid)
+            doc.set(user)
+                .addOnSuccessListener {
+                    status = 200
+                    Log.d("success", "$status")
+                }
+                .addOnFailureListener {
+                    Log.e("toUser", "${it.message}")
+                }
+        } catch (e: Exception) {
+            Log.e("toUser", "$e")
+
+        }
+        return status
+
+    }
+
+    override suspend fun getFromUsers():UserModel{
+        val uid = currentUser?.uid
+        lateinit var userInfo:UserModel
+        try{
+            val db = firestore.collection("users").document(uid.toString())
+            db.get()
+                .addOnSuccessListener {
+                    Log.d("data","${it.data}")
+                    userInfo = UserModel(
+                        it.data!!["displayName"].toString(),
+                        it.data!!["email"].toString(),
+                        it.data!!["imageUrl"].toString(),
+                        it.data!!["phNumber"].toString())
+                }
+                .addOnFailureListener{
+                    Log.d("fail","${it.message}")
+                }
+        }
+        catch(e:Exception)
+        {
+            Log.d("fromUser","$e")
+        }
+        return userInfo
+
+    }
+}

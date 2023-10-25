@@ -3,7 +3,9 @@ package com.example.firebaseecom.authUI
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firebaseecom.AuthRepository
+import com.example.firebaseecom.repositories.AuthRepository
+import com.example.firebaseecom.repositories.FirestoreRepository
+import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,45 +17,51 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(val repository: AuthRepository) : ViewModel() {
+class AuthViewModel @Inject constructor(val authRepository: AuthRepository, val firestoreRepository: FirestoreRepository) : ViewModel() {
 
     private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(null)
     private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val currentUser :FirebaseUser?
-        get() = repository.currentUser
+        get() = authRepository.currentUser
 
     init {
-        if(repository.currentUser!=null)
+        if(authRepository.currentUser!=null)
         {
-            _loginAuth.value=Resource.Success(repository.currentUser!!)
+            _loginAuth.value=Resource.Success(authRepository.currentUser!!)
         }
     }
 
-    var logiAuth : StateFlow<Resource<FirebaseUser>?> = _loginAuth
+    var loginAuth : StateFlow<Resource<FirebaseUser>?> = _loginAuth
     var signUpAuth : StateFlow<Resource<FirebaseUser>?> = _signUpAuth
+    private var dbResponse=400
 
     fun logIn(email:String,password:String)
     {
         viewModelScope.launch(Dispatchers.IO){
             _loginAuth.value=Resource.Loading()
-            val result = repository.userLogin(email,password)
+            val result = authRepository.userLogin(email,password)
             _loginAuth.value=result
 
 
         }
     }
 
-    fun signUp(email: String,password: String)
+    fun signUp(email: String,password: String,phNum:String)
     {
+        val userModel= UserModel("",email,"",phNum)
         viewModelScope.launch(Dispatchers.IO) {
             _signUpAuth.value=Resource.Loading()
-            _signUpAuth.value=repository.userSignUp(email,password)
+            _signUpAuth.value = authRepository.userSignUp(email, password)
+
+        }
+        viewModelScope.launch(Dispatchers.IO){
+            dbResponse=firestoreRepository.addToUsers(userModel)
         }
     }
 
     fun logout()
     {
-        repository.userSignOut()
+        authRepository.userSignOut()
         _loginAuth.value=null
         _signUpAuth.value=null
     }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.firebaseecom.ProductDetailsActivity
+import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.model.ProductModel

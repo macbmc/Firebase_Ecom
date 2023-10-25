@@ -1,7 +1,9 @@
 package com.example.firebaseecom.di
 
-import com.example.firebaseecom.AuthRepository
-import com.example.firebaseecom.AuthRepositoryImpl
+import com.example.firebaseecom.repositories.AuthRepository
+import com.example.firebaseecom.repositories.AuthRepositoryImpl
+import com.example.firebaseecom.repositories.FirestoreRepository
+import com.example.firebaseecom.repositories.FirestoreRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -22,6 +24,9 @@ object FirebaseModule {
     fun provideAuth():FirebaseAuth= FirebaseAuth.getInstance()
 
     @Provides
-    fun provideAuthRepository(repository: AuthRepositoryImpl):AuthRepository = repository
+    fun provideAuthRepository(repository: AuthRepositoryImpl): AuthRepository = repository
+
+    @Provides
+    fun provideFirestoreRepository(repository: FirestoreRepositoryImpl): FirestoreRepository = repository
 
 }
