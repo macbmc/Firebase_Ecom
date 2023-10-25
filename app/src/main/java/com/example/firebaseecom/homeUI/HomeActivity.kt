@@ -12,6 +12,7 @@ import com.example.firebaseecom.authUI.AuthViewModel
 import com.example.firebaseecom.authUI.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.model.ProductModel
+import com.example.firebaseecom.profileUI.UserProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,9 +72,7 @@ class HomeActivity : AppCompatActivity() {
         adapter.setProduct(demoProduct)
 
         homeBinding.profButton.setOnClickListener(){
-            val authViewModel= ViewModelProvider(this@HomeActivity).get(AuthViewModel::class.java)
-            authViewModel.logout()
-            startActivity(Intent(this@HomeActivity,SignUpActivity::class.java))
+            startActivity(Intent(this@HomeActivity,UserProfileActivity::class.java))
         }
 
 
