@@ -16,11 +16,11 @@ interface FirestoreRepository {
     suspend fun getFromUsers(): UserModel
     suspend fun getAllProducts(): Resource<List<ProductModel>>
     suspend fun getFromProducts(cat: String): Resource<List<ProductModel>>
+    suspend fun addToWishlist(productModel: ProductModel):Int
 
 
     /*suspend fun addToProducts(productModel: ProductModel):Int
 
-    suspend fun getFromProducts(cat:String)
 
     suspend fun addToWishlist(productModel: ProductModel):Int
 
@@ -151,5 +151,24 @@ class FirestoreRepositoryImpl @Inject constructor(
             return Resource.Success(productListByCat)
         }
         return Resource.Failed("Firebase Error Try Again")
+    }
+
+    override suspend fun addToWishlist(productModel: ProductModel): Int {
+        try {
+            val db=firestore.collection("user-wishlist").document(currentUser!!.uid)
+                .collection("items")
+            db.add(productModel)
+                .addOnSuccessListener {
+                    Log.d("add","success")
+                }
+                .addOnFailureListener{
+                    Log.d("add","failure")
+                }
+        }
+        catch (e:Exception)
+        {
+            Log.d("exception","$e")
+        }
+        return 123
     }
 }

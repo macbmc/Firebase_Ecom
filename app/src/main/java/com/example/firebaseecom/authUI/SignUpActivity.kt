@@ -1,11 +1,11 @@
 package com.example.firebaseecom.authUI
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -51,7 +51,7 @@ class SignUpActivity : AppCompatActivity() {
 
                                     is Resource.Success -> {
                                         Log.d("success", "${it.data}")
-                                        Log.d("userId", "${authViewModel.currentUser!!.uid}")
+                                        Log.d("userId", authViewModel.currentUser!!.uid)
                                         startActivity(
                                             Intent(
                                                 this@SignUpActivity,
@@ -62,9 +62,9 @@ class SignUpActivity : AppCompatActivity() {
                                     }
 
                                     is Resource.Failed -> {
-                                        Log.d("failed", "${it.message}")
+                                        Log.d("failed", it.message)
                                         Toast.makeText(
-                                            this@SignUpActivity, "${it.message}",
+                                            this@SignUpActivity, it.message,
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }

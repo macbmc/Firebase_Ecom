@@ -33,5 +33,12 @@ class HomeViewModel @Inject constructor(@ApplicationContext val context: Context
         }
     }
 
+    fun addToWishlist(productModel: ProductModel)
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.addToWishlist(productModel)
+        }
+    }
+
 
 }

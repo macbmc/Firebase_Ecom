@@ -13,13 +13,18 @@ import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductModel
 
-class ProductListAdapter(private val context: Context) :
+class ProductListAdapter(private val context: Context,val firestoreOperations: FirestoreOperations ) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
     private var productDetails = emptyList<ProductModel>()
 
     private lateinit var productListViewBinding: ProductListViewBinding
 
-    class ProductViewHolder(private val productListViewBinding: ProductListViewBinding) :
+    interface FirestoreOperations
+    {
+        fun addToWishlist(productModel: ProductModel)
+    }
+
+    class ProductViewHolder(private val productListViewBinding: ProductListViewBinding,val firestoreOperations: FirestoreOperations) :
         RecyclerView.ViewHolder(productListViewBinding.root) {
         fun bind(productModel: ProductModel) {
             productListViewBinding.apply {
@@ -27,6 +32,8 @@ class ProductListAdapter(private val context: Context) :
                 homeLikeButton.setOnClickListener {
                     homeLikeButton.visibility = View.INVISIBLE
                     homeLikedButton.visibility = View.VISIBLE
+                    firestoreOperations.addToWishlist(productModel)
+
                 }
 
             }
@@ -47,7 +54,7 @@ class ProductListAdapter(private val context: Context) :
         val layoutInflater = LayoutInflater.from(parent.context)
         productListViewBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.product_list_view, parent, false)
-        return ProductViewHolder(productListViewBinding)
+        return ProductViewHolder(productListViewBinding,firestoreOperations)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
