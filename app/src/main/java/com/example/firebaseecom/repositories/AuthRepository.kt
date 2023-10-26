@@ -60,7 +60,7 @@ class AuthRepositoryImpl @Inject constructor(
  }
 
  fun isValidated(password: String): String {
-   var msg: String = ""
+   var msg = ""
   var n=0
 
   if (password.length < 6) {

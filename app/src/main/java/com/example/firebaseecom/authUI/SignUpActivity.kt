@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.homeUI.HomeActivity
@@ -33,40 +35,48 @@ class SignUpActivity : AppCompatActivity() {
         signUpBinding.apply {
             signUpButton.setOnClickListener {
                 lifecycleScope.launch {
-                    authViewModel.apply {
-                        signUp(editSignupEmail.text.toString(), editSignUpPassword.text.toString(),editSignUpPhone.text.toString())
-                        signUpAuth.collect {
-                            when (it) {
-                                is Resource.Loading -> {
-                                    Log.d("Loading", "Loading")
-                                    progressBar.visibility= View.VISIBLE
-                                }
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        authViewModel.apply {
+                            signUp(
+                                editSignupEmail.text.toString(),
+                                editSignUpPassword.text.toString(),
+                                editSignUpPhone.text.toString()
+                            )
+                            signUpAuth.collect {
+                                when (it) {
+                                    is Resource.Loading -> {
+                                        Log.d("Loading", "Loading")
+                                        progressBar.visibility = View.VISIBLE
+                                    }
 
-                                is Resource.Success -> {
-                                    Log.d("success", "${it.data}")
-                                    Log.d("userId", "${authViewModel.currentUser!!.uid}")
-                                    startActivity(
-                                        Intent(
-                                            this@SignUpActivity,
-                                            HomeActivity::class.java
+                                    is Resource.Success -> {
+                                        Log.d("success", "${it.data}")
+                                        Log.d("userId", "${authViewModel.currentUser!!.uid}")
+                                        startActivity(
+                                            Intent(
+                                                this@SignUpActivity,
+                                                HomeActivity::class.java
+                                            )
                                         )
-                                    )
+
+                                    }
+
+                                    is Resource.Failed -> {
+                                        Log.d("failed", "${it.message}")
+                                        Toast.makeText(
+                                            this@SignUpActivity, "${it.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+
+                                    else -> {}
 
                                 }
-
-                                is Resource.Failed -> {
-                                    Log.d("failed", "${it.message}")
-                                    Toast.makeText(this@SignUpActivity,"${it.message}",
-                                        Toast.LENGTH_SHORT).show()
-                                }
-
-                                else -> {}
-
                             }
                         }
+
+
                     }
-
-
                 }
             }
             toSignIn.setOnClickListener {

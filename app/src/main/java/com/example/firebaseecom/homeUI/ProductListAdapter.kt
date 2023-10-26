@@ -3,13 +3,14 @@ package com.example.firebaseecom.homeUI
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
+import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductModel
 
 class ProductListAdapter(private val context: Context) :
@@ -21,8 +22,14 @@ class ProductListAdapter(private val context: Context) :
     class ProductViewHolder(private val productListViewBinding: ProductListViewBinding) :
         RecyclerView.ViewHolder(productListViewBinding.root) {
         fun bind(productModel: ProductModel) {
-            productListViewBinding.productDetails = productModel
+            productListViewBinding.apply {
+                productDetails = productModel
+                homeLikeButton.setOnClickListener {
+                    homeLikeButton.visibility = View.INVISIBLE
+                    homeLikedButton.visibility = View.VISIBLE
+                }
 
+            }
         }
 
     }
@@ -47,9 +54,10 @@ class ProductListAdapter(private val context: Context) :
         val product = productDetails[position]
         holder.bind(product)
         Glide.with(context)
-            .load(R.drawable.placeholder_image)
+            .load(product.productImage)
+            .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             context.startActivity(Intent(context, ProductDetailsActivity::class.java))
         }
 

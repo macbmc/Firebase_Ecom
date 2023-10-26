@@ -6,14 +6,13 @@ data class ProductModel
     val productPrice: String?,
     val productImage: String?,
     val productDiscount: String?,
-    //val productCategory: String?,
-    val productDesc:String?,
-    val productReview: List<Review>
+    val productCategory: String?,
+    val productDesc: String?,
+    val productReview: List<String>
 
 
 ) {
-    data class Review(
-        val customerName: String?,
-        val content: String?
-    )
+
+    constructor() : this("", "", "", "", "", "",listOf(""))
+
 }
