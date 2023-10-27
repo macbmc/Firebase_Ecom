@@ -7,7 +7,9 @@
     <data>
 
     </data>
-
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -41,16 +43,6 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageButton
-                            android:id="@+id/optionHomeButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="4dp"
-                            android:backgroundTint="@color/white"
-                            android:src="@drawable/ic_options"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageButton
                             android:id="@+id/cartHomeButton"
@@ -126,51 +118,52 @@
                     android:layout_centerHorizontal="true"
                     android:visibility="invisible"
                     />
+            </RelativeLayout>
 
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/catButton2"
-            android:layout_marginTop="330dp"
-            android:id="@+id/view"
-            android:background="@color/buttonColor">
+    <RelativeLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/buttonColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
             android:id="@+id/profButton"
             android:layout_width="54dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
-            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/border"
             android:src="@drawable/ic_prof" />
 
-            <ImageButton
-                android:id="@+id/wishButton"
-                android:layout_width="54dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="100dp"
-                android:layout_marginBottom="10dp"
-                android:layout_toStartOf="@+id/profButton"
-                android:background="@drawable/border"
-                android:src="@drawable/ic_wish" />
+        <ImageButton
+            android:id="@+id/wishButton"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@+id/profButton"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_wish" />
 
         <ImageButton
             android:id="@+id/sellButton"
             android:layout_width="54dp"
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="100dp"
+            android:layout_marginBottom="10dp"
             android:layout_toStartOf="@+id/wishButton"
             android:background="@drawable/border"
             android:src="@drawable/ic_sell" />
-            </RelativeLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

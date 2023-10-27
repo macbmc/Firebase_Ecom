@@ -1,5 +1,7 @@
 package com.example.firebaseecom.model
 
+import java.io.Serializable
+
 data class ProductModel
     (
     val productTitle: String?,
@@ -11,7 +13,7 @@ data class ProductModel
     val productReview: List<String>
 
 
-) {
+):Serializable {
 
     constructor() : this("", "", "", "", "", "",listOf(""))
 

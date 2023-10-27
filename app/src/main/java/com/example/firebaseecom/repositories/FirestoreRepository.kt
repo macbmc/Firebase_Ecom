@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.firebaseecom.model.ProductModel
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,10 +14,11 @@ import javax.inject.Inject
 interface FirestoreRepository {
     val currentUser: FirebaseUser?
     suspend fun addToUsers(userModel: UserModel): Int
-    suspend fun getFromUsers(): UserModel
+    suspend fun getFromUsers(): UserModel?
     suspend fun getAllProducts(): Resource<List<ProductModel>>
     suspend fun getFromProducts(cat: String): Resource<List<ProductModel>>
-    suspend fun addToWishlist(productModel: ProductModel):Int
+    suspend fun addToWishlist(productModel: ProductModel): Int
+    suspend fun getAd(): List<String>
 
 
     /*suspend fun addToProducts(productModel: ProductModel):Int
@@ -64,26 +66,26 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getFromUsers(): UserModel {
+    override suspend fun getFromUsers(): UserModel? {
         val uid = currentUser?.uid
+        val db = firestore.collection("users").document(uid.toString())
         lateinit var userInfo: UserModel
-        try {
-            val db = firestore.collection("users").document(uid.toString())
-            db.get()
-                .addOnSuccessListener {
-                    Log.d("data", "${it.data}")
-                    userInfo = UserModel(
-                        it.data!!["displayName"].toString(),
-                        it.data!!["email"].toString(),
-                        it.data!!["imageUrl"].toString(),
-                        it.data!!["phNumber"].toString()
-                    )
-                }
-                .addOnFailureListener {
-                    Log.d("fail", "${it.message}")
-                }.await()
-        } catch (e: Exception) {
-            Log.d("fromUser", "$e")
+
+        try{
+            val snapshot = Tasks.await(
+                db.get()
+                    .addOnCompleteListener {
+                        if(it.isSuccessful)
+                            it.result
+                    }
+            )
+            val data = snapshot.data
+            userInfo= UserModel(data?.get("displayName").toString(),data?.get("email").toString(),
+                data?.get("imageUrl").toString(),data?.get("phNumber").toString(),)
+        }
+        catch(e:Exception)
+        {
+            Log.d("exceptio",e.toString())
         }
         return userInfo
 
@@ -91,33 +93,31 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     override suspend fun getAllProducts(): Resource<List<ProductModel>> {
         var productList: MutableList<ProductModel> = mutableListOf()
-        var response = 400
-
+        var response = 0
+        val db = firestore.collection("product-details")
         try {
-            val db = firestore.collection("product-details")
-            db.get()
-                .addOnSuccessListener {
-                    response = 200
-                    for (doc in it.documents) {
-                        val data = doc.toObject(ProductModel::class.java)
-                        if (data != null) {
-                            productList.add(data)
-                        }
+            val snapshot = Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result
                     }
-                    Log.d("data", "$productList")
-
-
+                })
+            snapshot.let {
+                for (doc in it.documents) {
+                    val data = doc.toObject(ProductModel::class.java)
+                    if (data != null) {
+                        response = 200
+                        productList.add(data)
+                    }
                 }
-                .addOnFailureListener {
-                    Log.e("fromproduct", "${it.message}")
-                }.await()
+            }
         } catch (e: Exception) {
-            Log.e("errorinproduct", "$e")
+            Log.d("exception", e.toString())
         }
-        if (response == 200) {
-            return Resource.Success(productList)
+        if (response != 200) {
+            return Resource.Failed("")
         }
-        return Resource.Failed("Firebase Error Try Again")
+        return Resource.Success(productList)
 
 
     }
@@ -142,6 +142,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
                 }
                 .addOnFailureListener {
+                    response = 400
                     Log.e("fromproduct", "${it.message}")
                 }.await()
         } catch (e: Exception) {
@@ -149,26 +150,54 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
         if (response == 200) {
             return Resource.Success(productListByCat)
+        } else if (response == 400) {
+            return Resource.Failed("FirebaseError")
         }
-        return Resource.Failed("Firebase Error Try Again")
+        return Resource.Loading()
     }
 
     override suspend fun addToWishlist(productModel: ProductModel): Int {
         try {
-            val db=firestore.collection("user-wishlist").document(currentUser!!.uid)
+            val db = firestore.collection("user-wishlist").document(currentUser!!.uid)
                 .collection("items")
             db.add(productModel)
                 .addOnSuccessListener {
-                    Log.d("add","success")
+                    Log.d("add", "success")
                 }
-                .addOnFailureListener{
-                    Log.d("add","failure")
+                .addOnFailureListener {
+                    Log.d("add", "failure")
                 }
+        } catch (e: Exception) {
+            Log.d("exception", "$e")
+        }
+        return 123
+    }
+
+    override suspend fun getAd(): List<String> {
+        var adList: MutableList<String> = mutableListOf()
+        val db = firestore.collection("ads")
+        try {
+            val snapshot = Tasks.await(
+                db.get()
+                    .addOnCompleteListener {
+                        if(it.isSuccessful)
+                            it.result
+                    }
+            )
+            snapshot.let{
+                for(doc in it.documents)
+                {
+
+                    val data = doc.data!!.get("imageUrl").toString()
+                    adList.add(data)
+                }
+            }
         }
         catch (e:Exception)
         {
-            Log.d("exception","$e")
+            Log.d("exceptio",e.toString())
         }
-        return 123
+        Log.d("adList",adList.toString())
+        return adList
     }
 }

@@ -12,6 +12,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductModel
+import java.io.Serializable
 
 class ProductListAdapter(private val context: Context,val firestoreOperations: FirestoreOperations ) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
@@ -65,7 +66,9 @@ class ProductListAdapter(private val context: Context,val firestoreOperations: F
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener {
-            context.startActivity(Intent(context, ProductDetailsActivity::class.java))
+            val intent =Intent(context, ProductDetailsActivity::class.java)
+            intent.putExtra("product",product as Serializable)
+            context.startActivity(intent)
         }
 
     }

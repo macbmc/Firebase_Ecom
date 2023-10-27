@@ -19,6 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(@ApplicationContext val context: Context,val repository: FirestoreRepository):ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductModel>>?>(null)
+    val adList =MutableStateFlow<List<String>>(listOf())
 
     var products : StateFlow<Resource<List<ProductModel>>?> = _products
 
@@ -29,7 +30,7 @@ class HomeViewModel @Inject constructor(@ApplicationContext val context: Context
             _products.value=Resource.Loading()
             val result = repository.getAllProducts()
             _products.value = result
-            Log.d("-product","hasValue")
+            Log.d("-product",_products.value.toString())
         }
     }
 
@@ -37,6 +38,13 @@ class HomeViewModel @Inject constructor(@ApplicationContext val context: Context
     {
         viewModelScope.launch(Dispatchers.IO){
             repository.addToWishlist(productModel)
+        }
+    }
+    fun getAd()
+    {
+
+        viewModelScope.launch(Dispatchers.IO){
+            adList.value=repository.getAd()
         }
     }
 

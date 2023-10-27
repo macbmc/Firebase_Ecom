@@ -3,21 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="userDetails"
+            type="com.example.firebaseecom.model.UserModel" />
 
     </data>
 
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".profileUI.UserProfileActivity">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewTop"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/userImage"
@@ -27,50 +24,74 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:src="@drawable/placeholder_image" />
+
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_marginStart="10dp"
-        android:id="@+id/userLogout"
-        android:backgroundTint="@color/white"
+        android:layout_width="54dp"
+        android:id="@+id/addUserImage"
+        android:layout_height="43dp"
+        android:layout_below="@id/userImage"
+        android:layout_marginStart="-40dp"
+        android:layout_marginTop="-40dp"
         android:layout_toEndOf="@id/userImage"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_logout"/>
+        android:background="@null"
+        android:src="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/profgreetingEmail"
+            android:text="@{userDetails.component2()}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userImage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profPhNo"
+        android:text="@{userDetails.component4()}"
         android:layout_below="@id/profgreetingEmail"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="18dp"/>
-    </androidx.cardview.widget.CardView>
+    <ImageButton
+        android:id="@+id/navPop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:src="@drawable/baseline_arrow_back_ios_24" />
+    <ImageButton
+        android:id="@+id/userLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/userImage"
+        android:backgroundTint="@color/white"
+        android:elevation="2dp"
+        android:src="@drawable/ic_logout" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cardViewTop"
+        android:layout_below="@id/profPhNo"
         android:background="@drawable/layout_border">
 
         <RelativeLayout
             android:id="@+id/editProfile"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp">
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:background="@drawable/border">
             <TextView
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit Profile"/>
@@ -79,12 +100,15 @@
             android:id="@+id/viewOrders"
             android:layout_toEndOf="@id/editProfile"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp">
+            android:layout_marginStart="62dp"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:background="@drawable/border">
             <TextView
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" Orders"/>
@@ -92,14 +116,17 @@
         <RelativeLayout
             android:id="@+id/viewWishlist"
             android:layout_below="@id/editProfile"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="20dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp">
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:background="@drawable/border">
             <TextView
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:text="Wishlist"/>
         </RelativeLayout>
@@ -107,15 +134,19 @@
             android:id="@+id/chat"
             android:layout_toEndOf="@id/viewWishlist"
             android:layout_below="@id/viewOrders"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="100dp"
-            android:layout_height="50dp">
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="62dp"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:background="@drawable/border">
             <TextView
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
+                android:textColor="@color/white"
                 android:text="Customer"/>
         </RelativeLayout>
 

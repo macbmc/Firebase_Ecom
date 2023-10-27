@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.firebaseecom.R
 import com.example.firebaseecom.authUI.AuthViewModel
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class UserProfileActivity : AppCompatActivity() {
     private lateinit var activityUserProfileBinding: ActivityUserProfileBinding

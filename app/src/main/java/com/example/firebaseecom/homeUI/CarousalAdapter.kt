@@ -12,8 +12,7 @@ import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
 class CarousalAdapter(private val context: Context):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
 
-    var imageList= emptyList<String>()
-    val demoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe0O0260hzKyKursZUTtZAxECP0gSVJ2JXwQ&usqp=CAU"
+    var imageList= emptyList<String?>()
     private lateinit var adCorousalViewBinding: AdCorousalViewBinding
 
     fun setAd(imageList: List<String>)
@@ -40,9 +39,9 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
 
     override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
         val imageUrl=imageList[position]
-        Log.i("carousal","check")
+        Log.d("carousal",imageUrl.toString())
         Glide.with(context)
-            .load(demoUrl)
+            .load(imageUrl)
             .placeholder(R.drawable.placeholder_image)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.adView))
