@@ -63,11 +63,20 @@ dependencies {
     implementation ("com.google.dagger:hilt-android:2.44")//hilt
     kapt ("com.google.dagger:hilt-android-compiler:2.44")
 
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")//coroutines\
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")//coroutines
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")//lifecycle
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
     kapt ("androidx.lifecycle:lifecycle-compiler:2.6.2")
+
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.4.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
 
 
 

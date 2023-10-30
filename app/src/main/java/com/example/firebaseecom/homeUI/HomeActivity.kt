@@ -14,13 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.ProductListByCatActivity
 import com.example.firebaseecom.ProductSearchActivity
 import com.example.firebaseecom.R
-import com.example.firebaseecom.SellProdActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.model.ProductModel
 import com.example.firebaseecom.profileUI.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -59,9 +57,6 @@ class HomeActivity : AppCompatActivity() {
             wishButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, ProductListByCatActivity::class.java))
             }
-            sellButton.setOnClickListener {
-                startActivity(Intent(this@HomeActivity, SellProdActivity::class.java))
-            }
             searchHomeButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, ProductSearchActivity::class.java))
             }
@@ -88,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
         homeItemView.adapter = adapter
         homeBinding.apply {
             lifecycleScope.launch {
-                homeViewModel.getAll()
+                homeViewModel.getProductHome()
                 homeViewModel.products.collect()
                 {
                     when (it) {
@@ -124,5 +119,10 @@ class HomeActivity : AppCompatActivity() {
             homeViewModel.addToWishlist(productModel)
 
         }
+
+        override fun removeFromWishlist(productModel: ProductModel) {
+            homeViewModel.removeFromWishlist(productModel)
+        }
+
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable
 
 data class ProductModel
     (
+    val productId:String?,
     val productTitle: String?,
     val productPrice: String?,
     val productImage: String?,
@@ -15,6 +16,6 @@ data class ProductModel
 
 ):Serializable {
 
-    constructor() : this("", "", "", "", "", "",listOf(""))
+    constructor() : this("","", "", "", "", "", "",listOf(""))
 
 }

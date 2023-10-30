@@ -6,7 +6,7 @@
     <data>
         <variable
             name="productDetails"
-            type="com.example.firebaseecom.model.ProductModel" />
+            type="com.example.firebaseecom.model.ProductHomeModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout 
     android:id="@+id/homeProductPrice"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
-        android:text="@{productDetails.component1()}"
+        android:text="@{productDetails.component5()}"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeProductView" />
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="16dp"
-        android:text="@{productDetails.component2()}"
+        android:text="@{productDetails.component4()}"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeProductTitle" />

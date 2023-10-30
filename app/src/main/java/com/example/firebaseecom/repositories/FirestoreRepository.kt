@@ -17,6 +17,7 @@ interface FirestoreRepository {
     suspend fun getAllProducts(): Resource<List<ProductModel>>
     suspend fun getFromProducts(cat: String): Resource<List<ProductModel>>
     suspend fun addToDest(dest: String,productModel: ProductModel)
+    suspend fun removeFromDest(dest: String,productModel: ProductModel)
     suspend fun getAd(): List<String>
 
 
@@ -155,8 +156,8 @@ class FirestoreRepositoryImpl @Inject constructor(
     override suspend fun addToDest(dest:String,productModel: ProductModel) {
         try {
             val db = firestore.collection("user-$dest").document(currentUser!!.uid)
-                .collection("items")
-            db.add(productModel)
+                .collection("items").document(productModel.productId.toString())
+            db.set(productModel)
                 .addOnSuccessListener {
                     Log.d("add", "success")
                 }
@@ -191,5 +192,11 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
         Log.d("adList", adList.toString())
         return adList
+    }
+
+    override suspend fun removeFromDest(dest: String, productModel: ProductModel) {
+        val db = firestore.collection("user-$dest").document(currentUser!!.uid)
+            .collection("items").document(productModel.productId.toString())
+        db.delete()
     }
 }

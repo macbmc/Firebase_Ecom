@@ -10,121 +10,126 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-            <RelativeLayout
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/homeToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/homeToolBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
-                    android:minHeight="?attr/actionBarSize"
-                    android:theme="?attr/actionBarTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="407dp"
-                        android:layout_height="wrap_content"
-                        tools:layout_editor_absoluteX="1dp"
-                        tools:layout_editor_absoluteY="5dp">
-
-                        <ImageButton
-                            android:id="@+id/searchHomeButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="16dp"
-                            android:backgroundTint="@color/white"
-                            android:scaleType="center"
-                            android:src="@drawable/ic_search"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <ImageButton
-                            android:id="@+id/cartHomeButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="24dp"
-                            android:backgroundTint="@color/white"
-                            app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_cart" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </com.google.android.material.appbar.MaterialToolbar>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/carousalView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
-                    android:layout_centerHorizontal="true"/>
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="5dp">
 
                 <ImageButton
-                    android:id="@+id/catButton3"
-                    android:layout_width="54dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_below="@+id/carousalView"
-                    android:background="@drawable/border"
-                    android:src="@drawable/ic_launcher_foreground" />
-
-                <ImageButton
-                    android:id="@+id/catButton2"
-                    android:layout_width="54dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/carousalView"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_toStartOf="@+id/catButton3"
-                    android:background="@drawable/border"
-                    android:src="@drawable/ic_launcher_foreground" />
-
-                <ImageButton
-                    android:id="@+id/catButton1"
-                    android:layout_width="54dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/carousalView"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_toStartOf="@+id/catButton2"
-                    android:background="@drawable/border"
-                    android:src="@drawable/ic_launcher_foreground" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/homeItemView"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/catButton2"
-                    android:layout_marginTop="30dp" />
-                <ProgressBar
+                    android:id="@+id/searchHomeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/catButton2"
-                    android:id="@+id/homeItemViewProgress"
-                    android:layout_marginTop="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:visibility="invisible"
-                    />
-            </RelativeLayout>
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/white"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageButton
+                    android:id="@+id/cartHomeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_cart" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carousalView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp" />
+
+        <ImageButton
+            android:id="@+id/catButton3"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/carousalView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <ImageButton
+            android:id="@+id/catButton2"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/carousalView"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="100dp"
+            android:layout_toStartOf="@+id/catButton3"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <ImageButton
+            android:id="@+id/catButton1"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/carousalView"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
+            android:layout_toStartOf="@+id/catButton2"
+            android:background="@drawable/border"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeItemView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/catButton2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp" />
+
+        <ProgressBar
+            android:id="@+id/homeItemViewProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/catButton2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:visibility="invisible" />
+    </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="79dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="parent"

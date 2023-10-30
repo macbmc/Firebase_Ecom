@@ -2,9 +2,11 @@ package com.example.firebaseecom.homeUI
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,26 +16,29 @@ import com.example.firebaseecom.detailsUI.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductModel
 import java.io.Serializable
 
-class ProductListAdapter(private val context: Context,val firestoreOperations: FirestoreOperations ) :
+class ProductListAdapter(
+    private val context: Context,
+    val firestoreOperations: FirestoreOperations
+) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
     private var productDetails = emptyList<ProductModel>()
 
     private lateinit var productListViewBinding: ProductListViewBinding
 
-    interface FirestoreOperations
-    {
+    interface FirestoreOperations {
         fun addToWishlist(productModel: ProductModel)
+        fun removeFromWishlist(productModel: ProductModel)
     }
 
-    class ProductViewHolder(private val productListViewBinding: ProductListViewBinding,val firestoreOperations: FirestoreOperations) :
+    class ProductViewHolder(
+        private val productListViewBinding: ProductListViewBinding,
+        val firestoreOperations: FirestoreOperations
+    ) :
         RecyclerView.ViewHolder(productListViewBinding.root) {
         fun bind(productModel: ProductModel) {
             productListViewBinding.apply {
-                productDetails = productModel
+               // productDetails = productModel
                 homeLikeButton.setOnClickListener {
-                    homeLikeButton.visibility = View.INVISIBLE
-                    homeLikedButton.visibility = View.VISIBLE
-                    firestoreOperations.addToWishlist(productModel)
 
                 }
 
@@ -55,7 +60,7 @@ class ProductListAdapter(private val context: Context,val firestoreOperations: F
         val layoutInflater = LayoutInflater.from(parent.context)
         productListViewBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.product_list_view, parent, false)
-        return ProductViewHolder(productListViewBinding,firestoreOperations)
+        return ProductViewHolder(productListViewBinding, firestoreOperations)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
@@ -66,8 +71,8 @@ class ProductListAdapter(private val context: Context,val firestoreOperations: F
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener {
-            val intent =Intent(context, ProductDetailsActivity::class.java)
-            intent.putExtra("product",product as Serializable)
+            val intent = Intent(context, ProductDetailsActivity::class.java)
+            intent.putExtra("product", product as Serializable)
             context.startActivity(intent)
         }
 
