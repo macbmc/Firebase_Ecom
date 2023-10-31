@@ -71,11 +71,19 @@ dependencies {
     kapt ("androidx.lifecycle:lifecycle-compiler:2.6.2")
 
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")//retrofit and moshi
     implementation("com.squareup.retrofit2:converter-moshi:2.4.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    val roomVersion = "2.6.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation ("androidx.room:room-ktx:2.6.0")
+    kapt ("androidx.room:room-compiler:2.6.0")
+
 
 
 

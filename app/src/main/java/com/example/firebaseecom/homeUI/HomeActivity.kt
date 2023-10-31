@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -70,7 +71,16 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
            homeViewModel.getAd()
             homeViewModel.adList.collect{
-                carousalAdapter.setAd(it)
+                when(it){
+                    is Resource.Loading ->{
+                        homeBinding.homeadViewProgress.isVisible=true
+                    }
+                    is Resource.Success ->{
+                        homeBinding.homeadViewProgress.isVisible=false
+                        carousalAdapter.setAd(it.data)
+                    }
+                    else -> {}
+                }
             }
         }
 

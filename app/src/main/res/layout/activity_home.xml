@@ -72,6 +72,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp" />
+        <ProgressBar
+            android:id="@+id/homeadViewProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:visibility="invisible"/>
 
         <ImageButton
             android:id="@+id/catButton3"
@@ -113,7 +120,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/catButton2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="50dp"/>
 
         <ProgressBar
             android:id="@+id/homeItemViewProgress"

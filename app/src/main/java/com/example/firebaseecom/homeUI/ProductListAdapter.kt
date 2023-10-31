@@ -2,6 +2,7 @@ package com.example.firebaseecom.homeUI
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.detailsUI.ProductDetailsActivity
+import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductModel
 import java.io.Serializable
 
@@ -21,7 +23,7 @@ class ProductListAdapter(
     val firestoreOperations: FirestoreOperations
 ) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
-    private var productDetails = emptyList<ProductModel>()
+    private var productDetails : List<ProductHomeModel>? = listOf()
 
     private lateinit var productListViewBinding: ProductListViewBinding
 
@@ -35,11 +37,10 @@ class ProductListAdapter(
         val firestoreOperations: FirestoreOperations
     ) :
         RecyclerView.ViewHolder(productListViewBinding.root) {
-        fun bind(productModel: ProductModel) {
+        fun bind(productModel: ProductHomeModel?) {
             productListViewBinding.apply {
-               // productDetails = productModel
+                productDetails = productModel
                 homeLikeButton.setOnClickListener {
-
                 }
 
             }
@@ -48,7 +49,7 @@ class ProductListAdapter(
     }
 
 
-    fun setProduct(productDetails: List<ProductModel>) {
+    fun setProduct(productDetails: List<ProductHomeModel>?) {
         this.productDetails = productDetails
         notifyDataSetChanged()
     }
@@ -64,10 +65,10 @@ class ProductListAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = productDetails[position]
+        val product = productDetails?.get(position)
         holder.bind(product)
         Glide.with(context)
-            .load(product.productImage)
+            .load(product?.productImage)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener {
@@ -79,6 +80,6 @@ class ProductListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return productDetails.count()
+        return productDetails!!.count()
     }
 }

@@ -1,6 +1,8 @@
 package com.example.firebaseecom.di
 
-import com.example.firebaseecom.EkartApi
+import com.example.firebaseecom.api.EkartApi
+import com.example.firebaseecom.repositories.NetworkRepository
+import com.example.firebaseecom.repositories.NetworkRepositoryImpl
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -26,4 +28,8 @@ object EkartApiModule {
         )
         .build()
         .create(EkartApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNetworkRepository(repository:NetworkRepositoryImpl):NetworkRepository = repository
 }
