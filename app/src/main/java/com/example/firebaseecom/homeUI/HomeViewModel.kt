@@ -26,17 +26,7 @@ class HomeViewModel @Inject constructor(
     var status:Boolean =false
 
 
-    fun addToWishlist(productModel: ProductHomeModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.addToDest("wishlist", productModel)
-        }
-    }
 
-    fun removeFromWishlist(productModel: ProductHomeModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.removeFromDest("wishlist", productModel)
-        }
-    }
 
     fun getAd() {
 
