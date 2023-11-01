@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "ProductTable")
@@ -21,4 +22,6 @@ data class ProductHomeModel
     val productPrice: Int?,
     @Json(name = "product_title")
     val productTitle: String?
-)
+):Serializable{
+    constructor() : this("",0, "",0,"")
+}

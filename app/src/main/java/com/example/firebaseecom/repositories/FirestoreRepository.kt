@@ -1,7 +1,7 @@
 package com.example.firebaseecom.repositories
 
 import android.util.Log
-import com.example.firebaseecom.model.ProductModel
+import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
 import com.google.android.gms.tasks.Tasks
@@ -14,10 +14,9 @@ interface FirestoreRepository {
     val currentUser: FirebaseUser?
     suspend fun addToUsers(userModel: UserModel): Int
     suspend fun getFromUsers(): UserModel?
-    suspend fun getAllProducts(): Resource<List<ProductModel>>
-    suspend fun getFromProducts(cat: String): Resource<List<ProductModel>>
-    suspend fun addToDest(dest: String,productModel: ProductModel)
-    suspend fun removeFromDest(dest: String,productModel: ProductModel)
+    suspend fun addToDest(dest: String,productModel: ProductHomeModel)
+    suspend fun checkInDest(dest: String,id: Int): Boolean
+    suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
 
 
@@ -91,7 +90,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getAllProducts(): Resource<List<ProductModel>> {
+    /*override suspend fun getAllProducts(): Resource<List<ProductModel>> {
         var productList: MutableList<ProductModel> = mutableListOf()
         var response = 0
         val db = firestore.collection("product-details")
@@ -120,9 +119,9 @@ class FirestoreRepositoryImpl @Inject constructor(
         return Resource.Success(productList)
 
 
-    }
+    }*/
 
-    override suspend fun getFromProducts(cat: String): Resource<List<ProductModel>> {
+    /*override suspend fun getFromProducts(cat: String): Resource<List<ProductModel>> {
         var productListByCat: MutableList<ProductModel> = mutableListOf()
         var response = 400
         val db = firestore.collection("product-details").whereEqualTo("productCategory", cat)
@@ -151,9 +150,9 @@ class FirestoreRepositoryImpl @Inject constructor(
         return Resource.Success(productListByCat)
 
 
-    }
+    }*/
 
-    override suspend fun addToDest(dest:String,productModel: ProductModel) {
+    override suspend fun addToDest(dest:String,productModel: ProductHomeModel) {
         try {
             val db = firestore.collection("user-$dest").document(currentUser!!.uid)
                 .collection("items").document(productModel.productId.toString())
@@ -188,15 +187,37 @@ class FirestoreRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            Log.d("exceptio", e.toString())
+            Log.d("exception", e.toString())
         }
         Log.d("adList", adList.toString())
         return adList
     }
 
-    override suspend fun removeFromDest(dest: String, productModel: ProductModel) {
+    override suspend fun removeFromDest(dest: String, productModel: ProductHomeModel) {
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items").document(productModel.productId.toString())
         db.delete()
+    }
+
+    override suspend fun checkInDest(dest: String, id: Int): Boolean {
+        var status = false
+        val db=firestore.collection("user-$dest").document(currentUser!!.uid)
+            .collection("items").document(id.toString())
+        val task = Tasks.await(db.get()
+            .addOnCompleteListener {
+                if(it.isSuccessful)
+                {
+                    val doc = it.result
+                    if(doc.exists())
+                    {
+                        status=true
+                    }
+                }
+                Log.d("statusrepo",status.toString())
+
+            })
+
+        return status
+
     }
 }

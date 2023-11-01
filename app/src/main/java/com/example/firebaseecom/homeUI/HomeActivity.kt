@@ -12,11 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.firebaseecom.ProductListByCatActivity
 import com.example.firebaseecom.ProductSearchActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityHomeBinding
-import com.example.firebaseecom.model.ProductModel
+import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.profileUI.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,9 +53,6 @@ class HomeActivity : AppCompatActivity() {
         homeBinding.apply {
             profButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
-            }
-            wishButton.setOnClickListener {
-                startActivity(Intent(this@HomeActivity, ProductListByCatActivity::class.java))
             }
             searchHomeButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, ProductSearchActivity::class.java))
@@ -125,13 +121,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     inner class FirebaseOperationImpl : ProductListAdapter.FirestoreOperations {
-        override fun addToWishlist(productModel: ProductModel) {
+        override fun addToWishlist(productModel: ProductHomeModel) {
             homeViewModel.addToWishlist(productModel)
 
         }
 
-        override fun removeFromWishlist(productModel: ProductModel) {
+        override fun removeFromWishlist(productModel: ProductHomeModel) {
             homeViewModel.removeFromWishlist(productModel)
+        }
+
+        override  fun checkInWishlist(id: Int):Boolean {
+             homeViewModel.checkInWishlist("wishlist",id)
+            val status =homeViewModel.status
+            Log.d("Statusinha",status.toString())
+            return status
         }
 
     }
