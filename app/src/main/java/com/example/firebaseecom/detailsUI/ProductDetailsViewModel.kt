@@ -14,10 +14,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    val networkRepository: NetworkRepository
+    private val networkRepository: NetworkRepository
 ) : ViewModel() {
 
-    val _productDetails = MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(null)
+    private val _productDetails = MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(null)
     val productDetails: StateFlow<Resource<List<ProductDetailsModel>?>?> = _productDetails
 
     fun getProductDetails(id:Int) {
