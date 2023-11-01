@@ -17,7 +17,7 @@ import com.example.firebaseecom.model.ProductHomeModel
 import java.io.Serializable
 
 class ProductListAdapter(
-    private val context: Context, val firestoreOperations: FirestoreOperations
+    private val context: Context
 ) : RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
     private var productDetails: List<ProductHomeModel>? = listOf()
 

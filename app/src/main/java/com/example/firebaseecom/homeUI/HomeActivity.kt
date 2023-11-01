@@ -84,7 +84,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductListAdapter(this@HomeActivity, FirebaseOperationImpl())
+        val adapter = ProductListAdapter(this@HomeActivity)
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -120,7 +120,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    inner class FirebaseOperationImpl : ProductListAdapter.FirestoreOperations {
+    /*inner class FirebaseOperationImpl : ProductListAdapter.FirestoreOperations {
         override fun addToWishlist(productModel: ProductHomeModel) {
             homeViewModel.addToWishlist(productModel)
 
@@ -137,5 +137,5 @@ class HomeActivity : AppCompatActivity() {
             return status
         }
 
-    }
+    }*/
 }
