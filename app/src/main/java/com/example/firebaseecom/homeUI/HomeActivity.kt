@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.ProductSearchActivity
 import com.example.firebaseecom.R
+import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.profileUI.UserProfileActivity
@@ -94,6 +95,9 @@ class HomeActivity : AppCompatActivity() {
                 {
                     when (it) {
                         is Resource.Loading -> {
+                            Log.d("base",EkartApiEndPoints.END_POINT_BASE.ordinal.toString())
+                            Log.d("base",EkartApiEndPoints.END_POINT_PRODUCT_META.toString())
+                            Log.d("base",EkartApiEndPoints.END_POINT_PRODUCTS.toString())
                             homeItemViewProgress.visibility = View.VISIBLE
                             Log.d("itemViewLoader", "Loading")
                         }

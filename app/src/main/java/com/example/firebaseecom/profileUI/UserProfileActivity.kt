@@ -21,8 +21,8 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var profileViewModel: ProfileViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authViewModel=ViewModelProvider(this).get(AuthViewModel::class.java)
-        profileViewModel=ViewModelProvider(this).get(ProfileViewModel::class.java)
+        authViewModel= ViewModelProvider(this)[AuthViewModel::class.java]
+        profileViewModel= ViewModelProvider(this)[ProfileViewModel::class.java]
         activityUserProfileBinding=DataBindingUtil.setContentView(this,R.layout.activity_user_profile)
         getUserdata()
         activityUserProfileBinding.apply {

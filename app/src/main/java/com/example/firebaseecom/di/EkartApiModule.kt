@@ -1,6 +1,7 @@
 package com.example.firebaseecom.di
 
 import com.example.firebaseecom.api.EkartApi
+import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.repositories.NetworkRepositoryImpl
 import com.squareup.moshi.Moshi
@@ -20,7 +21,7 @@ object EkartApiModule {
     @Provides
     @Singleton
     fun provideRetrofit() : EkartApi = Retrofit.Builder()
-        .baseUrl(EkartApi.BASE_URL)
+        .baseUrl(EkartApiEndPoints.END_POINT_BASE.url)
         .addConverterFactory(
             MoshiConverterFactory.create(
                 Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

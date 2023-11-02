@@ -1,6 +1,5 @@
 package com.example.firebaseecom.homeUI
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
@@ -23,21 +22,17 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableStateFlow<Resource<List<String>>>(Resource.Loading())
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
-    var status:Boolean =false
-
-
+    var status: Boolean = false
 
 
     fun getAd() {
 
         viewModelScope.launch(Dispatchers.IO) {
             val adData = firestoreRepository.getAd()
-            if(adData!=null)
-            {
-                adList.value=Resource.Success(adData)
-            }
-            else{
-                adList.value=Resource.Loading()
+            if (adData != null) {
+                adList.value = Resource.Success(adData)
+            } else {
+                adList.value = Resource.Loading()
             }
         }
     }
@@ -45,19 +40,21 @@ class HomeViewModel @Inject constructor(
     fun getProductHome() {
         viewModelScope.launch(Dispatchers.IO) {
             _products.value = Resource.Loading()
+            _products.value = networkRepository.fetchFromLocal()
             val remoteData = networkRepository.fetchFromRemote()
             if (remoteData != null) {
                 networkRepository.storeInLocal(remoteData)
                 _products.value = networkRepository.fetchFromLocal()
-
             }
+
 
 
         }
     }
-    fun checkInWishlist(dest:String,id:Int){
-        viewModelScope.launch(Dispatchers.IO){
-            status=firestoreRepository.checkInDest(dest,id)
+
+    fun checkInWishlist(dest: String, id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            status = firestoreRepository.checkInDest(dest, id)
         }
 
     }

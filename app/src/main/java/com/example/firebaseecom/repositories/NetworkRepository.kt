@@ -1,6 +1,7 @@
 package com.example.firebaseecom.repositories
 
 import android.util.Log
+import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.api.EkartApi
 import com.example.firebaseecom.local.ProductDao
 import com.example.firebaseecom.model.ProductDetailsModel
@@ -27,7 +28,8 @@ class NetworkRepositoryImpl @Inject constructor(
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         lateinit var apiCall: Response<List<ProductHomeModel>?>
         try {
-            apiCall = ekartApi.getProducts()
+            apiCall = ekartApi.getProducts(EkartApiEndPoints.END_POINT_PRODUCTS.url)
+            Log.d("apiCall","success")
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }
@@ -65,7 +67,7 @@ class NetworkRepositoryImpl @Inject constructor(
     override suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>? {
         lateinit var apiCall: Response<List<ProductDetailsModel>>
         try {
-            apiCall = ekartApi.getProductDetails()
+            apiCall = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_PRODUCT_META.url)
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }

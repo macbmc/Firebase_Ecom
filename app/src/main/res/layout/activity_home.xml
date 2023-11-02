@@ -9,7 +9,8 @@
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bgcolor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,6 +96,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/catIcons"
+            android:background="@color/bgcolor"
             android:layout_height="wrap_content"
             android:layout_below="@id/carousalView"
             android:layout_marginTop="24dp">
@@ -102,6 +104,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/catPhones"
                 android:layout_weight="1"
+                android:backgroundTint="@color/bgcolor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/carousalView"
@@ -109,6 +112,7 @@
 
                 <ImageView
                     android:id="@+id/imgPhone"
+                    android:background="@color/bgcolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -125,6 +129,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/catLaptop"
+                android:backgroundTint="@color/bgcolor"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -152,12 +157,14 @@
 
                 android:id="@+id/catTablet"
                 android:layout_width="wrap_content"
+                android:backgroundTint="@color/bgcolor"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/carousalView"
                 android:layout_toEndOf="@+id/catLaptop">
 
                 <ImageView
                     android:id="@+id/imgTablets"
+                    android:backgroundTint="@color/bgcolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -193,7 +200,7 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -202,40 +209,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!--<ImageButton
-            android:id="@+id/profButton"
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/layout_border"
-            android:src="@drawable/ic_prof" />
-
-        <ImageButton
-            android:id="@+id/wishButton"
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@+id/profButton"
-            android:background="@drawable/layout_border"
-            android:src="@drawable/ic_wish" />
-
-        <ImageButton
-            android:id="@+id/sellButton"
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@+id/wishButton"
-            android:background="@drawable/layout_border"
-            android:src="@drawable/ic_sell" />-->
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

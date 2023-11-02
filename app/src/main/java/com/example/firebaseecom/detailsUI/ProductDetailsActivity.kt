@@ -48,6 +48,12 @@ class ProductDetailsActivity : AppCompatActivity() {
             backButton.setOnClickListener{
                 finish()
             }
+            buttonBuyNow.setOnClickListener{
+                productDetailsViewModel.addToOrders(productHome)
+            }
+            buttonAddToCart.setOnClickListener{
+                productDetailsViewModel.addToCart(productHome)
+            }
 
         }
 

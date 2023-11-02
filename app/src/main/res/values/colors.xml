@@ -5,4 +5,5 @@
     <color name="buttonColor">#8BC34A</color>
     <color name="linkTextColor">#03A9F4</color>
     <color name="red">#E10D0D</color>
+    <color name="bgcolor">#FFF3E1E1</color>
 </resources>
