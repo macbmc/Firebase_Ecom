@@ -34,6 +34,9 @@ class UserProfileActivity : AppCompatActivity() {
                 authViewModel.logout()
                 finish()
             }
+            navPop.setOnClickListener{
+                finish()
+            }
         }
     }
 

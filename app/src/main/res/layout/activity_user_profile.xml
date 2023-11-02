@@ -12,7 +12,8 @@
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/bgcolor"
     tools:context=".profileUI.UserProfileActivity">
 
 
@@ -69,7 +70,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/userImage"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/bgcolor"
         android:elevation="2dp"
         android:src="@drawable/ic_logout" />
 
@@ -127,7 +128,7 @@
                 android:textSize="20dp"
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
-                android:text="Wishlist"/>
+                android:text="Settings"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/chat"
