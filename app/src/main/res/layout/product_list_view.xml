@@ -27,7 +27,7 @@
         android:id="@+id/homeProductTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:text="@{productDetails.component5()}"
         android:textSize="24sp"
@@ -45,13 +45,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeProductTitle" />
 
-    <ImageButton
-        android:id="@+id/homeLikeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/homeProductView"
-        app:layout_constraintTop_toTopOf="@+id/homeProductView"
-        app:srcCompat="@drawable/ic_thumpsupnormal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

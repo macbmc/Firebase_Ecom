@@ -1,9 +1,9 @@
 package com.example.firebaseecom.homeUI
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
-import com.example.firebaseecom.model.ProductModel
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.utils.Resource
@@ -23,19 +23,10 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableStateFlow<Resource<List<String>>>(Resource.Loading())
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
+    var status:Boolean =false
 
 
-    fun addToWishlist(productModel: ProductModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.addToDest("wishlist", productModel)
-        }
-    }
 
-    fun removeFromWishlist(productModel: ProductModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.removeFromDest("wishlist", productModel)
-        }
-    }
 
     fun getAd() {
 
@@ -63,6 +54,12 @@ class HomeViewModel @Inject constructor(
 
 
         }
+    }
+    fun checkInWishlist(dest:String,id:Int){
+        viewModelScope.launch(Dispatchers.IO){
+            status=firestoreRepository.checkInDest(dest,id)
+        }
+
     }
 }
 
