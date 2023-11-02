@@ -2,4 +2,6 @@
     <string name="app_name">EKart</string>
     <string name="homeToolBar">homeToolBar</string>
     <string name="item_description">Item Description :</string>
+    <string name="product_review">Product Review:</string>
+    <string name="shareMsg">Checkout this product that I found in Ekart,</string>
 </resources>

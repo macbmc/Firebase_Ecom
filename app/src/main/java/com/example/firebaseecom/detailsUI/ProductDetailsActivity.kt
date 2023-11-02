@@ -48,10 +48,6 @@ class ProductDetailsActivity : AppCompatActivity() {
             backButton.setOnClickListener{
                 finish()
             }
-            buttonAddToCart.setOnClickListener{
-                productDetailsViewModel.addToCart(productHome)
-                Toast.makeText(this@ProductDetailsActivity,"Added to Cart",Toast.LENGTH_SHORT).show()
-            }
 
         }
 
