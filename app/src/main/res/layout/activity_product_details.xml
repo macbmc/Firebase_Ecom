@@ -28,7 +28,7 @@
                 android:background="@color/bgcolor"
 
                 app:layout_constraintTop_toTopOf="parent"
-                tools:context=".detailsUI.ProductDetailsActivity">
+                tools:context=".detailsPg.ProductDetailsActivity">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

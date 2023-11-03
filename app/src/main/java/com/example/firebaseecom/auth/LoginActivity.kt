@@ -1,4 +1,4 @@
-package com.example.firebaseecom.authUI
+package com.example.firebaseecom.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityLoginBinding
-import com.example.firebaseecom.homeUI.HomeActivity
+import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -1,19 +1,17 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.firebaseecom.detailsUI
+package com.example.firebaseecom.detailsPg
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
-import com.example.firebaseecom.homeUI.CarousalAdapter
+import com.example.firebaseecom.home.CarousalAdapter
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +43,9 @@ class ProductDetailsActivity : AppCompatActivity() {
         activityProductDetailsBinding.apply {
             productTitleText.setText(productHome.productTitle)
             productPriceText.setText(productHome.productPrice.toString())
+            shareButton.setOnClickListener{
+                productDetailsViewModel.shareProduct(productHome,this@ProductDetailsActivity)
+            }
             backButton.setOnClickListener{
                 finish()
             }
@@ -53,6 +54,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             }
             buttonAddToCart.setOnClickListener{
                 productDetailsViewModel.addToCart(productHome)
+                Toast.makeText(this@ProductDetailsActivity,"Added To Cart",Toast.LENGTH_SHORT).show()
             }
 
         }

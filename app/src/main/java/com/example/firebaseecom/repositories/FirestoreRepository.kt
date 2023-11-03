@@ -1,6 +1,7 @@
 package com.example.firebaseecom.repositories
 
 import android.util.Log
+import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
@@ -8,6 +9,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 interface FirestoreRepository {
@@ -18,17 +20,10 @@ interface FirestoreRepository {
     suspend fun checkInDest(dest: String,id: Int): Boolean
     suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
+    suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
 
 
-    /*suspend fun addToProducts(productModel: ProductModel):Int
 
-
-    suspend fun addToWishlist(productModel: ProductModel):Int
-
-    suspend fun addToCart(productModel: ProductModel):Int
-
-    suspend fun addToOrders(productModel: ProductModel):Int
-    */
 }
 
 
@@ -41,21 +36,15 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     override suspend fun addToUsers(userModel: UserModel): Int {
         var status = 400
-        val user = hashMapOf(
-            "displayName" to userModel.userName,
-            "email" to userModel.userEmail,
-            "imageUrl" to userModel.userImg,
-            "phNumber" to userModel.phNo
-        )
         try {
             val doc = firestore.collection("users").document(currentUser!!.uid)
-            doc.set(user)
+            doc.set(userModel)
                 .addOnSuccessListener {
                     status = 200
                     Log.d("success", "$status")
                 }
                 .addOnFailureListener {
-                    Log.e("toUser", "${it.message}")
+                    Log.e("toUse", "${it.message}")
                 }
         } catch (e: Exception) {
             Log.e("toUser", "$e")
@@ -213,11 +202,42 @@ class FirestoreRepositoryImpl @Inject constructor(
                         status=true
                     }
                 }
-                Log.d("statusrepo",status.toString())
+                Log.d("statusRepo",status.toString())
 
             })
 
         return status
 
+    }
+
+    override suspend fun getFromDest(dest: String): Resource<List<ProductHomeModel>> {
+        var productList: MutableList<ProductHomeModel> = mutableListOf()
+        var response = 0
+        val db = firestore.collection("user-$dest").document(currentUser!!.uid)
+            .collection("items")
+        try {
+            val snapshot = Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result
+                    }
+                })
+            snapshot.let {
+                for (doc in it.documents) {
+                    val data = doc.toObject(ProductHomeModel::class.java)
+                    if (data != null) {
+                        response = 200
+                        productList.add(data)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("exception", e.toString())
+        }
+        if (response != 200) {
+            return Resource.Failed("No Available Data")
+        }
+        Log.d("cartdatarepo",productList.toString())
+        return Resource.Success(productList)
     }
 }

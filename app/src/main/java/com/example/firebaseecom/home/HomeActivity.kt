@@ -1,4 +1,4 @@
-package com.example.firebaseecom.homeUI
+package com.example.firebaseecom.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.ProductSearchActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.databinding.ActivityHomeBinding
+import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
-import com.example.firebaseecom.profileUI.UserProfileActivity
+import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 @AndroidEntryPoint
 
@@ -58,6 +61,11 @@ class HomeActivity : AppCompatActivity() {
             searchHomeButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, ProductSearchActivity::class.java))
             }
+            cartHomeButton.setOnClickListener{
+                val intent =Intent(this@HomeActivity,ProductListActivity::class.java)
+                intent.putExtra("dest","cart")
+                startActivity(intent)
+            }
         }
 
 
@@ -85,7 +93,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductListAdapter(this@HomeActivity)
+        val adapter = ProductHomeAdapter(this@HomeActivity,NavigateClass())
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -124,22 +132,12 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    /*inner class FirebaseOperationImpl : ProductListAdapter.FirestoreOperations {
-        override fun addToWishlist(productModel: ProductHomeModel) {
-            homeViewModel.addToWishlist(productModel)
+   inner class NavigateClass:ProductHomeAdapter.NavigationInterface{
+       override fun navigateToDetails(productModel: ProductHomeModel) {
+           val intent = Intent(this@HomeActivity, ProductDetailsActivity::class.java)
+           intent.putExtra("product", productModel as Serializable)
+           startActivity(intent)
+       }
 
-        }
-
-        override fun removeFromWishlist(productModel: ProductHomeModel) {
-            homeViewModel.removeFromWishlist(productModel)
-        }
-
-        override  fun checkInWishlist(id: Int):Boolean {
-             homeViewModel.checkInWishlist("wishlist",id)
-            val status =homeViewModel.status
-            Log.d("Statusinha",status.toString())
-            return status
-        }
-
-    }*/
+   }
 }

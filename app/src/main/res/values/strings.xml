@@ -4,4 +4,6 @@
     <string name="item_description">Item Description :</string>
     <string name="product_review">Product Review:</string>
     <string name="shareMsg">Checkout this product that I found in Ekart,</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

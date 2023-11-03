@@ -24,19 +24,24 @@ class NetworkRepositoryImpl @Inject constructor(
     private val productDao: ProductDao
 ) :
     NetworkRepository {
+    lateinit var apiCall: Response<List<ProductHomeModel>?>
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
-        lateinit var apiCall: Response<List<ProductHomeModel>?>
         try {
             apiCall = ekartApi.getProducts(EkartApiEndPoints.END_POINT_PRODUCTS.url)
             Log.d("apiCall","success")
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }
-        if (apiCall.code() != 200) {
-            return null
+        if(::apiCall.isInitialized) {
+
+            if (apiCall.code() != 200) {
+                return null
+            }
+            return apiCall.body()
         }
-        return apiCall.body()
+        return null
+
 
 
     }

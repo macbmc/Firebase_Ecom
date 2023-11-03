@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.firebaseecom.homeUI
+package com.example.firebaseecom.home
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,21 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
-import com.example.firebaseecom.detailsUI.ProductDetailsActivity
+import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import java.io.Serializable
 
-class ProductListAdapter(
-    private val context: Context
-) : RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
+class ProductHomeAdapter(
+    private val context: Context,val navigateClass: HomeActivity.NavigateClass
+) : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productDetails: List<ProductHomeModel>? = listOf()
 
     private lateinit var productListViewBinding: ProductListViewBinding
 
-    interface FirestoreOperations {
-        fun addToWishlist(productModel: ProductHomeModel)
-        fun removeFromWishlist(productModel: ProductHomeModel)
-        fun checkInWishlist(id: Int): Boolean
+    interface NavigationInterface {
+        fun navigateToDetails(productModel: ProductHomeModel)
     }
 
     class ProductViewHolder(
@@ -59,9 +57,8 @@ class ProductListAdapter(
         Glide.with(context).load(product?.productImage).error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ProductDetailsActivity::class.java)
-            intent.putExtra("product", product as Serializable)
-            context.startActivity(intent)
+            navigateClass.navigateToDetails(product!!)
+
         }
 
     }

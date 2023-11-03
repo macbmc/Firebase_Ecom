@@ -1,14 +1,15 @@
-package com.example.firebaseecom.profileUI
+package com.example.firebaseecom.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.firebaseecom.R
-import com.example.firebaseecom.authUI.AuthViewModel
-import com.example.firebaseecom.authUI.SignUpActivity
+import com.example.firebaseecom.auth.AuthViewModel
+import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ class UserProfileActivity : AppCompatActivity() {
         profileViewModel.getUserData()
         lifecycleScope.launch {
             profileViewModel.userDetails.collect{
+                Log.d("userDataprof",it.toString())
                 activityUserProfileBinding.userDetails = it
             }
         }

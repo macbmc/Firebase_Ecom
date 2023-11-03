@@ -1,4 +1,4 @@
-package com.example.firebaseecom.homeUI
+package com.example.firebaseecom.home
 
 import android.content.Context
 import android.util.Log

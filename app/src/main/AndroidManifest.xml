@@ -18,7 +18,7 @@
         android:theme="@style/Theme.FirebaseEcom"
         tools:targetApi="31">
         <activity
-            android:name=".ProductListActivity"
+            android:name=".CartOrder.ProductListActivity"
             android:exported="false" />
 
         <provider
@@ -38,10 +38,10 @@
             android:name=".ProductListByCatActivity"
             android:exported="false" />
         <activity
-            android:name=".profileUI.UserProfileActivity"
+            android:name=".profile.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".authUI.SignUpActivity"
+            android:name=".auth.SignUpActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,13 +50,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".authUI.LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".detailsUI.ProductDetailsActivity"
+            android:name=".detailsPg.ProductDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".homeUI.HomeActivity"
+            android:name=".home.HomeActivity"
             android:exported="false" />
     </application>
 

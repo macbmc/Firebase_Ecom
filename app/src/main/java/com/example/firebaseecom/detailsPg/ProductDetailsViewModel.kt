@@ -1,4 +1,4 @@
-package com.example.firebaseecom.detailsUI
+package com.example.firebaseecom.detailsPg
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -46,11 +46,6 @@ class ProductDetailsViewModel @Inject constructor(
         }
     }
 
-    fun removeFromCart(productModel: ProductHomeModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.removeFromDest("cart", productModel)
-        }
-    }
 
     fun shareProduct(productModel: ProductHomeModel,context: Context) {
         productRepository.getUri(productModel,context)

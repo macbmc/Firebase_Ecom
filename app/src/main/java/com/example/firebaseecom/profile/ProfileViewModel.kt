@@ -1,4 +1,4 @@
-package com.example.firebaseecom.profileUI
+package com.example.firebaseecom.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

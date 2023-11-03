@@ -1,6 +1,7 @@
-package com.example.firebaseecom.authUI
+package com.example.firebaseecom.auth
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.repositories.AuthRepository
@@ -48,14 +49,13 @@ class AuthViewModel @Inject constructor(val authRepository: AuthRepository, val 
 
     fun signUp(email: String,password: String,phNum:String)
     {
-        val userModel= UserModel("",email,"",phNum)
+        val userModel= UserModel("..",email,"..",phNum)
         viewModelScope.launch(Dispatchers.IO) {
             _signUpAuth.value=Resource.Loading()
             _signUpAuth.value = authRepository.userSignUp(email, password)
+            Log.d("userData",userModel.toString())
+            firestoreRepository.addToUsers(userModel)
 
-        }
-        viewModelScope.launch(Dispatchers.IO){
-            dbResponse=firestoreRepository.addToUsers(userModel)
         }
     }
 
