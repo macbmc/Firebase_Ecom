@@ -69,12 +69,13 @@ class FirestoreRepositoryImpl @Inject constructor(
             )
             val data = snapshot.data
             userInfo = UserModel(
-                data?.get("displayName").toString(), data?.get("email").toString(),
-                data?.get("imageUrl").toString(), data?.get("phNumber").toString(),
+                data?.get("userName").toString(), data?.get("userEmail").toString(),
+                data?.get("userImg").toString(), data?.get("phNo").toString(),
             )
         } catch (e: Exception) {
             Log.d("exceptio", e.toString())
         }
+
         return userInfo
 
     }

@@ -42,10 +42,9 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun getUserdata() {
-        profileViewModel.getUserData()
         lifecycleScope.launch {
+            profileViewModel.getUserData()
             profileViewModel.userDetails.collect{
-                Log.d("userDataprof",it.toString())
                 activityUserProfileBinding.userDetails = it
             }
         }
