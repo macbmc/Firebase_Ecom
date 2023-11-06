@@ -7,10 +7,13 @@ import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.Async
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +25,6 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableStateFlow<Resource<List<String>>>(Resource.Loading())
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
-    var status: Boolean = false
 
 
     fun getAd() {
@@ -52,10 +54,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun checkInWishlist(dest: String, id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            status = firestoreRepository.checkInDest(dest, id)
-        }
+    suspend fun checkNumbWishlist(dest: String): Int {
+       val size = viewModelScope.async(Dispatchers.IO){
+           firestoreRepository.checkNumDest(dest)
+       }
+        return size.await()
 
     }
 }

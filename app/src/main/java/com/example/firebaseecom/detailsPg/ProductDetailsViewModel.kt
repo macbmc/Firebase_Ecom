@@ -23,7 +23,7 @@ class ProductDetailsViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    private val _productDetails = MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(null)
+    private val _productDetails = MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(Resource.Loading())
     val productDetails: StateFlow<Resource<List<ProductDetailsModel>?>?> = _productDetails
 
     fun getProductDetails(id: Int) {

@@ -62,7 +62,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <ImageButton
+               <!-- <ImageButton
                     android:id="@+id/cartHomeButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -71,7 +71,37 @@
                     android:backgroundTint="@color/buttonColor"
                     app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_cart" />
+                    app:srcCompat="@drawable/ic_cart" />-->
+                <FrameLayout
+                    android:id="@+id/cartHomeButton"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:padding="16dp"
+                    android:focusable="true"
+                    android:clipToPadding="false">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_cart"/>
+
+                    <TextView
+                        android:id="@+id/cartNumber"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-4dp"
+                        android:layout_marginEnd="-4dp"
+                        android:background="@drawable/cart_icon_text_bg"
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@color/buttonColor" />
+
+                </FrameLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

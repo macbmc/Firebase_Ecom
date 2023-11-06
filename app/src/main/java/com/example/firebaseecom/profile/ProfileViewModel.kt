@@ -7,6 +7,7 @@ import com.example.firebaseecom.repositories.FirestoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,12 +15,13 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     val repository: FirestoreRepository
 ):ViewModel() {
-    val userDetails = MutableStateFlow<UserModel?>(null)
+    val _userDetails = MutableStateFlow<UserModel>(UserModel("","","",""))
+    val userDetails :StateFlow<UserModel> = _userDetails
 
     fun getUserData()
     {
         viewModelScope.launch(Dispatchers.IO){
-            userDetails.value=repository.getFromUsers()
+            _userDetails.value=repository.getFromUsers()!!
         }
     }
 
