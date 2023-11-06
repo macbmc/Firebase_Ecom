@@ -23,7 +23,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
     lateinit var productDetailsViewModel: ProductDetailsViewModel
     lateinit var productHome: ProductHomeModel
-    val carousalAdapter = CarousalAdapter(this@ProductDetailsActivity)
+    val carousalAdapter = ProductDetailsAdapter(this@ProductDetailsActivity)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productDetailsViewModel = ViewModelProvider(this).get(ProductDetailsViewModel::class.java)

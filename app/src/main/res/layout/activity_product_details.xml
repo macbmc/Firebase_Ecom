@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/productCarousalView"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="28dp"
                     android:textSize="24sp" />
 
@@ -83,7 +84,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/productTitleText"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="28dp"
                     android:textColor="#131313"
                     android:textSize="20sp" />
@@ -105,7 +107,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/productPriceText"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
                     android:freezesText="false"
                     android:text="@string/item_description"
@@ -116,7 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
                     android:text="@{productDetails.component1()}"
                     android:textSize="16sp" />
@@ -126,7 +130,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/productDescText"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
                     android:freezesText="false"
                     android:text="@string/product_review"
@@ -137,9 +142,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textReview"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
-                    android:layout_marginBottom="34dp"
+                    android:layout_marginBottom="100dp"
                     android:text="@{productDetails.component4()}"
                     android:textSize="16sp" />
 
