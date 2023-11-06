@@ -16,6 +16,7 @@ import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.ProductSearchActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.api.EkartApiEndPoints
+import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
@@ -66,6 +67,11 @@ class HomeActivity : AppCompatActivity() {
                 intent.putExtra("dest","cart")
                 startActivity(intent)
             }
+            catLaptop.setOnClickListener{
+                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
+                intent.putExtra("category","Laptop")
+                startActivity(intent)
+            }
         }
 
 
@@ -73,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         ObserveCartNumber()
     }
 

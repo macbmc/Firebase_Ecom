@@ -17,6 +17,7 @@ interface NetworkRepository {
     suspend fun fetchFromLocal(): Resource<List<ProductHomeModel>>
 
     suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>?
+    suspend fun fetchProductByCategory(category:String):Resource<List<ProductHomeModel>>
 }
 
 class NetworkRepositoryImpl @Inject constructor(
@@ -85,5 +86,21 @@ class NetworkRepositoryImpl @Inject constructor(
         }
         return Resource.Failed("apiFail")
 
+    }
+
+    override suspend fun fetchProductByCategory(category: String): Resource<List<ProductHomeModel>> {
+        var productData:MutableList<ProductHomeModel> = mutableListOf()
+        try {
+            productData=productDao.getProductByCategory(category).toMutableList()
+        }
+        catch(e:Exception)
+        {
+            Log.e("fetchProductByCategory",e.toString())
+        }
+        if(productData==null)
+        {
+            return Resource.Failed("Database Error,Try Again")
+        }
+        return Resource.Success(productData)
     }
 }

@@ -17,4 +17,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM ProductTable")
     fun getProductFromDb():List<ProductHomeModel>
+
+    @Query("SELECT * FROM ProductTable WHERE productCategory=:category")
+    fun getProductByCategory(category:String):List<ProductHomeModel>
 }
