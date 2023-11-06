@@ -1,7 +1,6 @@
 package com.example.firebaseecom.repositories
 
 import android.util.Log
-import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
@@ -9,7 +8,6 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 interface FirestoreRepository {
@@ -17,7 +15,7 @@ interface FirestoreRepository {
     suspend fun addToUsers(userModel: UserModel): Int
     suspend fun getFromUsers(): UserModel?
     suspend fun addToDest(dest: String,productModel: ProductHomeModel)
-    suspend fun checkInDest(dest: String,id: Int): Boolean
+    suspend fun checkNumDest(dest: String): Int
     suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
     suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
@@ -189,25 +187,27 @@ class FirestoreRepositoryImpl @Inject constructor(
         db.delete()
     }
 
-    override suspend fun checkInDest(dest: String, id: Int): Boolean {
-        var status = false
-        val db=firestore.collection("user-$dest").document(currentUser!!.uid)
-            .collection("items").document(id.toString())
-        val task = Tasks.await(db.get()
-            .addOnCompleteListener {
-                if(it.isSuccessful)
-                {
-                    val doc = it.result
-                    if(doc.exists())
-                    {
-                        status=true
+    override suspend fun checkNumDest(dest: String): Int{
+        var size = 0
+        val db = firestore.collection("user-$dest").document(currentUser!!.uid)
+            .collection("items")
+
+        try{
+            Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if(it.isSuccessful){
+                        it.result.let {
+                            size=it.size()
+                        }
                     }
-                }
-                Log.d("statusRepo",status.toString())
-
-            })
-
-        return status
+                })
+        }
+        catch (e:Exception)
+        {
+            Log.e("ErrorNumbCheck",e.toString())
+        }
+        Log.d("cartNUmrepo",size.toString())
+        return size
 
     }
 

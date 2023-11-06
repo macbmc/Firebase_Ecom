@@ -5,6 +5,7 @@ package com.example.firebaseecom.detailsPg
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -67,12 +68,14 @@ class ProductDetailsActivity : AppCompatActivity() {
             productDetailsViewModel.productDetails.collect {
                 when (it) {
                     is Resource.Loading -> {
+                        activityProductDetailsBinding.progressBar.isVisible=true
                         Toast.makeText(
                             this@ProductDetailsActivity, "Details Loading", Toast.LENGTH_SHORT
                         ).show()
                     }
 
                     is Resource.Success -> {
+                        activityProductDetailsBinding.progressBar.isVisible=false
                         val myList = it.data
                         activityProductDetailsBinding.productDetails = myList?.singleOrNull {
                             it.productId == productHome.productId

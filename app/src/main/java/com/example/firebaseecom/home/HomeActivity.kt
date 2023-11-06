@@ -34,9 +34,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeViewModel: HomeViewModel
     val carousalAdapter = CarousalAdapter(this@HomeActivity)
 
-    var imageList: List<String> =
-        listOf("R.drawable.placeholder_image", "R.drawable.placeholder_image")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,11 +47,14 @@ class HomeActivity : AppCompatActivity() {
             false
         )
 
+
         observeCarousal()
         observeProducts()
+        ObserveCartNumber()
 
 
         homeBinding.apply {
+            cartNumber.text = "0"
             profButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
             }
@@ -70,6 +70,21 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        ObserveCartNumber()
+    }
+
+    private fun ObserveCartNumber() {
+        lifecycleScope.launch {
+            var size = homeViewModel.checkNumbWishlist("cart")
+            Log.d("deferredcartnumber", size.toString())
+            homeBinding.cartNumber.text=size.toString()
+
+        }
+    }
+
 
     private fun observeCarousal() {
 

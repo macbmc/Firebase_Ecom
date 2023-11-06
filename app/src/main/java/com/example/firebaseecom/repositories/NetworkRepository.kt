@@ -25,6 +25,7 @@ class NetworkRepositoryImpl @Inject constructor(
 ) :
     NetworkRepository {
     lateinit var apiCall: Response<List<ProductHomeModel>?>
+    lateinit var apiCallDetails: Response<List<ProductDetailsModel>?>
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         try {
@@ -70,17 +71,19 @@ class NetworkRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>? {
-        lateinit var apiCall: Response<List<ProductDetailsModel>>
         try {
-            apiCall = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_PRODUCT_META.url)
+            apiCallDetails = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_PRODUCT_META.url)
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }
-        if (apiCall.code() != 200) {
-            return Resource.Failed("API Error")
-        }
+        if(::apiCallDetails.isInitialized) {
 
-        return Resource.Success(apiCall.body()!!)
+            if (apiCallDetails.code() != 200) {
+                return Resource.Failed("apiFail")
+            }
+            return Resource.Success(apiCallDetails.body())
+        }
+        return Resource.Failed("apiFail")
 
     }
 }
