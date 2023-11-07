@@ -48,14 +48,14 @@ class HomeActivity : AppCompatActivity() {
             false
         )
 
-
+        ObserveCartNumber()
         observeCarousal()
         observeProducts()
-        ObserveCartNumber()
+
 
 
         homeBinding.apply {
-            cartNumber.text = "0"
+            cartNumber.text="0"
             profButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
             }

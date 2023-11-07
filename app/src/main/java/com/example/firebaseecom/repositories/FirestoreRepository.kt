@@ -188,26 +188,29 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkNumDest(dest: String): Int{
-        var size = 0
+        var count = 0
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items")
 
-        try{
-            Tasks.await(db.get()
+        try {
+            val snapshot = Tasks.await(db.get()
                 .addOnCompleteListener {
-                    if(it.isSuccessful){
-                        it.result.let {
-                            size=it.size()
-                        }
+                    if (it.isSuccessful) {
+                        it.result
                     }
                 })
+            snapshot.let {
+                for (doc in it.documents) {
+                    count++
+                }
+            }
         }
         catch (e:Exception)
         {
             Log.e("ErrorNumbCheck",e.toString())
         }
-        Log.d("cartNUmrepo",size.toString())
-        return size
+        Log.d("cartNUmrepo",count.toString())
+        return count
 
     }
 
