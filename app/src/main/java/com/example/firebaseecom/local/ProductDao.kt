@@ -5,8 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.firebaseecom.model.ProductHomeModel
-import kotlinx.coroutines.flow.StateFlow
-import org.intellij.lang.annotations.Flow
 
 @Dao
 
@@ -17,4 +15,11 @@ interface ProductDao {
 
     @Query("SELECT * FROM ProductTable")
     fun getProductFromDb():List<ProductHomeModel>
+
+    @Query("SELECT * FROM ProductTable WHERE productCategory=:category")
+    fun getProductByCategory(category:String):List<ProductHomeModel>
+
+    @Query("SELECT * FROM ProductTable WHERE productTitle LIKE '%' || :productName || '%'")
+    fun searchForProducts(productName:String):List<ProductHomeModel>
+
 }

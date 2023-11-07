@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
-import com.example.firebaseecom.home.CarousalAdapter
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,13 +20,13 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 
 class ProductDetailsActivity : AppCompatActivity() {
-    lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
-    lateinit var productDetailsViewModel: ProductDetailsViewModel
+    private lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
+    private lateinit var productDetailsViewModel: ProductDetailsViewModel
     lateinit var productHome: ProductHomeModel
-    val carousalAdapter = ProductDetailsAdapter(this@ProductDetailsActivity)
+    private val carousalAdapter = ProductDetailsAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        productDetailsViewModel = ViewModelProvider(this).get(ProductDetailsViewModel::class.java)
+        productDetailsViewModel = ViewModelProvider(this)[ProductDetailsViewModel::class.java]
         activityProductDetailsBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
         productHome = intent.extras!!.get("product") as ProductHomeModel
@@ -42,8 +41,9 @@ class ProductDetailsActivity : AppCompatActivity() {
         observeProductDetails()
 
         activityProductDetailsBinding.apply {
-            productTitleText.setText(productHome.productTitle)
-            productPriceText.setText(productHome.productPrice.toString())
+            productTitleText.text = productHome.productTitle
+            productTitleHeader.text=productHome.productTitle
+            productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener{
                 productDetailsViewModel.shareProduct(productHome,this@ProductDetailsActivity)
             }
@@ -77,8 +77,8 @@ class ProductDetailsActivity : AppCompatActivity() {
                     is Resource.Success -> {
                         activityProductDetailsBinding.progressBar.isVisible=false
                         val myList = it.data
-                        activityProductDetailsBinding.productDetails = myList?.singleOrNull {
-                            it.productId == productHome.productId
+                        activityProductDetailsBinding.productDetails = myList?.singleOrNull { list ->
+                            list.productId == productHome.productId
                         }
                         carousalAdapter.setAd(activityProductDetailsBinding.productDetails?.productImage!!)
                     }

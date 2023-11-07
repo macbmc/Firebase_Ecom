@@ -18,6 +18,9 @@
         android:theme="@style/Theme.FirebaseEcom"
         tools:targetApi="31">
         <activity
+            android:name=".category.ProductCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".CartOrder.ProductListActivity"
             android:exported="false" />
 
@@ -32,10 +35,7 @@
         </provider>
 
         <activity
-            android:name=".ProductSearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProductListByCatActivity"
+            android:name=".productSearch.ProductSearchActivity"
             android:exported="false" />
         <activity
             android:name=".profile.UserProfileActivity"

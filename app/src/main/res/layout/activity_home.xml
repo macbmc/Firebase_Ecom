@@ -10,7 +10,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgcolor">
+    android:background="@color/bgColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,16 +62,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-               <!-- <ImageButton
-                    android:id="@+id/cartHomeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="24dp"
-                    android:backgroundTint="@color/buttonColor"
-                    app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_cart" />-->
                 <FrameLayout
                     android:id="@+id/cartHomeButton"
                     android:layout_width="wrap_content"
@@ -87,7 +77,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_cart"/>
+                        android:src="@drawable/ic_cart"
+                        android:contentDescription="toCart" />
 
                     <TextView
                         android:id="@+id/cartNumber"
@@ -98,7 +89,6 @@
                         android:layout_marginEnd="-4dp"
                         android:background="@drawable/cart_icon_text_bg"
                         android:gravity="center"
-                        android:text="5"
                         android:textColor="@color/buttonColor" />
 
                 </FrameLayout>
@@ -114,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="70dp" />
         <ProgressBar
             android:id="@+id/homeadViewProgress"
             android:layout_width="wrap_content"
@@ -126,7 +116,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/catIcons"
-            android:background="@color/bgcolor"
+            android:background="@color/bgColor"
             android:layout_height="wrap_content"
             android:layout_below="@id/carousalView"
             android:layout_marginTop="24dp">
@@ -134,7 +124,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/catPhones"
                 android:layout_weight="1"
-                android:backgroundTint="@color/bgcolor"
+                android:backgroundTint="@color/bgColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/carousalView"
@@ -142,7 +132,7 @@
 
                 <ImageView
                     android:id="@+id/imgPhone"
-                    android:background="@color/bgcolor"
+                    android:background="@color/bgColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -159,7 +149,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/catLaptop"
-                android:backgroundTint="@color/bgcolor"
+                android:backgroundTint="@color/bgColor"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,14 +177,14 @@
 
                 android:id="@+id/catTablet"
                 android:layout_width="wrap_content"
-                android:backgroundTint="@color/bgcolor"
+                android:backgroundTint="@color/bgColor"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/carousalView"
                 android:layout_toEndOf="@+id/catLaptop">
 
                 <ImageView
                     android:id="@+id/imgTablets"
-                    android:backgroundTint="@color/bgcolor"
+                    android:backgroundTint="@color/bgColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -218,7 +208,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"/>
+        />
 
         <ProgressBar
             android:id="@+id/homeItemViewProgress"

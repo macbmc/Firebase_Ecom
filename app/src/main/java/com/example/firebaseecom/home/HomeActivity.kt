@@ -13,9 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.CartOrder.ProductListActivity
-import com.example.firebaseecom.ProductSearchActivity
+import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.api.EkartApiEndPoints
+import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
@@ -31,13 +32,13 @@ import java.io.Serializable
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding
-    lateinit var homeViewModel: HomeViewModel
-    val carousalAdapter = CarousalAdapter(this@HomeActivity)
+    private lateinit var homeViewModel: HomeViewModel
+    private val carousalAdapter = CarousalAdapter(this@HomeActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
 
@@ -47,14 +48,14 @@ class HomeActivity : AppCompatActivity() {
             false
         )
 
-
+        observeCartNumber()
         observeCarousal()
         observeProducts()
-        ObserveCartNumber()
+
 
 
         homeBinding.apply {
-            cartNumber.text = "0"
+            cartNumber.text="0"
             profButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
             }
@@ -66,6 +67,21 @@ class HomeActivity : AppCompatActivity() {
                 intent.putExtra("dest","cart")
                 startActivity(intent)
             }
+            catLaptop.setOnClickListener{
+                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
+                intent.putExtra("category","Laptop")
+                startActivity(intent)
+            }
+            catPhones.setOnClickListener{
+                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
+                intent.putExtra("category","Phone")
+                startActivity(intent)
+            }
+            catTablet.setOnClickListener{
+                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
+                intent.putExtra("category","Tablet")
+                startActivity(intent)
+            }
         }
 
 
@@ -73,13 +89,13 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        ObserveCartNumber()
+
+        observeCartNumber()
     }
 
-    private fun ObserveCartNumber() {
+    private fun observeCartNumber() {
         lifecycleScope.launch {
-            var size = homeViewModel.checkNumbWishlist("cart")
-            Log.d("deferredcartnumber", size.toString())
+            val size = homeViewModel.checkNumbWishlist("cart")
             homeBinding.cartNumber.text=size.toString()
 
         }
@@ -108,7 +124,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductHomeAdapter(this@HomeActivity,NavigateClass())
+        val adapter = ProductHomeAdapter(NavigateClass())
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -127,7 +143,7 @@ class HomeActivity : AppCompatActivity() {
 
                         is Resource.Success -> {
                             homeItemViewProgress.visibility = View.INVISIBLE
-                            Log.d("itemviewLoader", "success")
+                            Log.d("itemViewLoader", "success")
                             adapter.setProduct(it.data)
 
                         }
@@ -139,7 +155,6 @@ class HomeActivity : AppCompatActivity() {
                                 .show()
                         }
 
-                        else -> {}
                     }
                 }
             }
