@@ -1,4 +1,3 @@
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,11 +7,9 @@ import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ProductListAdapter @Inject constructor(
-   @ApplicationContext val context: Context,
     val activityFunctionClass: ProductListActivity.ActivityFunctionClass
 ) : RecyclerView.Adapter<ProductListAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
@@ -37,7 +34,7 @@ class ProductListAdapter @Inject constructor(
     override fun onBindViewHolder(holder: ProductListAdapter.MyViewHolder, position: Int) {
         val productHome = productList[position]
         holder.bind(productHome)
-        Glide.with(context)
+        Glide.with(holder.itemView)
             .load(productHome.productImage)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.productImage))

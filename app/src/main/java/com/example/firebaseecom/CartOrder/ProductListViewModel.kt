@@ -2,7 +2,6 @@ package com.example.firebaseecom.CartOrder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.utils.Resource

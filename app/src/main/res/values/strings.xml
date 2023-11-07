@@ -6,4 +6,6 @@
     <string name="shareMsg">Checkout this product that I found in Ekart,</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="no_search_data">No Search Data</string>
+    <string name="no_data">Product Not Available</string>
 </resources>

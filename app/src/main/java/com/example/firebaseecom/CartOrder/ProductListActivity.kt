@@ -2,19 +2,18 @@ package com.example.firebaseecom.CartOrder
 
 import ProductListAdapter
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.firebaseecom.R
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
@@ -25,9 +24,9 @@ import java.io.Serializable
 
 @AndroidEntryPoint
 class ProductListActivity : AppCompatActivity() {
-    lateinit var activityProductListBinding: ActivityProductListBinding
-    lateinit var productListViewModel: ProductListViewModel
-    val adapter = ProductListAdapter(this@ProductListActivity, ActivityFunctionClass())
+    private lateinit var activityProductListBinding: ActivityProductListBinding
+    private lateinit var productListViewModel: ProductListViewModel
+    val adapter = ProductListAdapter(ActivityFunctionClass())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +81,9 @@ class ProductListActivity : AppCompatActivity() {
     }
 
     inner class ActivityFunctionClass : ProductListAdapter.ActivityFunctionInterface {
-        override fun navigateToDetails(product: ProductHomeModel) {
+        override fun navigateToDetails(productHomeModel: ProductHomeModel) {
             val intent = Intent(this@ProductListActivity, ProductDetailsActivity::class.java)
-            intent.putExtra("product", product as Serializable)
+            intent.putExtra("product", productHomeModel as Serializable)
             startActivity(intent)
         }
 

@@ -17,7 +17,7 @@ import com.example.firebaseecom.model.ProductHomeModel
 import java.io.Serializable
 
 class ProductHomeAdapter(
-    private val context: Context,val navigateClass: HomeActivity.NavigateClass
+    val navigateClass: HomeActivity.NavigateClass
 ) : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productDetails: List<ProductHomeModel>? = listOf()
 
@@ -28,7 +28,7 @@ class ProductHomeAdapter(
     }
 
     class ProductViewHolder(
-        private val productListViewBinding: ProductListViewBinding, val context: Context
+        private val productListViewBinding: ProductListViewBinding
     ) : RecyclerView.ViewHolder(productListViewBinding.root) {
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(productModel: ProductHomeModel?) {
@@ -48,13 +48,13 @@ class ProductHomeAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         productListViewBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.product_list_view, parent, false)
-        return ProductViewHolder(productListViewBinding, context)
+        return ProductViewHolder(productListViewBinding)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productDetails?.get(position)
         holder.bind(product)
-        Glide.with(context).load(product?.productImage).error(R.drawable.placeholder_image)
+        Glide.with(holder.itemView).load(product?.productImage).error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.homeProductView))
         holder.itemView.setOnClickListener {
             navigateClass.navigateToDetails(product!!)

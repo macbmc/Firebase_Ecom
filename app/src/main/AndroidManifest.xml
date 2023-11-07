@@ -35,7 +35,7 @@
         </provider>
 
         <activity
-            android:name=".ProductSearchActivity"
+            android:name=".productSearch.ProductSearchActivity"
             android:exported="false" />
         <activity
             android:name=".profile.UserProfileActivity"

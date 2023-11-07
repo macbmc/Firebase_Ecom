@@ -15,6 +15,7 @@ interface NetworkRepository {
     suspend fun fetchFromRemote(): List<ProductHomeModel>?
     suspend fun storeInLocal(remoteData: List<ProductHomeModel>?)
     suspend fun fetchFromLocal(): Resource<List<ProductHomeModel>>
+    suspend fun searchForProducts(searchQuery: String):Resource<List<ProductHomeModel>>
 
     suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>?
     suspend fun fetchProductByCategory(category:String):Resource<List<ProductHomeModel>>
@@ -61,6 +62,19 @@ class NetworkRepositoryImpl @Inject constructor(
         return Resource.Success(productData)
     }
 
+    override suspend fun searchForProducts(searchQuery:String): Resource<List<ProductHomeModel>> {
+        var productData = listOf<ProductHomeModel>()
+        try {
+            productData = productDao.searchForProducts(searchQuery)
+        } catch (e: Exception) {
+            Log.d("fetchFromLocal", e.toString())
+        }
+        if (productData == null) {
+            return Resource.Failed("No results for your search")
+        }
+        return Resource.Success(productData)
+    }
+
     override suspend fun storeInLocal(remoteData: List<ProductHomeModel>?) {
         try {
             productDao.insertProduct(remoteData!!)
@@ -92,6 +106,7 @@ class NetworkRepositoryImpl @Inject constructor(
         var productData:MutableList<ProductHomeModel> = mutableListOf()
         try {
             productData=productDao.getProductByCategory(category).toMutableList()
+            Log.d("productBYCatRepo",productData.toString())
         }
         catch(e:Exception)
         {
@@ -103,4 +118,6 @@ class NetworkRepositoryImpl @Inject constructor(
         }
         return Resource.Success(productData)
     }
+
+
 }

@@ -12,7 +12,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 import com.example.firebaseecom.databinding.ProductDetailsImageViewBinding
 
-class ProductDetailsAdapter(private val context: Context):RecyclerView.Adapter<ProductDetailsAdapter.CarousalViewHolder>() {
+class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.CarousalViewHolder>() {
 
     var imageList= emptyList<String?>()
     private lateinit var productDetailsImageViewBinding: ProductDetailsImageViewBinding
@@ -43,7 +43,7 @@ class ProductDetailsAdapter(private val context: Context):RecyclerView.Adapter<P
     override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
         val imageUrl=imageList[position]
         Log.d("detailsImg",imageUrl.toString())
-        Glide.with(context)
+        Glide.with(holder.itemView)
             .load(imageUrl)
             .placeholder(R.drawable.placeholder_image)
             .error(R.drawable.error_image)

@@ -1,6 +1,5 @@
-package com.example.firebaseecom.category
+package com.example.firebaseecom.productSearch
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,16 +8,17 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
+
+
 @ActivityScoped
-class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.ProductCategoryClass) : RecyclerView.Adapter<ProductCategoryAdapter.MyViewHolder>() {
-    interface ProductCategoryInterface{
+class ProductSearchAdapter(val productSearchClass: ProductSearchActivity.ProductSearchClass) :
+    RecyclerView.Adapter<ProductSearchAdapter.MyViewHolder>() {
+    interface ProductCategoryInterface {
         fun addToCart(productHomeModel: ProductHomeModel)
         fun navToDetails(productHomeModel: ProductHomeModel)
     }
+
     var productList = mutableListOf<ProductHomeModel>()
     lateinit var cartViewBinding: CartViewBinding
 
@@ -27,7 +27,7 @@ class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.P
         fun bind(productHomeModel: ProductHomeModel) {
             cartViewBinding.productHome = productHomeModel
             cartViewBinding.deleteBtn.setOnClickListener {
-                productCategoryClass.addToCart(productHomeModel)
+                productSearchClass.addToCart(productHomeModel)
             }
         }
 
@@ -44,8 +44,8 @@ class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.P
 
     }
 
-    override fun onBindViewHolder(holder:MyViewHolder, position: Int) {
-        val product=productList[position]
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val product = productList[position]
         holder.bind(product)
         cartViewBinding.deleteBtn.setImageResource(+R.drawable.ic_cart)
         Glide.with(holder.itemView)
@@ -53,7 +53,7 @@ class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.P
             .error(R.drawable.error_image)
             .into(holder.itemView.findViewById(R.id.productImage))
         holder.itemView.setOnClickListener {
-            productCategoryClass.navToDetails(product)
+            productSearchClass.navToDetails(product)
         }
 
     }
@@ -62,11 +62,11 @@ class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.P
         return productList.size
     }
 
-    fun setProducts(productlist:List<ProductHomeModel>)
-    {
-        this.productList=productlist.toMutableList()
+    fun setProducts(productlist: List<ProductHomeModel>) {
+        this.productList = productlist.toMutableList()
         notifyDataSetChanged()
     }
 
 
 }
+

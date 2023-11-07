@@ -24,11 +24,11 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authViewModel = ViewModelProvider(this@SignUpActivity).get(AuthViewModel::class.java)
+        authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
         if (authViewModel.currentUser != null) {
-            Log.d("userId", "${authViewModel.currentUser!!.uid}")
+            Log.d("userId", authViewModel.currentUser!!.uid)
             startActivity(Intent(this@SignUpActivity, HomeActivity::class.java))
         }
 

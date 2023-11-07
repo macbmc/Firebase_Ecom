@@ -11,7 +11,6 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.firebaseecom.R
 import com.example.firebaseecom.model.ProductHomeModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -29,7 +28,7 @@ interface ProductRepository {
 class ProductRepositoryImpl @Inject constructor(@ApplicationContext  context: Context) :
     ProductRepository {
     override fun getUri(productHomeModel: ProductHomeModel,context: Context) {
-        lateinit var bitmapUri: Uri
+        var bitmapUri: Uri? = null
         Glide.with(context)
             .asBitmap()
             .load(productHomeModel.productImage)
@@ -53,7 +52,7 @@ class ProductRepositoryImpl @Inject constructor(@ApplicationContext  context: Co
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-                    shareProduct(bitmapUri, productHomeModel,context)
+                    shareProduct(bitmapUri!!, productHomeModel,context)
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -63,9 +62,9 @@ class ProductRepositoryImpl @Inject constructor(@ApplicationContext  context: Co
             })
     }
 
-    override fun shareProduct(uri: Uri, productHome: ProductHomeModel,context: Context) {
+    override fun shareProduct(uri: Uri, productHomeModel: ProductHomeModel, context: Context) {
         if (uri != null) {
-            val msg = " "+productHome.productTitle+" "+productHome.productPrice.toString()
+            val msg = " "+productHomeModel.productTitle+" "+productHomeModel.productPrice.toString()
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

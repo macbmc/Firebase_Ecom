@@ -13,7 +13,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgcolor"
+    android:background="@color/bgColor"
     tools:context=".profile.UserProfileActivity">
 
 
@@ -70,7 +70,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/userImage"
-        android:backgroundTint="@color/bgcolor"
+        android:backgroundTint="@color/bgColor"
         android:elevation="2dp"
         android:src="@drawable/ic_logout" />
 
