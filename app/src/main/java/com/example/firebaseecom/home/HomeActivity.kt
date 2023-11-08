@@ -109,11 +109,11 @@ class HomeActivity : AppCompatActivity() {
             homeViewModel.adList.collect{
                 when(it){
                     is Resource.Loading ->{
-                        homeBinding.homeadViewProgress.isVisible=true
+                        homeBinding.homeAdViewProgress.isVisible=true
                     }
                     is Resource.Success ->{
-                        homeBinding.homeadViewProgress.isVisible=false
                         carousalAdapter.setAd(it.data)
+                        homeBinding.homeAdViewProgress.isVisible=false
                     }
                     else -> {}
                 }
@@ -134,9 +134,6 @@ class HomeActivity : AppCompatActivity() {
                 {
                     when (it) {
                         is Resource.Loading -> {
-                            Log.d("base",EkartApiEndPoints.END_POINT_BASE.ordinal.toString())
-                            Log.d("base",EkartApiEndPoints.END_POINT_PRODUCT_META.toString())
-                            Log.d("base",EkartApiEndPoints.END_POINT_PRODUCTS.toString())
                             homeItemViewProgress.visibility = View.VISIBLE
                             Log.d("itemViewLoader", "Loading")
                         }

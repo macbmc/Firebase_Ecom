@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
                                 is Resource.Failed -> {
                                     Log.d("failed", it.message)
+                                    progressBar.visibility = View.INVISIBLE
                                     Toast.makeText(
                                         this@LoginActivity, it.message, Toast.LENGTH_SHORT
                                     ).show()

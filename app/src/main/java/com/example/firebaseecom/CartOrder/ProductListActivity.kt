@@ -93,5 +93,14 @@ class ProductListActivity : AppCompatActivity() {
 
 
         }
+
+        override fun addTotalPrice(productList: List<ProductHomeModel>) {
+            var totalPrice=0
+            for(product in productList)
+            {
+                totalPrice += product.productPrice!!
+            }
+            activityProductListBinding.cartPrice.text=getString(R.string.price) + totalPrice.toString()
+        }
     }
 }
