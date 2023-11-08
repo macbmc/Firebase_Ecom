@@ -3,7 +3,9 @@ package com.example.firebaseecom.home
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +15,7 @@ import com.example.firebaseecom.databinding.AdCorousalViewBinding
 class CarousalAdapter(private val context: Context):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
 
     var imageList= emptyList<String?>()
+    var lastPosition=-1
     private lateinit var adCorousalViewBinding: AdCorousalViewBinding
 
     fun setAd(imageList: List<String>)
@@ -39,7 +42,7 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
 
     override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
         val imageUrl=imageList[position]
-        Log.d("carousal",imageUrl.toString())
+        setAnimation(holder.itemView,position)
         Glide.with(context)
             .load(imageUrl)
             .placeholder(R.drawable.placeholder_image)
@@ -50,5 +53,14 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
 
     override fun getItemCount(): Int {
        return imageList.count()
+    }
+    private fun setAnimation(itemView: View, position: Int) {
+        if(position>lastPosition)
+        {
+            val animation= AnimationUtils.loadAnimation(context,R.anim.slide_down)
+            itemView.startAnimation(animation)
+            lastPosition=position
+        }
+
     }
 }

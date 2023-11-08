@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.firebaseecom.model.ProductHomeModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -25,7 +24,7 @@ interface ProductRepository {
     fun shareProduct(uri: Uri, productHomeModel: ProductHomeModel,context: Context)
 }
 
-class ProductRepositoryImpl @Inject constructor(@ApplicationContext  context: Context) :
+class ProductRepositoryImpl @Inject constructor() :
     ProductRepository {
     override fun getUri(productHomeModel: ProductHomeModel,context: Context) {
         var bitmapUri: Uri? = null
@@ -42,7 +41,7 @@ class ProductRepositoryImpl @Inject constructor(@ApplicationContext  context: Co
                         )
                         Objects.requireNonNull(file.parentFile).mkdirs()
                         val out = FileOutputStream(file)
-                        resource?.compress(Bitmap.CompressFormat.PNG, 90, out)
+                        resource.compress(Bitmap.CompressFormat.PNG, 90, out)
                         out.close()
                         bitmapUri = FileProvider
                             .getUriForFile(

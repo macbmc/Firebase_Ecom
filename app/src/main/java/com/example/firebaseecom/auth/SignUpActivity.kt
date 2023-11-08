@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -62,6 +63,7 @@ class SignUpActivity : AppCompatActivity() {
                                     }
 
                                     is Resource.Failed -> {
+                                        progressBar.isVisible=false
                                         Log.d("failed", it.message)
                                         Toast.makeText(
                                             this@SignUpActivity, it.message,

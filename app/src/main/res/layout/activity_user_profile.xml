@@ -94,7 +94,7 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit Profile"/>
+                android:text="@string/edit_profile"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/viewOrders"
@@ -111,7 +111,7 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" Orders"/>
+                android:text="@string/orders"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/viewWishlist"
@@ -128,7 +128,7 @@
                 android:textSize="20dp"
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
-                android:text="Settings"/>
+                android:text="@string/settings"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/chat"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:textColor="@color/white"
-                android:text="Customer"/>
+                android:text="@string/queries"/>
         </RelativeLayout>
 
     </RelativeLayout>

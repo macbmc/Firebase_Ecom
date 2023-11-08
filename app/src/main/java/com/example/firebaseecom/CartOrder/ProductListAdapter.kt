@@ -16,6 +16,7 @@ class ProductListAdapter @Inject constructor(
 
         fun navigateToDetails(productHomeModel: ProductHomeModel)
         fun deleteFromCart(productHomeModel: ProductHomeModel)
+        fun addTotalPrice(productList: List<ProductHomeModel>)
     }
 
     var productList: MutableList<ProductHomeModel> = mutableListOf()
@@ -50,6 +51,7 @@ class ProductListAdapter @Inject constructor(
     fun setProduct(productList: List<ProductHomeModel>) {
         this.productList = productList.toMutableList()
         notifyDataSetChanged()
+        activityFunctionClass.addTotalPrice(productList)
     }
 
     inner class MyViewHolder(private val cartViewBinding: CartViewBinding) :
@@ -57,9 +59,10 @@ class ProductListAdapter @Inject constructor(
         fun bind(productHomeModel: ProductHomeModel) {
             cartViewBinding.productHome = productHomeModel
             cartViewBinding.deleteBtn.setOnClickListener {
-                val status = activityFunctionClass.deleteFromCart(productHomeModel)
+                activityFunctionClass.deleteFromCart(productHomeModel)
                 productList.removeAt(adapterPosition)
                 notifyItemRemoved(adapterPosition)
+                activityFunctionClass.addTotalPrice(productList)
 
             }
         }

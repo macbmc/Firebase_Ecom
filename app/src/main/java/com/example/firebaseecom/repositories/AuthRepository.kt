@@ -1,9 +1,11 @@
 package com.example.firebaseecom.repositories
 
+import android.content.res.Resources
 import android.util.Log
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.example.firebaseecom.R
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -60,24 +62,33 @@ class AuthRepositoryImpl @Inject constructor(
  }
 
  fun isValidated(password: String): String {
-   var msg = ""
-  var n=0
+   var msg = " "
+  var nD=0
+  var nL=0
 
   if (password.length < 6) {
-   msg="Not enough characters"
+   msg = Resources.getSystem().getString(R.string.lengthMsg)
 
   }
   for(i in 0 until password.length)
   {
    if(password[i].isDigit())
    {
-    n++
+    nD++
+   }
+   if(password[i].isLetter())
+   {
+    nL++
    }
 
   }
-  if(n<2)
+  if(nD<2)
   {
-   msg="Not enough digits in the password"
+   msg=Resources.getSystem().getString(R.string.DigitMsg)
+  }
+  if(nL<2)
+  {
+   msg=Resources.getSystem().getString(R.string.letterMsg)
   }
   return msg
 
