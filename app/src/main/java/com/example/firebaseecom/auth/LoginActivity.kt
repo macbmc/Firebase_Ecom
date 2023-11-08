@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                                     Log.d("failed", it.message)
                                     progressBar.visibility = View.INVISIBLE
                                     Toast.makeText(
-                                        this@LoginActivity, it.message, Toast.LENGTH_SHORT
+                                        this@LoginActivity,it.message, Toast.LENGTH_LONG
                                     ).show()
                                 }
 

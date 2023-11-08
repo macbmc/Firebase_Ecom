@@ -3,6 +3,8 @@ package com.example.firebaseecom.profile
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -29,34 +31,26 @@ class UserProfileActivity : AppCompatActivity() {
         activityUserProfileBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_user_profile)
         getUserdata()
-        activityUserProfileBinding.apply {
-            viewOrders.setOnClickListener{
-                val intent = Intent(this@UserProfileActivity,ProductListActivity::class.java)
-                intent.putExtra("dest","orders")
-                startActivity(intent)
-            }
-            userLogout.setOnClickListener {
-                val intent = Intent(this@UserProfileActivity, SignUpActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                authViewModel.logout()
-                finish()
-            }
-            navPop.setOnClickListener {
-                finish()
-            }
-            editProfile.setOnClickListener{
-                profileView.isVisible=false
-                profileEditView.isVisible=true
-            }
-        }
+    }
+
+    private fun navToOrders() {
+        val intent = Intent(this@UserProfileActivity, ProductListActivity::class.java)
+        intent.putExtra("dest", "orders")
+        startActivity(intent)
+    }
+
+    private fun userSignout() {
+        val intent = Intent(this@UserProfileActivity, SignUpActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        authViewModel.logout()
+        finish()
     }
 
     private fun getUserdata() {
         lifecycleScope.launch {
             profileViewModel.getUserData()
             profileViewModel.userDetails.collect {
-                Log.d("userData",it.toString())
                 activityUserProfileBinding.userDetails = it
             }
         }

@@ -5,6 +5,8 @@
     <string name="product_review">Product Review:</string>
     <string name="shareMsg">Checkout this product that I found in Ekart,</string>
     <string name="yes">Yes</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
     <string name="no">No</string>
     <string name="no_search_data">No Search Data</string>
     <string name="no_data">Product Not Available</string>
@@ -28,4 +30,17 @@
     <string name="usernameedit">Username:</string>
     <string name="emailedit">Email</string>
     <string name="phone_numberedit">Phone Number</string>
+    <string name="enter_password">Enter Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_update">Profile Update</string>
+    <string name="to_continue_please_enter_password">You will be logged out of your account Please SignIn again To continue please enter password</string>
+    <string name="hey">Hey!</string>
+    <string name="cart">Cart</string>
+    <string name="payments">Payments</string>
+    <string name="helpline">Helpline</string>
+    <string name="select_your_language">Select Your Language</string>
+    <string name="english">English</string>
+    <string name="malayalam">Malayalam</string>
+    <string name="account_settings">Account Settings</string>
 </resources>

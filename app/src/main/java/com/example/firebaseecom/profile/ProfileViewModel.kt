@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.UserModel
+import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,18 +16,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val repository: FirestoreRepository
-):ViewModel() {
-    val _userDetails = MutableStateFlow<UserModel>(UserModel("","","",""))
-    val userDetails :StateFlow<UserModel> = _userDetails
+    private val firestoreRepository: FirestoreRepository,
+    val authRepository:AuthRepository
+) : ViewModel() {
+    private val _userDetails = MutableStateFlow(UserModel("", "", "", ""))
+    val userDetails: StateFlow<UserModel> = _userDetails
 
-    fun getUserData()
-    {
+    fun getUserData() {
         viewModelScope.async(Dispatchers.IO) {
-            _userDetails.value=repository.getFromUsers()!!
-            Log.d("userdataview",_userDetails.value.toString())
-        }
+            _userDetails.value = firestoreRepository.getFromUsers()!!
+            Log.d("userdataview", _userDetails.value.toString())
         }
     }
+    fun updateUser(userModel: UserModel)
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            firestoreRepository.addToUsers(userModel)
+        }
+    }
+
+
+
+    }
+
 
 
