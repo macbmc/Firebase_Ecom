@@ -39,7 +39,7 @@ class AuthRepositoryImpl @Inject constructor(
 
  override suspend fun userSignUp(email: String, password: String): Resource<FirebaseUser> {
   val msg = isValidated(password)
-  if (msg != "") {
+  if (msg != " ") {
    return Resource.Failed(message = msg)
   } else {
 

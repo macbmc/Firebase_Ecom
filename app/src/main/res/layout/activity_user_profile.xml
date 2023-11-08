@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -16,7 +17,55 @@
     android:background="@color/bgColor"
     tools:context=".profile.UserProfileActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/homeToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/buttonColor"
+        android:backgroundTint="@color/buttonColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="5dp">
+
+            <ImageButton
+                android:id="@+id/navPop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/userLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:backgroundTint="@color/white"
+                android:elevation="2dp"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+<RelativeLayout
+    android:id="@+id/profileView"
+    android:visibility="invisible"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/homeToolBar">
     <ImageView
         android:id="@+id/userImage"
         android:layout_width="wrap_content"
@@ -24,18 +73,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/border"
-        android:src="@drawable/placeholder_image" />
+        android:src="@drawable/placeholder_image"/>
 
-    <ImageButton
-        android:layout_width="54dp"
-        android:id="@+id/addUserImage"
-        android:layout_height="43dp"
-        android:layout_below="@id/userImage"
-        android:layout_marginStart="-40dp"
-        android:layout_marginTop="-40dp"
-        android:layout_toEndOf="@id/userImage"
-        android:background="@null"
-        android:src="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/profgreetingEmail"
@@ -55,27 +94,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textSize="18dp"/>
-    <ImageButton
-        android:id="@+id/navPop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        android:src="@drawable/baseline_arrow_back_ios_24" />
-    <ImageButton
-        android:id="@+id/userLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/userImage"
-        android:backgroundTint="@color/bgColor"
-        android:elevation="2dp"
-        android:src="@drawable/ic_logout" />
+
 
 
     <RelativeLayout
+        android:id="@+id/navButtonHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/profPhNo">
@@ -114,7 +137,7 @@
                 android:text="@string/orders"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/viewWishlist"
+            android:id="@+id/viewSettings"
             android:layout_below="@id/editProfile"
             android:layout_marginTop="40dp"
             android:layout_marginStart="20dp"
@@ -132,7 +155,7 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/chat"
-            android:layout_toEndOf="@id/viewWishlist"
+            android:layout_toEndOf="@id/viewSettings"
             android:layout_below="@id/viewOrders"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="30dp"
@@ -152,8 +175,118 @@
 
     </RelativeLayout>
 
-
-
+    <TextView
+        android:id="@+id/deactivateAccount"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/deactivate_account"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_below="@id/navButtonHolder"/>
 
 </RelativeLayout>
+    <RelativeLayout
+        android:visibility="visible"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:id="@+id/profileEditView"
+        android:layout_below="@id/homeToolBar"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/editImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border"
+            android:src="@drawable/placeholder_image"/>
+
+        <ImageButton
+            android:layout_width="54dp"
+            android:id="@+id/addUserImage"
+            android:layout_height="43dp"
+            android:layout_below="@id/editImage"
+            android:layout_marginStart="-40dp"
+            android:layout_marginTop="-40dp"
+            android:layout_toEndOf="@id/editImage"
+            android:background="@null"
+            android:src="@drawable/ic_add" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editImage"
+            android:text="@string/usernameedit"
+            android:textSize="16sp"
+            android:layout_marginTop="26dp"/>
+
+        <EditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/editImage"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:text="@{userDetails.component1()}"
+            android:hint="@string/username"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextUsername"
+            android:text="@string/emailedit"
+            android:textSize="16sp"
+            android:layout_marginTop="26dp"/>
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@{userDetails.component2()}"
+            android:layout_below="@+id/editTextUsername"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:hint="@string/email"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextEmail"
+            android:text="@string/phone_numberedit"
+            android:textSize="16sp"
+            android:layout_marginTop="26dp"/>
+
+        <EditText
+            android:id="@+id/editTextPhNum"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@{userDetails.component4()}"
+            android:layout_below="@+id/editTextEmail"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:hint="@string/phone_number"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/editTextPhNum"
+            android:text="Submit"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/buttonColor"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
 </layout>

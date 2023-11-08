@@ -21,4 +21,11 @@
     <string name="lengthMsg">Not enough characters</string>
     <string name="DigitMsg">Not enough digits in the password..Weak Password</string>
     <string name="letterMsg">Not enough letter in the password..Weak Password</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="deactivate_account">Deactivate Account?</string>
+    <string name="usernameedit">Username:</string>
+    <string name="emailedit">Email</string>
+    <string name="phone_numberedit">Phone Number</string>
 </resources>

@@ -82,6 +82,11 @@ class ProductDetailsActivity : AppCompatActivity() {
                         }
                         carousalAdapter.setAd(activityProductDetailsBinding.productDetails?.productImage!!)
                     }
+                    is Resource.Failed -> {
+                        activityProductDetailsBinding.progressBar.isVisible=true
+                        Toast.makeText(this@ProductDetailsActivity,it.message,Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
                     else -> {}
                 }
