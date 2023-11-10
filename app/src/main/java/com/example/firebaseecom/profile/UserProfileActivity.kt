@@ -2,11 +2,7 @@ package com.example.firebaseecom.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +13,7 @@ import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 @AndroidEntryPoint
 
@@ -28,14 +25,38 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-        activityUserProfileBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_user_profile)
+        activityUserProfileBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_profile)
+
         getUserdata()
+
+        activityUserProfileBinding.apply {
+            navPop.setOnClickListener{finish()}
+            userLogout.setOnClickListener {
+                userSignout()
+            }
+            orderLayout.setOnClickListener {
+                navToCartOrders("orders")
+            }
+            cartLayout.setOnClickListener{
+                navToCartOrders("cart")
+            }
+            editProfile.setOnClickListener{
+                navToEditProfile()
+            }
+
+        }
+
     }
 
-    private fun navToOrders() {
+    private fun navToEditProfile() {
+        val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
+        intent.putExtra("user", activityUserProfileBinding.userDetails as Serializable)
+        startActivity(intent)
+    }
+
+    private fun navToCartOrders(dest:String) {
         val intent = Intent(this@UserProfileActivity, ProductListActivity::class.java)
-        intent.putExtra("dest", "orders")
+        intent.putExtra("dest", dest)
         startActivity(intent)
     }
 
@@ -51,7 +72,18 @@ class UserProfileActivity : AppCompatActivity() {
         lifecycleScope.launch {
             profileViewModel.getUserData()
             profileViewModel.userDetails.collect {
-                activityUserProfileBinding.userDetails = it
+                activityUserProfileBinding.apply{
+                    userDetails = it
+                    if(userDetails?.userName?.isNotEmpty()!!)
+                    {
+                        greetingText.text=getString(R.string.hey)+userDetails?.userName
+                    }
+                    else
+                    {
+                        greetingText.text=getString(R.string.hey)+userDetails?.userEmail
+                    }
+                }
+
             }
         }
 

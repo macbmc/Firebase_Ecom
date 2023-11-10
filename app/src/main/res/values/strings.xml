@@ -26,7 +26,7 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
-    <string name="deactivate_account">Deactivate Account?</string>
+    <string name="deactivate_account">Deactivate Account</string>
     <string name="usernameedit">Username:</string>
     <string name="emailedit">Email</string>
     <string name="phone_numberedit">Phone Number</string>
@@ -34,8 +34,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_update">Profile Update</string>
-    <string name="to_continue_please_enter_password">You will be logged out of your account Please SignIn again To continue please enter password</string>
-    <string name="hey">Hey!</string>
+    <string name="to_continue_please_enter_password">To continue please enter password.You will be logged out . Please Sign in with new Email</string>
+    <string name="hey">Hey!  </string>
     <string name="cart">Cart</string>
     <string name="payments">Payments</string>
     <string name="helpline">Helpline</string>

@@ -75,6 +75,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             userInfo = UserModel(
                 data?.get("userName").toString(), data?.get("userEmail").toString(),
                 data?.get("userImg").toString(), data?.get("phNo").toString(),
+                data?.get("address").toString()
             )
 
         } catch (e: Exception) {

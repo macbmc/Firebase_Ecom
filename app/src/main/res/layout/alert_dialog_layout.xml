@@ -8,10 +8,10 @@
 
     <EditText
         android:id="@+id/dialogPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/edittext_layout"
         android:ems="10"
         android:hint="@string/enter_password"

@@ -3,6 +3,7 @@ package com.example.firebaseecom.repositories
 import android.content.res.Resources
 import android.util.Log
 import com.example.firebaseecom.R
+import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +16,7 @@ interface AuthRepository {
     var currentUser: FirebaseUser?
     suspend fun userLogin(email: String, password: String): Resource<FirebaseUser>
     suspend fun userSignUp(email: String, password: String): Resource<FirebaseUser>
+    suspend fun userEmailUpdate(email: String,password: String):AuthState
 
     fun userSignOut()
 
@@ -54,6 +56,34 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun userEmailUpdate(email: String, password: String):AuthState {
+        var auth = EmailAuthProvider.getCredential(currentUser?.email!!,password)
+        var response=400
+        currentUser?.reauthenticate(auth)
+
+            ?.addOnCompleteListener{reAuth->
+                if(reAuth.isSuccessful)
+                {
+                    Log.d("reAuth","success")
+                    currentUser?.verifyBeforeUpdateEmail(email)
+                        ?.addOnCompleteListener { emailVerification->
+                            if(emailVerification.isSuccessful)
+                            {
+                                response=200
+                            }
+                        }?.addOnFailureListener{
+                            Log.d("emailVerification",it.toString())
+                        }
+                }
+
+            }?.addOnFailureListener{
+                Log.d("reAuth",it.toString())
+            }
+        if(response!=200)
+            return AuthState.SignedIn()
+
+        return AuthState.SignedOut()
+    }
 
 
     override fun userSignOut() {
