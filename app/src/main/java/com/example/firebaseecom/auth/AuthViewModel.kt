@@ -11,6 +11,7 @@ import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -48,14 +49,14 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signUp(email: String, password: String, phNum: String) {
-        val userModel = UserModel("..", email, "..", phNum)
-        viewModelScope.launch(Dispatchers.IO) {
+        val userModel = UserModel("", email, "", phNum,"")
+        viewModelScope.async(Dispatchers.IO) {
             _signUpAuth.value = Resource.Loading()
             _signUpAuth.value = authRepository.userSignUp(email, password)
             Log.d("userData", userModel.toString())
             firestoreRepository.addToUsers(userModel)
-
         }
+
     }
 
     fun logout() {

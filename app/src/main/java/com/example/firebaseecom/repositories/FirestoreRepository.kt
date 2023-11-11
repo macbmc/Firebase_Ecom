@@ -32,8 +32,9 @@ class FirestoreRepositoryImpl @Inject constructor(
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
-    override suspend fun addToUsers(userModel: UserModel): Int {
+    override  suspend fun addToUsers(userModel: UserModel): Int {
         var status = 400
+        Log.d("currentUser",currentUser?.email.toString())
         try {
             val doc = firestore.collection("users").document(currentUser!!.uid)
             doc.set(userModel)
@@ -54,6 +55,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     override suspend fun getFromUsers(): UserModel {
         val uid = currentUser?.uid
+        Log.d("currentUser",currentUser?.email.toString())
         val db = firestore.collection("users").document(uid.toString())
         lateinit var userInfo: UserModel
 
@@ -66,13 +68,20 @@ class FirestoreRepositoryImpl @Inject constructor(
                     }
             )
             val data = snapshot.data
+            data.let{
+
+            }
+            Log.d("userinforepoIN",snapshot.data.toString())
             userInfo = UserModel(
                 data?.get("userName").toString(), data?.get("userEmail").toString(),
                 data?.get("userImg").toString(), data?.get("phNo").toString(),
+                data?.get("address").toString()
             )
+
         } catch (e: Exception) {
             Log.d("exceptio", e.toString())
         }
+        Log.d("userinforepo",userInfo.toString())
 
         return userInfo
 

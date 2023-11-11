@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -16,144 +17,266 @@
     android:background="@color/bgColor"
     tools:context=".profile.UserProfileActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/homeToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/buttonColor"
+        android:backgroundTint="@color/buttonColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
-    <ImageView
-        android:id="@+id/userImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/border"
-        android:src="@drawable/placeholder_image" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="5dp">
 
-    <ImageButton
-        android:layout_width="54dp"
-        android:id="@+id/addUserImage"
-        android:layout_height="43dp"
-        android:layout_below="@id/userImage"
-        android:layout_marginStart="-40dp"
-        android:layout_marginTop="-40dp"
-        android:layout_toEndOf="@id/userImage"
-        android:background="@null"
-        android:src="@drawable/ic_add" />
+            <ImageButton
+                android:id="@+id/navPop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/profgreetingEmail"
-            android:text="@{userDetails.component2()}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/profPhNo"
-        android:text="@{userDetails.component4()}"
-        android:layout_below="@id/profgreetingEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textSize="18dp"/>
-    <ImageButton
-        android:id="@+id/navPop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        android:src="@drawable/baseline_arrow_back_ios_24" />
-    <ImageButton
-        android:id="@+id/userLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/userImage"
-        android:backgroundTint="@color/bgColor"
-        android:elevation="2dp"
-        android:src="@drawable/ic_logout" />
+            <ImageButton
+                android:id="@+id/userLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:backgroundTint="@color/white"
+                android:elevation="2dp"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profPhNo">
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_below="@id/homeToolBar"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/greetingText"
+            style="@style/MaterialAlertDialog.Material3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@id/userImage"
+            android:layout_marginStart="20dp"
+            android:clickable="false"
+            android:elevation="2dp"
+            android:text="@string/hey"
+            android:fontFamily="sans-serif-black"
+            android:hapticFeedbackEnabled="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="50dp"
+            android:id="@+id/userImage"
+            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
+            android:src="@drawable/placeholder_image"
+            android:background="@drawable/border"/>
+        <RelativeLayout
+            android:id="@+id/orderLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:background="@color/buttonColor"
+            android:layout_below="@id/greetingText">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orders"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/cartLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="65dp"
+            android:layout_toEndOf="@id/orderLayout"
+            android:background="@color/buttonColor"
+            android:layout_below="@id/greetingText">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cart"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/paymentsLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/buttonColor"
+            android:layout_below="@id/orderLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/payments"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/helplineLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="65dp"
+            android:layout_toEndOf="@id/paymentsLayout"
+            android:background="@color/buttonColor"
+            android:layout_below="@id/cartLayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/helpline"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_below="@id/paymentsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/black"/>
+        <TextView
+            android:id="@+id/languageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_your_language"
+            android:layout_below="@id/paymentsLayout"
+            android:layout_marginTop="30dp"
+            android:textSize="22dp"/>
+        <RelativeLayout
+            android:id="@+id/englishLanguageLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/languageText"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/english"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/malayalamLanguageLayout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/languageText"
+            android:layout_toEndOf="@id/englishLanguageLayout"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/malayalam"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_below="@id/englishLanguageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/black"/>
+        <TextView
+            android:id="@+id/accountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_settings"
+            android:layout_below="@id/englishLanguageLayout"
+            android:layout_marginTop="30dp"
+            android:textSize="22dp" />
 
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:id="@+id/editProfile"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:background="@drawable/profile_layout_border">
+            android:layout_below="@+id/accountText"
+            android:background="@drawable/border">
+
             <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textSize="20dp"
-                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_profile"/>
+                android:layout_centerInParent="true"
+                android:text="@string/edit_profile"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-black"
+                android:textSize="22sp" />
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_profile"
+                android:background="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/viewOrders"
-            android:layout_toEndOf="@id/editProfile"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="62dp"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:background="@drawable/profile_layout_border">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/editProfile"
+            android:background="@drawable/border">
+
             <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textSize="20dp"
-                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/orders"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/viewWishlist"
-            android:layout_below="@id/editProfile"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:background="@drawable/profile_layout_border">
-            <TextView
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/deactivate_account"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_deactivate"
+                android:background="@color/white"
                 android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/white"
-                android:layout_height="wrap_content"
-                android:text="@string/settings"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/chat"
-            android:layout_toEndOf="@id/viewWishlist"
-            android:layout_below="@id/viewOrders"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginStart="62dp"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:background="@drawable/profile_layout_border">
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textColor="@color/white"
-                android:text="@string/queries"/>
+                android:layout_marginStart="20dp"/>
         </RelativeLayout>
 
     </RelativeLayout>
 
 
-
-
 </RelativeLayout>
+
 </layout>

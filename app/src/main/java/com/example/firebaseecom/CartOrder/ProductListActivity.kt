@@ -35,6 +35,8 @@ class ProductListActivity : AppCompatActivity() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         val dest = intent.getStringExtra("dest")
         activityProductListBinding.apply {
+            if(dest=="orders")
+                ButtonHolder.isVisible=false
             backButton.setOnClickListener {
                 finish()
             }

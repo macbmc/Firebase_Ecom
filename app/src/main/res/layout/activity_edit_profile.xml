@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="userDetails"
+            type="com.example.firebaseecom.model.UserModel" />
+
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profile.EditProfileActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/homeToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/buttonColor"
+        android:backgroundTint="@color/buttonColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="5dp">
+
+            <ImageButton
+                android:id="@+id/navPop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/navToCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:backgroundTint="@color/buttonColor"
+                android:src="@drawable/ic_cart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <RelativeLayout
+        android:id="@+id/userImageLayout"
+        android:layout_below="@id/homeToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/buttonColor">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_add"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/userImageLayout"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <EditText
+            android:id="@+id/editTextUsername"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:text="@{userDetails.component1()}"
+            android:hint="Username"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:text="@{userDetails.component2()}"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:hint="Email"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+        <LinearLayout
+            android:id="@+id/phoneLayout"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/editTextEmail">
+            <EditText
+                android:id="@+id/editTextPhone"
+                android:layout_width="match_parent"
+                android:text="@{userDetails.component4()}"
+                android:layout_height="40dp"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/edittext_layout"
+                android:inputType="number"
+                android:layout_weight="0.5"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Validate"
+                android:layout_marginStart="6dp"
+                android:layout_below="@id/editTextEmail"
+                android:backgroundTint="@color/buttonColor"
+                android:layout_toEndOf="@id/editTextPhone"/>
+
+        </LinearLayout>
+        <EditText
+            android:id="@+id/editTextAddress"
+            android:layout_marginTop="20dp"
+            android:text="@{userDetails.component5()}"
+            android:layout_below="@id/phoneLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:ems="10"
+            android:hint="Address"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/edittext_layout"
+            android:inputType="text" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextAddress"
+            android:backgroundTint="@color/buttonColor"
+            android:text="@string/submit"
+            android:id="@+id/submitBtn"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
+</layout>

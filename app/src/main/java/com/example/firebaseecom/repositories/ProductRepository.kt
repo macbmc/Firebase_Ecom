@@ -22,6 +22,8 @@ interface ProductRepository {
 
     fun getUri(productHomeModel: ProductHomeModel,context: Context)
     fun shareProduct(uri: Uri, productHomeModel: ProductHomeModel,context: Context)
+
+
 }
 
 class ProductRepositoryImpl @Inject constructor() :

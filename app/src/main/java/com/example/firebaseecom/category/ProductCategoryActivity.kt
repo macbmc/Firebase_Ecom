@@ -33,6 +33,7 @@ class ProductCategoryActivity : AppCompatActivity() {
         val category = intent.getStringExtra("category")
         observeProducts(category!!)
         activityProductListBinding.apply {
+
             buttonBuyNow.isVisible=false
             destText.text = category
             backButton.setOnClickListener {

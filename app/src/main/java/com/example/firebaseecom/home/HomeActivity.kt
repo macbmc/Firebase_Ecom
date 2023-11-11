@@ -97,7 +97,6 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val size = homeViewModel.checkNumbWishlist("cart")
             homeBinding.cartNumber.text=size.toString()
-
         }
     }
 
