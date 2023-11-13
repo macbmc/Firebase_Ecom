@@ -1,5 +1,6 @@
 package com.example.firebaseecom.home
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
@@ -7,12 +8,12 @@ import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.Async
 import javax.inject.Inject
 
@@ -23,19 +24,20 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
-    val adList = MutableStateFlow<Resource<List<String>>>(Resource.Loading())
+    val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
 
 
-    fun getAd() {
+    suspend fun getAdData() {
 
-        viewModelScope.launch(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             val adData = firestoreRepository.getAd()
-            if (adData != null) {
-                adList.value = Resource.Success(adData)
-            } else {
-                adList.value = Resource.Loading()
-            }
+            adList.postValue(adData)
+        }
+    }
+    fun getAd(){
+        viewModelScope.launch {
+            getAdData()
         }
     }
 

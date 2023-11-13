@@ -98,27 +98,38 @@
 
 
         </com.google.android.material.appbar.MaterialToolbar>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/carousalView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp" />
-        <ProgressBar
-            android:id="@+id/homeAdViewProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:visibility="invisible"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/homeToolBar"
+            android:id="@+id/carousalAd"
+            android:background="@color/white">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/carousalView"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                />
+            <ProgressBar
+                android:id="@+id/homeAdViewProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/catIcons"
             android:background="@color/bgColor"
             android:layout_height="wrap_content"
-            android:layout_below="@id/carousalView"
+            android:layout_below="@id/carousalAd"
             android:layout_marginTop="24dp">
 
             <androidx.cardview.widget.CardView

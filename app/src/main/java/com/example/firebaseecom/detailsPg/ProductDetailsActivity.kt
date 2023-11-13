@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
@@ -22,7 +24,7 @@ import kotlinx.coroutines.launch
 class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
-    lateinit var productHome: ProductHomeModel
+    private lateinit var productHome: ProductHomeModel
     private val carousalAdapter = ProductDetailsAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +32,10 @@ class ProductDetailsActivity : AppCompatActivity() {
         activityProductDetailsBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
         productHome = intent.extras!!.get("product") as ProductHomeModel
-        val adView = activityProductDetailsBinding.productCarousalView
+        val productView = activityProductDetailsBinding.productCarousalView
 
-        adView.adapter = carousalAdapter
-        adView.layoutManager = LinearLayoutManager(
+        productView.adapter = carousalAdapter
+        productView.layoutManager = LinearLayoutManager(
             this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
@@ -64,33 +66,37 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     private fun observeProductDetails() {
         lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
             productDetailsViewModel.getProductDetails(productHome.productId!!)
             productDetailsViewModel.productDetails.collect {
                 when (it) {
                     is Resource.Loading -> {
-                        activityProductDetailsBinding.progressBar.isVisible=true
+                        activityProductDetailsBinding.progressBar.isVisible = true
                         Toast.makeText(
                             this@ProductDetailsActivity, "Details Loading", Toast.LENGTH_SHORT
                         ).show()
                     }
 
                     is Resource.Success -> {
-                        activityProductDetailsBinding.progressBar.isVisible=false
+                        activityProductDetailsBinding.progressBar.isVisible = false
                         val myList = it.data
-                        activityProductDetailsBinding.productDetails = myList?.singleOrNull { list ->
-                            list.productId == productHome.productId
-                        }
+                        activityProductDetailsBinding.productDetails =
+                            myList?.singleOrNull { list ->
+                                list.productId == productHome.productId
+                            }
                         carousalAdapter.setAd(activityProductDetailsBinding.productDetails?.productImage!!)
                     }
+
                     is Resource.Failed -> {
-                        activityProductDetailsBinding.progressBar.isVisible=true
-                        Toast.makeText(this@ProductDetailsActivity,it.message,Toast.LENGTH_SHORT)
+                        activityProductDetailsBinding.progressBar.isVisible = true
+                        Toast.makeText(this@ProductDetailsActivity, it.message, Toast.LENGTH_SHORT)
                             .show()
                     }
 
                     else -> {}
                 }
             }
+        }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.firebaseecom.repositories
 import android.content.res.Resources
 import android.util.Log
 import com.example.firebaseecom.R
+import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.EmailAuthProvider
@@ -17,14 +18,20 @@ interface AuthRepository {
     suspend fun userLogin(email: String, password: String): Resource<FirebaseUser>
     suspend fun userSignUp(email: String, password: String): Resource<FirebaseUser>
     suspend fun userEmailUpdate(email: String,password: String):AuthState
+    suspend fun deleteUserAccount(password: String)
 
     fun userSignOut()
 
 }
 
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val authStateChangeImpl: AuthStateChange
 ) : AuthRepository {
+
+    interface AuthStateChange{
+        fun navToSignUp()
+    }
     override var currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
         set(value) {}
@@ -70,6 +77,7 @@ class AuthRepositoryImpl @Inject constructor(
                             if(emailVerification.isSuccessful)
                             {
                                 response=200
+
                             }
                         }?.addOnFailureListener{
                             Log.d("emailVerification",it.toString())
@@ -83,6 +91,36 @@ class AuthRepositoryImpl @Inject constructor(
             return AuthState.SignedIn()
 
         return AuthState.SignedOut()
+    }
+
+    override suspend fun deleteUserAccount(password: String) {
+        val authCredential= EmailAuthProvider.getCredential(currentUser?.email!!,password)
+        try {
+            currentUser?.reauthenticate(authCredential)
+                ?.addOnCompleteListener { reAuth->
+                    if(reAuth.isSuccessful)
+                    {
+                        Log.d("reAuth","success")
+                        currentUser?.delete()?.addOnCompleteListener {delete->
+                            if(delete.isSuccessful)
+                            {
+                                Log.d("delete","success")
+                                //currentUser=FirebaseAuth.getInstance().currentUser
+                            }
+                        }
+                            ?.addOnFailureListener {
+                                Log.d("delete",it.toString())
+                            }
+                    }
+                }
+                ?.addOnFailureListener {
+                    Log.d("reAuth",it.toString())
+                }
+        }
+        catch (e:Exception)
+        {
+            Log.d("deleteUserAccount",e.toString())
+        }
     }
 
 

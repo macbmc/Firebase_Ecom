@@ -65,10 +65,13 @@
         android:background="@color/buttonColor">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/userProfileImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_add"/>
+            android:background="@drawable/border"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_add" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -97,6 +100,7 @@
             android:layout_height="40dp"
             android:ems="10"
             android:hint="Email"
+            android:focusable="false"
             android:layout_centerHorizontal="true"
             android:background="@drawable/edittext_layout"
             android:inputType="text" />
@@ -149,6 +153,14 @@
             android:text="@string/submit"
             android:id="@+id/submitBtn"
             android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/submitBtn"
             android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>

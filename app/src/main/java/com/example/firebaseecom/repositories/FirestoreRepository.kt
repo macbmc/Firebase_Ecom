@@ -57,7 +57,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         val uid = currentUser?.uid
         Log.d("currentUser",currentUser?.email.toString())
         val db = firestore.collection("users").document(uid.toString())
-        lateinit var userInfo: UserModel
+        var userInfo = UserModel()
 
         try {
             val snapshot = Tasks.await(
@@ -87,67 +87,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     }
 
-    /*override suspend fun getAllProducts(): Resource<List<ProductModel>> {
-        var productList: MutableList<ProductModel> = mutableListOf()
-        var response = 0
-        val db = firestore.collection("product-details")
-        try {
-            val snapshot = Tasks.await(db.get()
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        it.result
-                    }
-                })
-            snapshot.let {
-                for (doc in it.documents) {
-                    val data = doc.toObject(ProductModel::class.java)
-                    if (data != null) {
-                        response = 200
-                        productList.add(data)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.d("exception", e.toString())
-        }
-        if (response != 200) {
-            return Resource.Failed("")
-        }
-        return Resource.Success(productList)
 
-
-    }*/
-
-    /*override suspend fun getFromProducts(cat: String): Resource<List<ProductModel>> {
-        var productListByCat: MutableList<ProductModel> = mutableListOf()
-        var response = 400
-        val db = firestore.collection("product-details").whereEqualTo("productCategory", cat)
-        try {
-            val snapshot = Tasks.await(db.get()
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        it.result
-                    }
-                })
-            snapshot.let {
-                for (doc in it.documents) {
-                    val data = doc.toObject(ProductModel::class.java)
-                    if (data != null) {
-                        response = 200
-                        productListByCat.add(data)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.d("exception", e.toString())
-        }
-        if (response != 200) {
-            return Resource.Failed("")
-        }
-        return Resource.Success(productListByCat)
-
-
-    }*/
 
     override suspend fun addToDest(dest:String,productModel: ProductHomeModel) {
         try {

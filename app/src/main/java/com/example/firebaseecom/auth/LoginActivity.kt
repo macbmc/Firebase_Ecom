@@ -7,8 +7,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityLoginBinding
 import com.example.firebaseecom.home.HomeActivity
@@ -31,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         activityLoginBinding.apply {
             logInButton.setOnClickListener {
                 lifecycleScope.launch {
+                    repeatOnLifecycle(Lifecycle.State.STARTED){
                     authViewModel.apply {
                         logIn(editTextUsername.text.toString(), editTextPassword.text.toString())
                         loginAuth.collect {
@@ -54,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
                                     Log.d("failed", it.message)
                                     progressBar.visibility = View.INVISIBLE
                                     Toast.makeText(
-                                        this@LoginActivity,it.message, Toast.LENGTH_LONG
+                                        this@LoginActivity, it.message, Toast.LENGTH_LONG
                                     ).show()
                                 }
 
@@ -62,9 +65,12 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
                     }
-
+                }
 
                 }
+            }
+            toSignUp.setOnClickListener{
+                startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
             }
         }
     }
