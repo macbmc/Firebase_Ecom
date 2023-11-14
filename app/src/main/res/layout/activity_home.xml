@@ -12,6 +12,7 @@
     android:layout_height="match_parent"
     android:background="@color/bgColor">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,11 +101,15 @@
         </com.google.android.material.appbar.MaterialToolbar>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:layout_below="@id/homeToolBar"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="200dp"
+
             android:id="@+id/carousalAd"
             android:background="@color/white">
             <androidx.recyclerview.widget.RecyclerView
@@ -183,6 +188,7 @@
             <androidx.cardview.widget.CardView
 
                 android:id="@+id/catTablet"
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:backgroundTint="@color/bgColor"
                 android:layout_height="wrap_content">
@@ -236,6 +242,6 @@
         app:layout_constraintEnd_toEndOf="parent">
 
     </RelativeLayout>-->
-
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
