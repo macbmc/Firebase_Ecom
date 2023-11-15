@@ -46,4 +46,11 @@
     <string name="profile_image">Profile Image</string>
     <string name="Gallery">Gallery\n</string>
     <string name="Camera">Camera</string>
+    <string name="checkout_form">Checkout Form:</string>
+    <string name="total_amount_to_be_paid">Total Amount to be paid :</string>
+    <string name="Continuenpay">Continue and Pay</string>
+    <string name="checkout">Checkout</string>
+    <string name="billing_address">Billing Address\n</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
 </resources>

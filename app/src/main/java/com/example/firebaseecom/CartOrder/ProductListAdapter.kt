@@ -15,12 +15,12 @@ class ProductListAdapter @Inject constructor(
     interface ActivityFunctionInterface {
 
         fun navigateToDetails(productHomeModel: ProductHomeModel)
-        fun deleteFromCart(productHomeModel: ProductHomeModel)
+        fun deleteFromCart(productHomeModel: ProductHomeModel,position: Int)
         fun addTotalPrice(productList: List<ProductHomeModel>)
     }
 
     var productList: MutableList<ProductHomeModel> = mutableListOf()
-    lateinit var cartViewBinding: CartViewBinding
+    private lateinit var cartViewBinding: CartViewBinding
     override fun onCreateViewHolder(
 
         parent: ViewGroup,
@@ -34,7 +34,7 @@ class ProductListAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: ProductListAdapter.MyViewHolder, position: Int) {
         val productHome = productList[position]
-        holder.bind(productHome)
+        holder.bind(productHome,position)
         Glide.with(holder.itemView)
             .load(productHome.productImage)
             .error(R.drawable.placeholder_image)
@@ -55,11 +55,11 @@ class ProductListAdapter @Inject constructor(
     }
 
     inner class MyViewHolder(private val cartViewBinding: CartViewBinding) :
-        RecyclerView.ViewHolder(cartViewBinding!!.root) {
-        fun bind(productHomeModel: ProductHomeModel) {
+        RecyclerView.ViewHolder(cartViewBinding.root) {
+        fun bind(productHomeModel: ProductHomeModel,position:Int) {
             cartViewBinding.productHome = productHomeModel
             cartViewBinding.deleteBtn.setOnClickListener {
-                activityFunctionClass.deleteFromCart(productHomeModel)
+                activityFunctionClass.deleteFromCart(productHomeModel,position)
                 productList.removeAt(adapterPosition)
                 notifyItemRemoved(adapterPosition)
                 activityFunctionClass.addTotalPrice(productList)

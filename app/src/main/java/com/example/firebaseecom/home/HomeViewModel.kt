@@ -50,9 +50,6 @@ class HomeViewModel @Inject constructor(
                 networkRepository.storeInLocal(remoteData)
                 _products.value = networkRepository.fetchFromLocal()
             }
-
-
-
         }
     }
 

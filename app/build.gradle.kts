@@ -85,6 +85,8 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.0")
     kapt ("androidx.room:room-compiler:2.6.0")
 
+    implementation("com.razorpay:checkout:1.6.33")
+
 
 
 

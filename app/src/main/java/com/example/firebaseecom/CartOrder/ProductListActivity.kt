@@ -17,6 +17,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productListViewModel: ProductListViewModel
     val adapter = ProductListAdapter(ActivityFunctionClass())
+    var productList = arrayListOf<ProductHomeModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,7 @@ class ProductListActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_product_list)
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         val dest = intent.getStringExtra("dest")
+        observeProducts(dest)
         activityProductListBinding.apply {
             if(dest=="orders")
                 ButtonHolder.isVisible=false
@@ -46,8 +49,23 @@ class ProductListActivity : AppCompatActivity() {
                 this@ProductListActivity, LinearLayoutManager.VERTICAL,
                 false
             )
+            buttonBuyNow.setOnClickListener{
+                if(productList.isNotEmpty())
+                {
+                    val intent = Intent(this@ProductListActivity, ProductCheckoutActivity::class.java)
+                    intent.putExtra("productList",productList)
+                    Log.d("productList",productList.toString())
+                    startActivity(intent)
+                }
+                else{
+                    Toast.makeText(this@ProductListActivity,"Add items to cart first", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            }
+
         }
-        observeProducts(dest)
+
     }
 
     private fun observeProducts(dest: String?) {
@@ -64,6 +82,7 @@ class ProductListActivity : AppCompatActivity() {
                             activityProductListBinding.progressBar.isVisible = false
                             Log.d("cartData", it.data.toString())
                             adapter.setProduct(it.data)
+                            productList= ArrayList(it.data)
 
                         }
 
@@ -89,9 +108,11 @@ class ProductListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        override fun deleteFromCart(productHomeModel: ProductHomeModel) {
+        override fun deleteFromCart(productHomeModel: ProductHomeModel,position:Int) {
 
             productListViewModel.removeFromCart(productHomeModel)
+            productList.remove(productHomeModel)
+
 
 
         }

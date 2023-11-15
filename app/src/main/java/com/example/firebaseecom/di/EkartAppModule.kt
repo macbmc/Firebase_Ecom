@@ -3,6 +3,8 @@ package com.example.firebaseecom.di
 import com.example.firebaseecom.profile.EditProfileActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.repositories.AuthRepositoryImpl
+import com.example.firebaseecom.repositories.PaymentRepository
+import com.example.firebaseecom.repositories.PaymentRepositoryImpl
 import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.repositories.ProductRepositoryImpl
 import dagger.Module
@@ -21,5 +23,8 @@ object EkartAppModule {
     fun provideAuthStateChange(): AuthRepositoryImpl.AuthStateChange {
         return EditProfileActivity().AuthStateChangeImpl()
     }
+
+    @Provides
+    fun providePaymentRepository(repositoryImpl: PaymentRepositoryImpl):PaymentRepository=repositoryImpl
 
 }
