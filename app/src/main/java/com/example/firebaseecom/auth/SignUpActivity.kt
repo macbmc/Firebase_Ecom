@@ -28,12 +28,13 @@ class SignUpActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
-        Log.d("currentUserValue",authViewModel.currentUser.toString())
+        Log.d("currentUserValue", authViewModel.currentUser.toString())
         if (authViewModel.currentUser != null) {
             Log.d("userId", authViewModel.currentUser!!.uid)
-            val intent=Intent(this@SignUpActivity, HomeActivity::class.java)
+            val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+            finish()
         }
 
         signUpBinding.apply {
@@ -56,17 +57,16 @@ class SignUpActivity : AppCompatActivity() {
                                     is Resource.Success -> {
                                         Log.d("success", "${it.data}")
                                         Log.d("userId", authViewModel.currentUser!!.uid)
-                                        startActivity(
-                                            Intent(
-                                                this@SignUpActivity,
-                                                HomeActivity::class.java
-                                            )
-                                        )
+                                        val intent= Intent(this@SignUpActivity,HomeActivity::class.java)
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startActivity(intent)
+                                        finish()
 
                                     }
 
                                     is Resource.Failed -> {
-                                        progressBar.isVisible=false
+                                        progressBar.isVisible = false
                                         Log.d("failed", it.message)
                                         Toast.makeText(
                                             this@SignUpActivity, it.message,

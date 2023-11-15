@@ -8,7 +8,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CheckoutlistviewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 
-class ProductCheckoutAdapter(val activityFunctionClass:ProductCheckoutActivity.ActivityFunctionClass):RecyclerView.Adapter<ProductCheckoutAdapter.MyViewHolder>() {
+class ProductCheckoutAdapter(private val activityFunctionClass:ProductCheckoutActivity.ActivityFunctionClass):RecyclerView.Adapter<ProductCheckoutAdapter.MyViewHolder>() {
 
     interface ActivityFunctionInterface{
         fun addTotalPrice(productList:List<ProductHomeModel?>)

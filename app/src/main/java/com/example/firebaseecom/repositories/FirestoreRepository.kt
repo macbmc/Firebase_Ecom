@@ -18,7 +18,9 @@ interface FirestoreRepository {
     suspend fun checkNumDest(dest: String): Int
     suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
+    suspend fun addToOrders(productList:List<ProductHomeModel>)
     suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
+    suspend fun removeAllFromCart()
 
 
 
@@ -130,6 +132,25 @@ class FirestoreRepositoryImpl @Inject constructor(
         return adList
     }
 
+    override suspend fun addToOrders(productList: List<ProductHomeModel>) {
+        for(productModel in productList)
+        {
+            try {
+                val db = firestore.collection("user-orders").document(currentUser!!.uid)
+                    .collection("items").document(productModel.productId.toString())
+                db.set(productModel)
+                    .addOnSuccessListener {
+                        Log.d("add", "success")
+                    }
+                    .addOnFailureListener {
+                        Log.d("add", "failure")
+                    }
+            } catch (e: Exception) {
+                Log.d("exception", "$e")
+            }
+        }
+    }
+
     override suspend fun removeFromDest(dest: String, productModel: ProductHomeModel) {
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items").document(productModel.productId.toString())
@@ -192,5 +213,10 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
         Log.d("cartdatarepo",productList.toString())
         return Resource.Success(productList)
+    }
+
+    override suspend fun removeAllFromCart() {
+        val db=firestore.collection("user-cart").document(currentUser!!.uid)
+        db.delete()
     }
 }

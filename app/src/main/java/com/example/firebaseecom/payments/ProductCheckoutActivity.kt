@@ -2,27 +2,41 @@
 
 package com.example.firebaseecom.payments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
+import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityProductCheckoutBinding
+import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 
 @AndroidEntryPoint
 
-class ProductCheckoutActivity : AppCompatActivity() {
+class ProductCheckoutActivity : AppCompatActivity(), PaymentResultListener {
     private lateinit var activityProductCheckoutBinding: ActivityProductCheckoutBinding
+    private lateinit var productCheckoutViewModel: ProductCheckoutViewModel
     private var productList = arrayListOf<ProductHomeModel>()
     val adapter = ProductCheckoutAdapter(ActivityFunctionClass())
+    var totalAmount = 0.0
+    private val checkOut = Checkout()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductCheckoutBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_checkout)
+        productCheckoutViewModel=ViewModelProvider(this)[ProductCheckoutViewModel::class.java]
+        checkOut.setKeyID(RazorpayKey.EKART_RAZORPAY_KEY.key)
+        checkOut.setImage(R.drawable.ic_cart)
         productList = (intent.extras?.get("productList") as? ArrayList<ProductHomeModel>)!!
-
         activityProductCheckoutBinding.apply {
             productListView.layoutManager = LinearLayoutManager(
                 this@ProductCheckoutActivity,
@@ -33,19 +47,52 @@ class ProductCheckoutActivity : AppCompatActivity() {
             backButton.setOnClickListener {
                 finish()
             }
+            PaymentBtn.setOnClickListener {
+                launchPay()
+            }
+
         }
         adapter.setProducts(productList.toList())
     }
 
+    private fun launchPay() {
+        val razorpayJSON = JSONObject()
+        try {
+            razorpayJSON.put("name", "EKart")
+            razorpayJSON.put("description", "Order Payment")
+            razorpayJSON.put("theme.color", R.color.bgColor)
+            razorpayJSON.put("currency", "INR")
+            razorpayJSON.put("amount", totalAmount * 100)//paisaToRupee
+            checkOut.open(this, razorpayJSON)
+
+
+        } catch (e: Exception) {
+            Log.d("launchRazorPay", e.toString())
+        }
+    }
+
     inner class ActivityFunctionClass : ProductCheckoutAdapter.ActivityFunctionInterface {
-        override fun addTotalPrice(productList:List<ProductHomeModel?>) {
-            var totalPrice = 0
+        override fun addTotalPrice(productList: List<ProductHomeModel?>) {
             for (product in productList) {
-                totalPrice += product?.productPrice!!
+                totalAmount += product?.productPrice!!
             }
             activityProductCheckoutBinding.totalPrice.text =
-                getString(R.string.total_amount_to_be_paid) + totalPrice.toString()
+                getString(R.string.total_amount_to_be_paid,totalAmount)
 
         }
+    }
+
+
+    override fun onPaymentSuccess(p0: String?) {
+        Toast.makeText(this, "Order Placed", Toast.LENGTH_SHORT).show()
+        productCheckoutViewModel.addToOrders(productList)
+        val intent = Intent(this, SignUpActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?) {
+        Toast.makeText(this, p1, Toast.LENGTH_SHORT).show()
     }
 }

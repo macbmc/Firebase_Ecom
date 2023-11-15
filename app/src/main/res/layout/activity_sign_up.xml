@@ -10,7 +10,8 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.SignUpActivity">
+    tools:context=".auth.SignUpActivity"
+    android:background="@color/bgColor">
 
     <TextView
         android:id="@+id/appNameTextView"

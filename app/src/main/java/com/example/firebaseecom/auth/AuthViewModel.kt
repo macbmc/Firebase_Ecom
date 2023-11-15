@@ -11,7 +11,6 @@ import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,8 +23,8 @@ class AuthViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
 
-    private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(null)
-    private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(null)
+    private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
+    private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
     val currentUser: FirebaseUser?
         get() = authRepository.currentUser
 
@@ -39,8 +38,8 @@ class AuthViewModel @Inject constructor(
     var signUpAuth: StateFlow<Resource<FirebaseUser>?> = _signUpAuth
 
     fun logIn(email: String, password: String) {
+        _loginAuth.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _loginAuth.value = Resource.Loading()
             val result = authRepository.userLogin(email, password)
             _loginAuth.value = result
 
@@ -50,8 +49,8 @@ class AuthViewModel @Inject constructor(
 
     fun signUp(email: String, password: String, phNum: String) {
         val userModel = UserModel("", email, "", phNum,"")
+        _signUpAuth.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _signUpAuth.value = Resource.Loading()
             _signUpAuth.value = authRepository.userSignUp(email, password)
             Log.d("userData", userModel.toString())
             firestoreRepository.addToUsers(userModel)

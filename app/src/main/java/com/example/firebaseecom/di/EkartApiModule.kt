@@ -5,13 +5,15 @@ import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.repositories.NetworkRepositoryImpl
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -20,15 +22,23 @@ object EkartApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() : EkartApi = Retrofit.Builder()
-        .baseUrl(EkartApiEndPoints.END_POINT_BASE.url)
-        .addConverterFactory(
-            MoshiConverterFactory.create(
-                Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    fun provideRetrofit() : EkartApi{
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .build()
+        return Retrofit.Builder()
+            .baseUrl(EkartApiEndPoints.END_POINT_BASE.url)
+            .client(okHttpClient)
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                )
             )
-        )
-        .build()
-        .create(EkartApi::class.java)
+            .build()
+            .create(EkartApi::class.java)
+    }
 
     @Provides
     @Singleton
