@@ -96,16 +96,18 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.getAd()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onRestart() {
+        super.onRestart()
 
         observeCartNumber()
     }
 
     private fun observeCartNumber() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val size = homeViewModel.checkNumbWishlist("cart")
-            homeBinding.cartNumber.text = size.toString()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val size = homeViewModel.checkNumbWishlist("cart")
+                homeBinding.cartNumber.text = size.toString()
+            }
         }
     }
 

@@ -21,10 +21,10 @@ class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: Fire
 
         }
     }
-    fun removeAllFromCart()
+    fun removeAllFromCart(productList: List<ProductHomeModel>)
     {
         viewModelScope.launch(Dispatchers.IO){
-            firestoreRepository.removeAllFromCart()
+            firestoreRepository.removeFromCartIfOrder(productList)
         }
     }
 }

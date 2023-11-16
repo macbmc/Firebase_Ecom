@@ -1,10 +1,11 @@
 package com.example.firebaseecom.CartOrder
 
-import ProductListAdapter
+import ProductCartAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -27,38 +28,46 @@ import java.io.Serializable
 class ProductListActivity : AppCompatActivity() {
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productListViewModel: ProductListViewModel
-    val adapter = ProductListAdapter(ActivityFunctionClass())
+    val cartAdapter = ProductCartAdapter(ActivityFunctionClass())
+    val orderAdapter = ProductOrderAdapter()
     var productList = arrayListOf<ProductHomeModel>()
+    var dest = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductListBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_list)
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
-        val dest = intent.getStringExtra("dest")
+        dest = intent.getStringExtra("dest")!!
         observeProducts(dest)
         activityProductListBinding.apply {
-            if(dest=="orders")
-                ButtonHolder.isVisible=false
+            if (dest == "orders") {
+                ButtonHolder.isVisible = false
+                recyclerView.adapter = orderAdapter
+            } else {
+                recyclerView.adapter = cartAdapter
+            }
             backButton.setOnClickListener {
                 finish()
             }
             destText.text = dest
-            recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(
                 this@ProductListActivity, LinearLayoutManager.VERTICAL,
                 false
             )
-            buttonBuyNow.setOnClickListener{
-                if(productList.isNotEmpty())
-                {
-                    val intent = Intent(this@ProductListActivity, ProductCheckoutActivity::class.java)
-                    intent.putExtra("productList",productList)
-                    Log.d("productList",productList.toString())
+            buttonBuyNow.setOnClickListener {
+                if (productList.isNotEmpty()) {
+                    val intent =
+                        Intent(this@ProductListActivity, ProductCheckoutActivity::class.java)
+                    intent.putExtra("productList", productList)
+                    Log.d("productList", productList.toString())
                     startActivity(intent)
-                }
-                else{
-                    Toast.makeText(this@ProductListActivity,"Add items to cart first", Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this@ProductListActivity,
+                        "Add items to cart first",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
 
@@ -81,8 +90,12 @@ class ProductListActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             activityProductListBinding.progressBar.isVisible = false
                             Log.d("cartData", it.data.toString())
-                            adapter.setProduct(it.data)
-                            productList= ArrayList(it.data)
+                            if (dest == "orders") {
+                                orderAdapter.setProduct(it.data)
+                            } else {
+                                cartAdapter.setProduct(it.data)
+                            }
+                            productList = ArrayList(it.data)
 
                         }
 
@@ -101,29 +114,41 @@ class ProductListActivity : AppCompatActivity() {
 
     }
 
-    inner class ActivityFunctionClass : ProductListAdapter.ActivityFunctionInterface {
+    inner class ActivityFunctionClass : ProductCartAdapter.ActivityFunctionInterface {
         override fun navigateToDetails(productHomeModel: ProductHomeModel) {
             val intent = Intent(this@ProductListActivity, ProductDetailsActivity::class.java)
             intent.putExtra("product", productHomeModel as Serializable)
             startActivity(intent)
         }
 
-        override fun deleteFromCart(productHomeModel: ProductHomeModel,position:Int) {
+        override fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int) {
+
 
             productListViewModel.removeFromCart(productHomeModel)
             productList.remove(productHomeModel)
 
 
-
         }
 
         override fun addTotalPrice(productList: List<ProductHomeModel>) {
-            var totalPrice=0
-            for(product in productList)
-            {
+            var totalPrice = 0
+            for (product in productList) {
                 totalPrice += product.productPrice!!
             }
-            activityProductListBinding.cartPrice.text=getString(R.string.price) + totalPrice.toString()
+            activityProductListBinding.cartPrice.text =
+                getString(R.string.price, totalPrice.toString())
         }
+    }
+
+    private fun deleteFromOrder(productHomeModel: ProductHomeModel) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.cancel_your_order))
+        builder.setMessage(getString(R.string.cancelOrder))
+        builder.setPositiveButton(R.string.submit) { _, _ ->
+            productListViewModel.removeFromOrder(productHomeModel)
+        }
+        builder.setNegativeButton(R.string.cancel) { _, _ -> }
+        builder.show()
+
     }
 }

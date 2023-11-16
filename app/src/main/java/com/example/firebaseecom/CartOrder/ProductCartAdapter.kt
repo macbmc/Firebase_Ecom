@@ -9,9 +9,9 @@ import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import javax.inject.Inject
 
-class ProductListAdapter @Inject constructor(
+class ProductCartAdapter @Inject constructor(
     val activityFunctionClass: ProductListActivity.ActivityFunctionClass
-) : RecyclerView.Adapter<ProductListAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
         fun navigateToDetails(productHomeModel: ProductHomeModel)
@@ -25,14 +25,14 @@ class ProductListAdapter @Inject constructor(
 
         parent: ViewGroup,
         viewType: Int
-    ): ProductListAdapter.MyViewHolder {
+    ): ProductCartAdapter.MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         cartViewBinding = DataBindingUtil.inflate(layoutInflater, R.layout.cart_view, parent, false)
         return MyViewHolder(cartViewBinding)
 
     }
 
-    override fun onBindViewHolder(holder: ProductListAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductCartAdapter.MyViewHolder, position: Int) {
         val productHome = productList[position]
         holder.bind(productHome,position)
         Glide.with(holder.itemView)

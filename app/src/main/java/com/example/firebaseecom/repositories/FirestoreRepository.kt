@@ -20,7 +20,7 @@ interface FirestoreRepository {
     suspend fun getAd(): List<String>
     suspend fun addToOrders(productList:List<ProductHomeModel>)
     suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
-    suspend fun removeAllFromCart()
+    suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>)
 
 
 
@@ -215,8 +215,15 @@ class FirestoreRepositoryImpl @Inject constructor(
         return Resource.Success(productList)
     }
 
-    override suspend fun removeAllFromCart() {
-        val db=firestore.collection("user-cart").document(currentUser!!.uid)
-        db.delete()
+    override suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>) {
+        val db=firestore.collection("user-cart").document(currentUser!!.uid).collection("items")
+        for(productModel in productList)
+        {
+            db.document(productModel.productId.toString()).get().addOnSuccessListener {
+                if(it.exists())
+                    db.document(productModel.productId.toString()).delete()
+            }
+        }
+
     }
 }

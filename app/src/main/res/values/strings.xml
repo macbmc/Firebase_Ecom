@@ -19,7 +19,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="buy_now">Buy Now</string>
     <string name="add_to_cart">Add to Cart</string>
-    <string name="price">Total Price :</string>
+    <string name="price">Total Price : %1$s</string>
     <string name="lengthMsg">Not enough characters</string>
     <string name="DigitMsg">Not enough digits in the password..Weak Password</string>
     <string name="letterMsg">Not enough letter in the password..Weak Password</string>
@@ -53,4 +53,7 @@
     <string name="billing_address">Billing Address\n</string>
     <string name="name">Name</string>
     <string name="address">Address</string>
+    <string name="cancel_your_order">Cancel your Order?</string>
+    <string name="cancelOrder">Are you sure you want to cancel the order.If yes amount will be refunded to yout account</string>
+    <string name="edit_order">Edit Order</string>
 </resources>
