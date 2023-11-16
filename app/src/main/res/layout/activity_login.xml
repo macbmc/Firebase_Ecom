@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="83dp"
         android:fontFamily="@font/arbutus"
-        android:text="Login"
+        android:text="@string/login"
         android:textSize="16sp" />
 
     <EditText
@@ -43,7 +43,7 @@
         android:layout_below="@+id/loginTitle"
         android:layout_marginTop="109dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_layout"
         android:inputType="text" />
@@ -57,7 +57,7 @@
         android:layout_marginTop="42dp"
         android:ems="10"
         android:background="@drawable/edittext_layout"
-        android:hint="Password"
+        android:hint="@string/enter_password"
         android:inputType="textPassword" />
 
     <Button
@@ -68,7 +68,7 @@
         android:layout_below="@+id/editTextPassword"
         android:layout_marginTop="90dp"
         android:backgroundTint="@color/buttonColor"
-        android:text="Login" />
+        android:text="@string/login" />
 
     <TextView
         android:id="@+id/toSignUp"
@@ -78,7 +78,7 @@
         android:layout_alignStart="@+id/editTextPassword"
         android:layout_marginStart="53dp"
         android:layout_marginTop="15dp"
-        android:text="Don't have an account? Sign Up"
+        android:text="@string/don_t_have_an_account_sign_up"
         android:textColor="@color/linkTextColor" />
 
     <ProgressBar

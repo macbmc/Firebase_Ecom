@@ -56,4 +56,10 @@
     <string name="cancel_your_order">Cancel your Order?</string>
     <string name="cancelOrder">Are you sure you want to cancel the order.If yes amount will be refunded to yout account</string>
     <string name="edit_order">Edit Order</string>
+    <string name="validate">Validate</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="search_for_products">Search for products</string>
+    <string name="signup">SignUp</string>
+    <string name="already_have_an_account_login">Already have an account? Login</string>
 </resources>
