@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -25,8 +26,6 @@
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bgColor"
-
                 app:layout_constraintTop_toTopOf="parent"
                 tools:context=".detailsPg.ProductDetailsActivity">
 
@@ -72,30 +71,43 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.appcompat.widget.Toolbar>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/productCarousalView"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="350dp"
                     android:layout_below="@id/toolbar"
-                    android:layout_marginTop="32dp" />
+                    android:id="@+id/productCarousalViewLayout"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/productCarousalView"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="32dp" />
+                </RelativeLayout>
 
                 <ProgressBar
                     android:id="@+id/progressBar"
                     android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/productCarousalView"
+                    android:layout_alignTop="@+id/productCarousalViewLayout"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="194dp"
                     android:layout_marginTop="83dp"
                     android:layout_marginEnd="169dp" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/details_page_layout"
+                    android:layout_below="@id/productCarousalViewLayout">
+
                 <TextView
                     android:id="@+id/productTitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/productCarousalView"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="28dp"
@@ -171,7 +183,7 @@
                     android:text="@{productDetails.component4()}"
                     android:textSize="16sp" />
 
-
+                </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
 

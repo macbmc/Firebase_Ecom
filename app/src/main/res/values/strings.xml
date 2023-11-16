@@ -26,7 +26,7 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
-    <string name="deactivate_account">Deactivate Account</string>
+    <string name="logout">Logout</string>
     <string name="usernameedit">Username:</string>
     <string name="emailedit">Email</string>
     <string name="phone_numberedit">Phone Number</string>
@@ -43,4 +43,7 @@
     <string name="english">English</string>
     <string name="malayalam">Malayalam</string>
     <string name="account_settings">Account Settings</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="Gallery">Gallery\n</string>
+    <string name="Camera">Camera</string>
 </resources>

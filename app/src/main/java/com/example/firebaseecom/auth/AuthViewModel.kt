@@ -50,7 +50,7 @@ class AuthViewModel @Inject constructor(
 
     fun signUp(email: String, password: String, phNum: String) {
         val userModel = UserModel("", email, "", phNum,"")
-        viewModelScope.async(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             _signUpAuth.value = Resource.Loading()
             _signUpAuth.value = authRepository.userSignUp(email, password)
             Log.d("userData", userModel.toString())

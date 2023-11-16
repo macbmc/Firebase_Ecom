@@ -12,6 +12,7 @@
     android:layout_height="match_parent"
     android:background="@color/bgColor">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,27 +99,42 @@
 
 
         </com.google.android.material.appbar.MaterialToolbar>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/carousalView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp" />
-        <ProgressBar
-            android:id="@+id/homeAdViewProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:visibility="invisible"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/homeToolBar"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="200dp"
+
+            android:id="@+id/carousalAd"
+            android:background="@color/white">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/carousalView"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                />
+            <ProgressBar
+                android:id="@+id/homeAdViewProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/catIcons"
             android:background="@color/bgColor"
             android:layout_height="wrap_content"
-            android:layout_below="@id/carousalView"
+            android:layout_below="@id/carousalAd"
             android:layout_marginTop="24dp">
 
             <androidx.cardview.widget.CardView
@@ -172,6 +188,7 @@
             <androidx.cardview.widget.CardView
 
                 android:id="@+id/catTablet"
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:backgroundTint="@color/bgColor"
                 android:layout_height="wrap_content">
@@ -225,6 +242,6 @@
         app:layout_constraintEnd_toEndOf="parent">
 
     </RelativeLayout>-->
-
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

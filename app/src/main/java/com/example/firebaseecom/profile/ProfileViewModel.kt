@@ -1,45 +1,66 @@
 package com.example.firebaseecom.profile
 
-import android.util.Log
+import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
-import com.example.firebaseecom.utils.AuthState
+import com.example.firebaseecom.repositories.StorageRepository
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
-    val authRepository:AuthRepository
+    private val authRepository:AuthRepository,
+   private val storageRepository: StorageRepository
 ) : ViewModel() {
     val user=UserModel("","","","","")
-    private val _userDetails = MutableStateFlow(user)
-    val userDetails: StateFlow<UserModel> = _userDetails
-    val authState = MutableStateFlow<AuthState>(AuthState.SignedIn())
+    val userDetails = MutableLiveData<UserModel>()
+    val userImageUrl = MutableLiveData<String>()
 
-    fun getUserData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _userDetails.value = firestoreRepository.getFromUsers()!!
-            Log.d("userdataview", _userDetails.value.toString())
-        }
-    }
     fun updateUser(userModel: UserModel)
     {
         viewModelScope.launch(Dispatchers.IO){
             firestoreRepository.addToUsers(userModel)
         }
     }
+    fun userData(){
+        viewModelScope.launch {
+            getUserData()
+        }
+    }
+
+    private suspend fun getUserData() {
+        withContext(Dispatchers.IO)
+        {
+            val user = firestoreRepository.getFromUsers()!!
+            userDetails.postValue(user)
+        }
+    }
+
     fun updateUserEmail(email:String,password:String){
         viewModelScope.launch(Dispatchers.IO){
             authRepository.userEmailUpdate(email,password)
+        }
+    }
+    fun storeImage(imageUri: Uri)
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            storageRepository.addImagetoStorage(imageUri)
+        }
+    }
+
+    fun getImageUrl()
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            userImageUrl.postValue(storageRepository.getImageUrl())
         }
     }
 

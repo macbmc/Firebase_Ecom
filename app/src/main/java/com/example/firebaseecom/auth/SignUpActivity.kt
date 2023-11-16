@@ -28,9 +28,12 @@ class SignUpActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
+        Log.d("currentUserValue",authViewModel.currentUser.toString())
         if (authViewModel.currentUser != null) {
             Log.d("userId", authViewModel.currentUser!!.uid)
-            startActivity(Intent(this@SignUpActivity, HomeActivity::class.java))
+            val intent=Intent(this@SignUpActivity, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
 
         signUpBinding.apply {

@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductSearchBinding
@@ -63,6 +65,7 @@ class ProductSearchActivity : AppCompatActivity() {
 
     private fun observeProducts(query: String?) {
         lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
             productSearchVIewModel.searchProducts(query!!)
             productSearchVIewModel.product.collect {
                 when (it) {
@@ -89,6 +92,7 @@ class ProductSearchActivity : AppCompatActivity() {
 
                 }
             }
+        }
         }
 
     }

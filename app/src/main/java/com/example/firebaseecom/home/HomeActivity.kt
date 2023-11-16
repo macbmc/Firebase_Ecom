@@ -8,21 +8,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.CartOrder.ProductListActivity
-import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.R
-import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -55,36 +58,43 @@ class HomeActivity : AppCompatActivity() {
 
 
         homeBinding.apply {
-            cartNumber.text="0"
+            cartNumber.text = "0"
             profButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, UserProfileActivity::class.java))
             }
             searchHomeButton.setOnClickListener {
                 startActivity(Intent(this@HomeActivity, ProductSearchActivity::class.java))
             }
-            cartHomeButton.setOnClickListener{
-                val intent =Intent(this@HomeActivity,ProductListActivity::class.java)
-                intent.putExtra("dest","cart")
+            cartHomeButton.setOnClickListener {
+                val intent = Intent(this@HomeActivity, ProductListActivity::class.java)
+                intent.putExtra("dest", "cart")
                 startActivity(intent)
             }
-            catLaptop.setOnClickListener{
-                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
-                intent.putExtra("category","Laptop")
+            catLaptop.setOnClickListener {
+                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
+                intent.putExtra("category", "Laptop")
                 startActivity(intent)
             }
-            catPhones.setOnClickListener{
-                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
-                intent.putExtra("category","Phone")
+            catPhones.setOnClickListener {
+                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
+                intent.putExtra("category", "Phone")
                 startActivity(intent)
             }
-            catTablet.setOnClickListener{
-                val intent=Intent(this@HomeActivity,ProductCategoryActivity::class.java)
-                intent.putExtra("category","Tablet")
+            catTablet.setOnClickListener {
+                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
+                intent.putExtra("category", "Tablet")
                 startActivity(intent)
             }
         }
 
 
+    }
+
+    private fun observeCarousal() {
+        homeViewModel.adList.observe(this@HomeActivity, Observer {
+            carousalAdapter.setAd(it)
+        })
+        homeViewModel.getAd()
     }
 
     override fun onResume() {
@@ -94,32 +104,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun observeCartNumber() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val size = homeViewModel.checkNumbWishlist("cart")
-            homeBinding.cartNumber.text=size.toString()
+            homeBinding.cartNumber.text = size.toString()
         }
     }
 
 
-    private fun observeCarousal() {
-
-        lifecycleScope.launch {
-           homeViewModel.getAd()
-            homeViewModel.adList.collect{
-                when(it){
-                    is Resource.Loading ->{
-                        homeBinding.homeAdViewProgress.isVisible=true
-                    }
-                    is Resource.Success ->{
-                        carousalAdapter.setAd(it.data)
-                        homeBinding.homeAdViewProgress.isVisible=false
-                    }
-                    else -> {}
-                }
-            }
-        }
-
-    }
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
@@ -128,6 +119,7 @@ class HomeActivity : AppCompatActivity() {
         homeItemView.adapter = adapter
         homeBinding.apply {
             lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
                 homeViewModel.getProductHome()
                 homeViewModel.products.collect()
                 {
@@ -153,17 +145,17 @@ class HomeActivity : AppCompatActivity() {
 
                     }
                 }
-            }
+            }}
         }
 
     }
 
-   inner class NavigateClass:ProductHomeAdapter.NavigationInterface{
-       override fun navigateToDetails(productModel: ProductHomeModel) {
-           val intent = Intent(this@HomeActivity, ProductDetailsActivity::class.java)
-           intent.putExtra("product", productModel as Serializable)
-           startActivity(intent)
-       }
+    inner class NavigateClass : ProductHomeAdapter.NavigationInterface {
+        override fun navigateToDetails(productModel: ProductHomeModel) {
+            val intent = Intent(this@HomeActivity, ProductDetailsActivity::class.java)
+            intent.putExtra("product", productModel as Serializable)
+            startActivity(intent)
+        }
 
-   }
+    }
 }
