@@ -1,10 +1,6 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.firebaseecom.home
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -12,12 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
-import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+
 import com.example.firebaseecom.model.ProductHomeModel
-import java.io.Serializable
 
 class ProductHomeAdapter(
-    val navigateClass: HomeActivity.NavigateClass
+    private val navigateClass: HomeActivity.NavigateClass
 ) : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productDetails: List<ProductHomeModel>? = listOf()
 

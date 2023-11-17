@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -97,16 +96,20 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.getAd()
     }
 
-    override fun onResume() {
-        super.onResume()
+
+    override fun onRestart() {
+        super.onRestart()
+
 
         observeCartNumber()
     }
 
     private fun observeCartNumber() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val size = homeViewModel.checkNumbWishlist("cart")
-            homeBinding.cartNumber.text = size.toString()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val size = homeViewModel.checkNumbWishlist("cart")
+                homeBinding.cartNumber.text = size.toString()
+            }
         }
     }
 

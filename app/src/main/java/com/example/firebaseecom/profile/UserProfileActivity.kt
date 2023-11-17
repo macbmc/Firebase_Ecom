@@ -83,7 +83,9 @@ class UserProfileActivity : AppCompatActivity() {
                 userDetails = it
                 if(userDetails?.userName!!.isNotEmpty())
                 {
-                    greetingText.text=getString(R.string.hey) + userDetails?.userName
+
+                    greetingText.text=getString(R.string.hey,userDetails?.userName)
+
                 }
                 Glide.with(this@UserProfileActivity)
                     .load(userDetails?.userImg)

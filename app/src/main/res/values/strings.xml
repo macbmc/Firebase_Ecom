@@ -19,7 +19,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="buy_now">Buy Now</string>
     <string name="add_to_cart">Add to Cart</string>
-    <string name="price">Total Price :</string>
+    <string name="price">Total Price : %1$s</string>
     <string name="lengthMsg">Not enough characters</string>
     <string name="DigitMsg">Not enough digits in the password..Weak Password</string>
     <string name="letterMsg">Not enough letter in the password..Weak Password</string>
@@ -35,7 +35,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_update">Profile Update</string>
     <string name="to_continue_please_enter_password">To continue please enter password.You will be logged out . Please Sign in with new Email</string>
-    <string name="hey">Hey!  </string>
+    <string name="hey">Hey! %1$s</string>
     <string name="cart">Cart</string>
     <string name="payments">Payments</string>
     <string name="helpline">Helpline</string>
@@ -46,4 +46,20 @@
     <string name="profile_image">Profile Image</string>
     <string name="Gallery">Gallery\n</string>
     <string name="Camera">Camera</string>
+    <string name="checkout_form">Checkout Form:</string>
+    <string name="total_amount_to_be_paid">Total Amount to be paid : %1$.02f</string>
+    <string name="Continuenpay">Continue and Pay</string>
+    <string name="checkout">Checkout</string>
+    <string name="billing_address">Billing Address\n</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="cancel_your_order">Cancel your Order?</string>
+    <string name="cancelOrder">Are you sure you want to cancel the order.If yes amount will be refunded to yout account</string>
+    <string name="edit_order">Edit Order</string>
+    <string name="validate">Validate</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="search_for_products">Search for products</string>
+    <string name="signup">SignUp</string>
+    <string name="already_have_an_account_login">Already have an account? Login</string>
 </resources>

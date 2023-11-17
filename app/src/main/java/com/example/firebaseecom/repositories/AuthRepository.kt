@@ -43,7 +43,7 @@ class AuthRepositoryImpl @Inject constructor(
             Resource.Success(user.user!!)
         } catch (e: Exception) {
             Log.e("SignIn", "$e")
-            Resource.Failed(e.toString())
+            Resource.Failed("Invalid Credentials")
         }
     }
 

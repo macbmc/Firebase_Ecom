@@ -9,32 +9,32 @@ import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import javax.inject.Inject
 
-class ProductListAdapter @Inject constructor(
+class ProductCartAdapter @Inject constructor(
     val activityFunctionClass: ProductListActivity.ActivityFunctionClass
-) : RecyclerView.Adapter<ProductListAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
         fun navigateToDetails(productHomeModel: ProductHomeModel)
-        fun deleteFromCart(productHomeModel: ProductHomeModel)
+        fun deleteFromCart(productHomeModel: ProductHomeModel,position: Int)
         fun addTotalPrice(productList: List<ProductHomeModel>)
     }
 
     var productList: MutableList<ProductHomeModel> = mutableListOf()
-    lateinit var cartViewBinding: CartViewBinding
+    private lateinit var cartViewBinding: CartViewBinding
     override fun onCreateViewHolder(
 
         parent: ViewGroup,
         viewType: Int
-    ): ProductListAdapter.MyViewHolder {
+    ): ProductCartAdapter.MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         cartViewBinding = DataBindingUtil.inflate(layoutInflater, R.layout.cart_view, parent, false)
         return MyViewHolder(cartViewBinding)
 
     }
 
-    override fun onBindViewHolder(holder: ProductListAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductCartAdapter.MyViewHolder, position: Int) {
         val productHome = productList[position]
-        holder.bind(productHome)
+        holder.bind(productHome,position)
         Glide.with(holder.itemView)
             .load(productHome.productImage)
             .error(R.drawable.placeholder_image)
@@ -55,11 +55,11 @@ class ProductListAdapter @Inject constructor(
     }
 
     inner class MyViewHolder(private val cartViewBinding: CartViewBinding) :
-        RecyclerView.ViewHolder(cartViewBinding!!.root) {
-        fun bind(productHomeModel: ProductHomeModel) {
+        RecyclerView.ViewHolder(cartViewBinding.root) {
+        fun bind(productHomeModel: ProductHomeModel,position:Int) {
             cartViewBinding.productHome = productHomeModel
             cartViewBinding.deleteBtn.setOnClickListener {
-                activityFunctionClass.deleteFromCart(productHomeModel)
+                activityFunctionClass.deleteFromCart(productHomeModel,position)
                 productList.removeAt(adapterPosition)
                 notifyItemRemoved(adapterPosition)
                 activityFunctionClass.addTotalPrice(productList)
