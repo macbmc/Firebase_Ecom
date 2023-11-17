@@ -109,10 +109,12 @@ class ProductDetailsActivity : AppCompatActivity() {
                                 .show()
                         }
 
+
                         else -> {}
                     }
                 }
             }
+        }
         }
     }
 }
