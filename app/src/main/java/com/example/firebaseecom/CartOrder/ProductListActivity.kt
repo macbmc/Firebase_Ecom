@@ -18,6 +18,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,7 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productListViewModel: ProductListViewModel
     val cartAdapter = ProductCartAdapter(ActivityFunctionClass())
-    val orderAdapter = ProductOrderAdapter()
+    val orderAdapter = ProductOrderAdapter(navClass())
     var productList = arrayListOf<ProductHomeModel>()
     var dest = ""
 
@@ -80,29 +81,57 @@ class ProductListActivity : AppCompatActivity() {
     private fun observeProducts(dest: String?) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                productListViewModel.getProductFromDest(dest!!)
-                productListViewModel.productList.collect {
-                    when (it) {
-                        is Resource.Loading -> {
-                            activityProductListBinding.progressBar.isVisible = true
-                        }
-
-                        is Resource.Success -> {
-                            activityProductListBinding.progressBar.isVisible = false
-                            Log.d("cartData", it.data.toString())
-                            if (dest == "orders") {
-                                orderAdapter.setProduct(it.data)
-                            } else {
-                                cartAdapter.setProduct(it.data)
+                if (dest == "orders") {
+                    productListViewModel.getProductFromOrder()
+                    productListViewModel.productOrderList.collect {
+                        when (it) {
+                            is Resource.Loading -> {
+                                activityProductListBinding.progressBar.isVisible = true
                             }
-                            productList = ArrayList(it.data)
 
+                            is Resource.Success -> {
+                                activityProductListBinding.progressBar.isVisible = false
+                                Log.d("cartData", it.data.toString())
+                                orderAdapter.setProduct(it.data)
+
+                            }
+
+                            is Resource.Failed -> {
+                                activityProductListBinding.progressBar.isVisible = false
+                                Toast.makeText(
+                                    this@ProductListActivity,
+                                    it.message,
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
                         }
+                    }
+                } else {
+                    productListViewModel.getProductFromDest(dest!!)
+                    productListViewModel.productCartList.collect {
+                        when (it) {
+                            is Resource.Loading -> {
+                                activityProductListBinding.progressBar.isVisible = true
+                            }
 
-                        is Resource.Failed -> {
-                            activityProductListBinding.progressBar.isVisible = false
-                            Toast.makeText(this@ProductListActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
+                            is Resource.Success -> {
+                                activityProductListBinding.progressBar.isVisible = false
+                                Log.d("cartData", it.data.toString())
+                                cartAdapter.setProduct(it.data)
+                                productList = ArrayList(it.data)
+
+                            }
+
+                            is Resource.Failed -> {
+                                activityProductListBinding.progressBar.isVisible = false
+                                Toast.makeText(
+                                    this@ProductListActivity,
+                                    it.message,
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
                         }
                     }
                 }
@@ -120,7 +149,6 @@ class ProductListActivity : AppCompatActivity() {
             intent.putExtra("product", productHomeModel as Serializable)
             startActivity(intent)
         }
-
         override fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int) {
 
 
@@ -129,6 +157,7 @@ class ProductListActivity : AppCompatActivity() {
 
 
         }
+
 
         override fun addTotalPrice(productList: List<ProductHomeModel>) {
             var totalPrice = 0
@@ -140,7 +169,7 @@ class ProductListActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteFromOrder(productHomeModel: ProductHomeModel) {
+    /*private fun deleteFromOrder(productHomeModel: ProductHomeModel) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.cancel_your_order))
         builder.setMessage(getString(R.string.cancelOrder))
@@ -149,6 +178,15 @@ class ProductListActivity : AppCompatActivity() {
         }
         builder.setNegativeButton(R.string.cancel) { _, _ -> }
         builder.show()
+
+    }*/
+
+    inner class navClass : ProductOrderAdapter.navInterface {
+        override fun navToOrderView(productOrderModel: ProductOrderModel) {
+            val intent=Intent(this@ProductListActivity,ProductOrderViewActivity::class.java)
+            intent.putExtra("productDetails",productOrderModel)
+            startActivity(intent)
+        }
 
     }
 }

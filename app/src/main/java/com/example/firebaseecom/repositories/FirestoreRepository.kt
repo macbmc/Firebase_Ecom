@@ -2,6 +2,7 @@ package com.example.firebaseecom.repositories
 
 import android.util.Log
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
 import com.google.android.gms.tasks.Tasks
@@ -18,8 +19,9 @@ interface FirestoreRepository {
     suspend fun checkNumDest(dest: String): Int
     suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
-    suspend fun addToOrders(productList:List<ProductHomeModel>)
+    suspend fun addToOrders(productList:List<ProductOrderModel>)
     suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
+    suspend fun getFromOrders():Resource<List<ProductOrderModel>>
     suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>)
 
 
@@ -132,7 +134,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         return adList
     }
 
-    override suspend fun addToOrders(productList: List<ProductHomeModel>) {
+    override suspend fun addToOrders(productList:List<ProductOrderModel>) {
         for(productModel in productList)
         {
             try {
@@ -199,6 +201,37 @@ class FirestoreRepositoryImpl @Inject constructor(
             snapshot.let {
                 for (doc in it.documents) {
                     val data = doc.toObject(ProductHomeModel::class.java)
+                    if (data != null) {
+                        response = 200
+                        productList.add(data)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("exception", e.toString())
+        }
+        if (response != 200) {
+            return Resource.Failed("No Available Data")
+        }
+        Log.d("cartdatarepo",productList.toString())
+        return Resource.Success(productList)
+    }
+
+    override suspend fun getFromOrders(): Resource<List<ProductOrderModel>> {
+        var productList: MutableList<ProductOrderModel> = mutableListOf()
+        var response = 0
+        val db = firestore.collection("user-orders").document(currentUser!!.uid)
+            .collection("items")
+        try {
+            val snapshot = Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result
+                    }
+                })
+            snapshot.let {
+                for (doc in it.documents) {
+                    val data = doc.toObject(ProductOrderModel::class.java)
                     if (data != null) {
                         response = 200
                         productList.add(data)

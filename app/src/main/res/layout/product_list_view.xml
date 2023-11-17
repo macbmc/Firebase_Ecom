@@ -8,6 +8,7 @@
             name="productDetails"
             type="com.example.firebaseecom.model.ProductHomeModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeProductPrice"
         android:layout_width="match_parent"

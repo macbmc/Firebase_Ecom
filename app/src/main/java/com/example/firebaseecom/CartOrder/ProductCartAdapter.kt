@@ -15,8 +15,8 @@ class ProductCartAdapter @Inject constructor(
     interface ActivityFunctionInterface {
 
         fun navigateToDetails(productHomeModel: ProductHomeModel)
-        fun deleteFromCart(productHomeModel: ProductHomeModel,position: Int)
         fun addTotalPrice(productList: List<ProductHomeModel>)
+        fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int)
     }
 
     var productList: MutableList<ProductHomeModel> = mutableListOf()
