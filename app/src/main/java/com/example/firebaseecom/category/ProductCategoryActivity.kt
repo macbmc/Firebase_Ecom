@@ -37,7 +37,7 @@ class ProductCategoryActivity : AppCompatActivity() {
         observeProducts(category!!)
         activityProductListBinding.apply {
 
-            buttonBuyNow.visibility= View.GONE
+            ButtonHolder.visibility=View.GONE
             destText.text = category
             backButton.setOnClickListener {
                 finish()

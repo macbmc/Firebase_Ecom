@@ -65,4 +65,5 @@
     <string name="ordered_date">Ordered Date: %1$s</string>
     <string name="delivery_date">Delivery Date: %1$s</string>
     <string name="outdelivery">Out for Delivery</string>
+    <string name="heyDefault">Hey !</string>
 </resources>

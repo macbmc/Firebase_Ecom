@@ -4,6 +4,7 @@ import ProductCartAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -43,7 +44,7 @@ class ProductListActivity : AppCompatActivity() {
         observeProducts(dest)
         activityProductListBinding.apply {
             if (dest == "orders") {
-                ButtonHolder.isVisible = false
+                ButtonHolder.visibility= View.GONE
                 recyclerView.adapter = orderAdapter
             } else {
                 recyclerView.adapter = cartAdapter
