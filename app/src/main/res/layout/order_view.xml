@@ -3,7 +3,9 @@
     <data>
         <variable
             name="productHome"
-            type="com.example.firebaseecom.model.ProductHomeModel" />
+
+            type="com.example.firebaseecom.model.ProductOrderModel" />
+
     </data>
 
 
@@ -50,20 +52,13 @@
             android:layout_toEndOf="@+id/price"
             android:layout_below="@id/productTitleText"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
+
+            android:layout_marginStart="10dp"
             android:textColor="@color/red"
             android:text="@{Integer.toString(productHome.component4())}"
-            android:textSize="20sp"
+            android:textSize="18sp"
             />
-        <Button
-            android:id="@+id/editOrderBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_order"
-            android:layout_marginStart="10dp"
-            android:layout_below="@id/productPriceText"
-            android:layout_toEndOf="@id/productImage"
-            android:backgroundTint="@color/buttonColor"/>
+
 
 
     </RelativeLayout>

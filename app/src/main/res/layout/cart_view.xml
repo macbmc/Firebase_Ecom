@@ -63,6 +63,7 @@
         android:layout_below="@id/productPriceText"
         android:layout_toEndOf="@id/productImage"
         android:layout_marginStart="110dp"
+        android:background="@drawable/cart_icon_text_bg"
         android:backgroundTint="@color/bgColor"
         />
 

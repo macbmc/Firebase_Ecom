@@ -2,6 +2,7 @@ package com.example.firebaseecom.category
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -36,7 +37,7 @@ class ProductCategoryActivity : AppCompatActivity() {
         observeProducts(category!!)
         activityProductListBinding.apply {
 
-            buttonBuyNow.isVisible=false
+            ButtonHolder.visibility=View.GONE
             destText.text = category
             backButton.setOnClickListener {
                 finish()

@@ -26,4 +26,5 @@ object EkartAppModule {
         return EditProfileActivity().AuthStateChangeImpl()
     }
 
+
 }

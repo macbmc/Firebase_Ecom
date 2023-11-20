@@ -42,8 +42,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getProductHome() {
+        _products.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _products.value = Resource.Loading()
             _products.value = networkRepository.fetchFromLocal()
             val remoteData = networkRepository.fetchFromRemote()
             if (remoteData != null) {
