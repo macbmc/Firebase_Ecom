@@ -26,7 +26,8 @@ abstract class EkartDatabase : RoomDatabase() {
                     context.applicationContext,
                     EkartDatabase::class.java,
                     "product_database"
-                ).build()
+                )
+                    .build()
                 INSTANCE = instance
                 return instance
             }

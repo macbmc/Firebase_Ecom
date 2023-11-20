@@ -1,6 +1,7 @@
 package com.example.firebaseecom.home
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,6 +20,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
@@ -31,11 +33,15 @@ import java.io.Serializable
 @AndroidEntryPoint
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity(){
 
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

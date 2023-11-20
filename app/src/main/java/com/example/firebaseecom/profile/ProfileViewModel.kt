@@ -18,20 +18,20 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
-    private val authRepository:AuthRepository,
-   private val storageRepository: StorageRepository
+    private val authRepository: AuthRepository,
+    private val storageRepository: StorageRepository
 ) : ViewModel() {
-    val user=UserModel("","","","","")
+    val user = UserModel("", "", "", "", "")
     val userDetails = MutableLiveData<UserModel>()
     val userImageUrl = MutableLiveData<String>()
 
-    fun updateUser(userModel: UserModel)
-    {
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateUser(userModel: UserModel) {
+        viewModelScope.launch(Dispatchers.IO) {
             firestoreRepository.addToUsers(userModel)
         }
     }
-    fun userData(){
+
+    fun userData() {
         viewModelScope.launch {
             getUserData()
         }
@@ -45,28 +45,25 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateUserEmail(email:String,password:String){
-        viewModelScope.launch(Dispatchers.IO){
-            authRepository.userEmailUpdate(email,password)
+    fun updateUserEmail(email: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            authRepository.userEmailUpdate(email, password)
         }
     }
-    fun storeImage(imageUri: Uri)
-    {
-        viewModelScope.launch(Dispatchers.IO){
+
+    fun storeImage(imageUri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
             storageRepository.addImagetoStorage(imageUri)
         }
     }
 
-    fun getImageUrl()
-    {
-        viewModelScope.launch(Dispatchers.IO){
+    fun getImageUrl() {
+        viewModelScope.launch(Dispatchers.IO) {
             userImageUrl.postValue(storageRepository.getImageUrl())
         }
     }
 
-
-
-    }
+}
 
 
 

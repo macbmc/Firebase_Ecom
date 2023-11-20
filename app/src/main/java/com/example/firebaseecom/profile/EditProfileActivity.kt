@@ -60,7 +60,10 @@ class EditProfileActivity : AppCompatActivity() {
             }
         cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {
-            activityEditProfileBinding.userProfileImage.setImageURI(imgUri)
+            Glide.with(this)
+                .load(imgUri.toString())
+                .error(R.drawable.placeholder_image)
+                .into(activityEditProfileBinding.userProfileImage)
             Log.d("ImageCapture", imgUri.toString())
             profileViewModel.storeImage(imgUri)
         }

@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_cart"
-                        android:contentDescription="toCart" />
+                        android:contentDescription="@string/tocart" />
 
                     <TextView
                         android:id="@+id/cartNumber"
@@ -106,8 +106,7 @@
             android:layout_below="@id/homeToolBar">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/homeToolBar"
+            android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:paddingLeft="10dp">
         <RelativeLayout
