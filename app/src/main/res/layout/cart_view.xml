@@ -27,9 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/productImage"
         android:layout_marginTop="70dp"
-        android:layout_marginStart="20dp"
-        android:textSize="20sp"
-        android:text="@{productHome.component5()}"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
         />
     <TextView
         android:id="@+id/price"
@@ -38,8 +37,8 @@
         android:layout_toEndOf="@+id/productImage"
         android:layout_below="@id/productTitleText"
         android:layout_marginTop="10dp"
-        android:text="price"
-        android:layout_marginStart="20dp"
+        android:text="@string/amount"
+        android:layout_marginStart="10dp"
         />
 
     <TextView
@@ -52,7 +51,7 @@
         android:layout_marginStart="20dp"
         android:textColor="@color/red"
         android:text="@{Integer.toString(productHome.component4())}"
-        android:textSize="20sp"
+        android:textSize="18sp"
         />
     <ImageButton
         android:id="@+id/deleteBtn"

@@ -1,3 +1,4 @@
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -7,10 +8,11 @@ import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
-import javax.inject.Inject
+import com.example.firebaseecom.model.asMap
 
-class ProductCartAdapter @Inject constructor(
-    val activityFunctionClass: ProductListActivity.ActivityFunctionClass
+class ProductCartAdapter (
+    val activityFunctionClass: ProductListActivity.ActivityFunctionClass,
+    val langId:String
 ) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
@@ -28,7 +30,7 @@ class ProductCartAdapter @Inject constructor(
     ): ProductCartAdapter.MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         cartViewBinding = DataBindingUtil.inflate(layoutInflater, R.layout.cart_view, parent, false)
-        return MyViewHolder(cartViewBinding)
+        return MyViewHolder(cartViewBinding,langId)
 
     }
 
@@ -54,17 +56,24 @@ class ProductCartAdapter @Inject constructor(
         activityFunctionClass.addTotalPrice(productList)
     }
 
-    inner class MyViewHolder(private val cartViewBinding: CartViewBinding) :
+    inner class MyViewHolder(private val cartViewBinding: CartViewBinding,val langId: String) :
         RecyclerView.ViewHolder(cartViewBinding.root) {
         fun bind(productHomeModel: ProductHomeModel,position:Int) {
-            cartViewBinding.productHome = productHomeModel
-            cartViewBinding.deleteBtn.setOnClickListener {
-                activityFunctionClass.deleteFromCart(productHomeModel,position)
-                productList.removeAt(adapterPosition)
-                notifyItemRemoved(adapterPosition)
-                activityFunctionClass.addTotalPrice(productList)
+            cartViewBinding.apply {
+                Log.d("cartTitle",langId)
+                productTitleText.text=productHomeModel.productTitle.asMap()[langId].toString()
+                productHome = productHomeModel
+                deleteBtn.setOnClickListener {
+                    activityFunctionClass.deleteFromCart(productHomeModel,position)
+                    productList.removeAt(adapterPosition)
+                    notifyItemRemoved(adapterPosition)
+                    activityFunctionClass.addTotalPrice(productList)
 
+                }
             }
+
+
+
         }
 
     }

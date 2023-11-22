@@ -56,7 +56,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.viewpager2:viewpager2:1.0.0")//viewpager
-    implementation ("com.github.bumptech.glide:glide:4.12.0")//glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")//glide
     kapt("com.github.bumptech.glide:compiler:4.12.0")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))//firebase
     implementation("com.google.firebase:firebase-perf")

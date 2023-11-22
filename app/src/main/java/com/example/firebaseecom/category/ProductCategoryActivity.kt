@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,18 +22,19 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 
 @AndroidEntryPoint
-class ProductCategoryActivity : AppCompatActivity() {
+class ProductCategoryActivity : BaseActivity() {
 
 
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productCategoryViewModel: ProductCategoryViewModel
-    var adapter = ProductCategoryAdapter(ProductCategoryClass())
+    private lateinit var adapter : ProductCategoryAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductListBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_list)
         productCategoryViewModel = ViewModelProvider(this)[ProductCategoryViewModel::class.java]
         val category = intent.getStringExtra("category")
+        adapter = ProductCategoryAdapter(ProductCategoryClass(),langId)
         observeProducts(category!!)
         activityProductListBinding.apply {
 

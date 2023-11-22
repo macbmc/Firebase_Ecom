@@ -65,7 +65,7 @@ class ProductRepositoryImpl @Inject constructor() :
 
     override fun shareProduct(uri: Uri, productHomeModel: ProductHomeModel, context: Context) {
         if (uri != null) {
-            val msg = " "+productHomeModel.productTitle+" "+productHomeModel.productPrice.toString()
+            val msg = " "+productHomeModel.productTitle.en +" "+productHomeModel.productPrice.toString()
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

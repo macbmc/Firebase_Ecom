@@ -3,6 +3,7 @@ package com.example.firebaseecom.main
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.zeugmasolutions.localehelper.LocaleHelper
 import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegate
@@ -30,6 +31,7 @@ abstract class BaseActivity : AppCompatActivity() {
 }*/
 open class BaseActivity : AppCompatActivity() {
     val localeDelegate: LocaleHelperActivityDelegate = LocaleHelperActivityDelegateImpl()
+    var langId=""
 
     override fun getDelegate() = localeDelegate.getAppCompatDelegate(super.getDelegate())
 
@@ -40,6 +42,9 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         localeDelegate.onCreate(this)
+        langId=resources.configuration.locales[0].language
+
+
     }
 
     override fun onResume() {

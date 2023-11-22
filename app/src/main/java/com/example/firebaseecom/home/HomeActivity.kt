@@ -1,12 +1,10 @@
 package com.example.firebaseecom.home
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -26,7 +24,6 @@ import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -39,23 +36,17 @@ class HomeActivity : BaseActivity(){
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
-
+        Log.d("homeLanguage",langId)
         adView.adapter = carousalAdapter
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
-
         observeCartNumber()
         observeCarousal()
         observeProducts()
@@ -95,6 +86,12 @@ class HomeActivity : BaseActivity(){
 
     }
 
+    private fun getLanguage():String {
+        val locale = resources.configuration.locales.get(0)
+        Log.d("homeLanguage",locale.language )
+        return locale.language
+    }
+
     private fun observeCarousal() {
         homeViewModel.adList.observe(this@HomeActivity, Observer {
             carousalAdapter.setAd(it)
@@ -121,7 +118,7 @@ class HomeActivity : BaseActivity(){
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductHomeAdapter(NavigateClass())
+        val adapter = ProductHomeAdapter(NavigateClass(),langId)
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -149,6 +146,7 @@ class HomeActivity : BaseActivity(){
                             Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_SHORT)
                                 .show()
                         }
+                        else -> {}
 
                     }
                 }

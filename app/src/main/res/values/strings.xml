@@ -8,6 +8,7 @@
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="no">No</string>
+    <string name="amount" translatable="false">price</string>
     <string name="no_search_data">No Search Data</string>
     <string name="no_data">Product Not Available</string>
     <string name="phones">Phones</string>
@@ -66,5 +67,6 @@
     <string name="delivery_date">Delivery Date: %1$s</string>
     <string name="outdelivery">Out for Delivery</string>
     <string name="heyDefault">Hey !</string>
-    <string name="tocart">toCart</string>
+    <string name="tocart" translatable="false">toCart</string>
+    <string name="add_items_to_cart_first">Add items to cart first</string>
 </resources>

@@ -76,13 +76,18 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/homeToolBar"
-        android:id="@+id/searchRecyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/homeToolBar"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_below="@+id/homeToolBar"
+        android:padding="20dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/searchRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/centerBanner"

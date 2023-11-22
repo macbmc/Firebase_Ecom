@@ -9,9 +9,7 @@ import com.zeugmasolutions.localehelper.LocaleHelperApplicationDelegate
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Calendar
-import java.util.Locale
 
-@Suppress("DEPRECATION")
 @HiltAndroidApp
 @ExperimentalCoroutinesApi
 

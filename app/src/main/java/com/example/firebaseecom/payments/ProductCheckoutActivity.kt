@@ -18,6 +18,7 @@ import com.example.firebaseecom.api.RazorpayKey
 import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityProductCheckoutBinding
 import com.example.firebaseecom.home.HomeActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
@@ -25,11 +26,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
-class ProductCheckoutActivity : AppCompatActivity(), PaymentResultListener {
+class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
     private lateinit var activityProductCheckoutBinding: ActivityProductCheckoutBinding
     private lateinit var productCheckoutViewModel: ProductCheckoutViewModel
     private var productList = arrayListOf<ProductHomeModel>()
-    val adapter = ProductCheckoutAdapter(ActivityFunctionClass())
+    private lateinit var adapter : ProductCheckoutAdapter
     var totalAmount = 0.0
     private val checkOut = Checkout()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +41,7 @@ class ProductCheckoutActivity : AppCompatActivity(), PaymentResultListener {
         checkOut.setKeyID(RazorpayKey.EKART_RAZORPAY_KEY.key)
         checkOut.setImage(R.drawable.ic_cart)
         productList = (intent.extras?.get("productList") as? ArrayList<ProductHomeModel>)!!
+        adapter = ProductCheckoutAdapter(ActivityFunctionClass(),langId)
         activityProductCheckoutBinding.apply {
             productListView.layoutManager = LinearLayoutManager(
                 this@ProductCheckoutActivity,

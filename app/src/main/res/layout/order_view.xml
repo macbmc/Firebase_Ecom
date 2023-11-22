@@ -30,7 +30,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:textSize="20sp"
-            android:text="@{productHome.component5()}"
+
             />
         <TextView
             android:id="@+id/price"
@@ -39,7 +39,7 @@
             android:layout_toEndOf="@+id/productImage"
             android:layout_below="@id/productTitleText"
             android:layout_marginTop="10dp"
-            android:text="price"
+            android:text="@string/amount"
             android:layout_marginStart="20dp"
             />
 

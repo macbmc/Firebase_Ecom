@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -16,7 +15,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductTitle
+import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 
-class ProductDetailsActivity : AppCompatActivity() {
+class ProductDetailsActivity : BaseActivity() {
     private lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
     private lateinit var productHome: ProductHomeModel
@@ -43,12 +45,12 @@ class ProductDetailsActivity : AppCompatActivity() {
             this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
-
+        val productTitleMap = getLanguageMap(productHome.productTitle)
         observeProductDetails()
 
         activityProductDetailsBinding.apply {
-            productTitleText.text = productHome.productTitle
-            productTitleHeader.text = productHome.productTitle
+            productTitleText.text=productTitleMap.get(langId).toString()
+            productTitleHeader.text=productTitleMap.get(langId).toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
                 productDetailsViewModel.shareProduct(productHome, this@ProductDetailsActivity)
@@ -74,6 +76,10 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun getLanguageMap(productTitle: ProductTitle): Map<String,Any?> {
+       return productTitle.asMap()
     }
 
     private fun observeProductDetails() {
