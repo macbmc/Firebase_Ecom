@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -18,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOrderModel
-
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,15 +26,13 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 
 @AndroidEntryPoint
-class ProductListActivity : AppCompatActivity() {
+class ProductListActivity : BaseActivity() {
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productListViewModel: ProductListViewModel
-    val cartAdapter = ProductCartAdapter(ActivityFunctionClass())
-
-    val orderAdapter = ProductOrderAdapter(navClass())
-
+    private lateinit var cartAdapter: ProductCartAdapter
+    private lateinit var orderAdapter: ProductOrderAdapter
     var productList = arrayListOf<ProductHomeModel>()
-    var dest = ""
+    private var dest = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +40,12 @@ class ProductListActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_product_list)
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         dest = intent.getStringExtra("dest")!!
+        cartAdapter = ProductCartAdapter(ActivityFunctionClass(), langId)
+        orderAdapter = ProductOrderAdapter(NavToClass(), langId)
         observeProducts(dest)
         activityProductListBinding.apply {
-            if (dest == "orders") {
-
-                ButtonHolder.visibility= View.GONE
-
+            if (dest == getString(R.string.order)) {
+                ButtonHolder.visibility = View.GONE
                 recyclerView.adapter = orderAdapter
             } else {
                 recyclerView.adapter = cartAdapter
@@ -72,7 +68,7 @@ class ProductListActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         this@ProductListActivity,
-                        "Add items to cart first",
+                        getString(R.string.add_items_to_cart_first),
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -87,8 +83,7 @@ class ProductListActivity : AppCompatActivity() {
     private fun observeProducts(dest: String?) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                if (dest == "orders") {
+                if (dest == getString(R.string.order)) {
                     productListViewModel.getProductFromOrder()
                     productListViewModel.productOrderList.collect {
                         when (it) {
@@ -112,38 +107,39 @@ class ProductListActivity : AppCompatActivity() {
                                 )
                                     .show()
                             }
-
                         }
                     }
                 } else {
-                    productListViewModel.getProductFromDest(dest!!)
-                    productListViewModel.productCartList.collect {
-                        when (it) {
-                            is Resource.Loading -> {
-                                activityProductListBinding.progressBar.isVisible = true
-                            }
+                    if (dest == getString(R.string.cart)) {
+                        productListViewModel.getProductFromDest("cart")
+                        productListViewModel.productCartList.collect {
+                            when (it) {
+                                is Resource.Loading -> {
+                                    activityProductListBinding.progressBar.isVisible = true
+                                }
 
-                            is Resource.Success -> {
-                                activityProductListBinding.progressBar.isVisible = false
-                                Log.d("cartData", it.data.toString())
-                                cartAdapter.setProduct(it.data)
-                                productList = ArrayList(it.data)
+                                is Resource.Success -> {
+                                    activityProductListBinding.progressBar.isVisible = false
+                                    Log.d("cartData", it.data.toString())
+                                    cartAdapter.setProduct(it.data)
+                                    productList = ArrayList(it.data)
 
-                            }
+                                }
 
-                            is Resource.Failed -> {
-                                activityProductListBinding.progressBar.isVisible = false
-                                Toast.makeText(
-                                    this@ProductListActivity,
-                                    it.message,
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                is Resource.Failed -> {
+                                    activityProductListBinding.progressBar.isVisible = false
+                                    Toast.makeText(
+                                        this@ProductListActivity,
+                                        it.message,
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
                             }
                         }
                     }
-                }
 
+                }
             }
 
         }
@@ -157,6 +153,7 @@ class ProductListActivity : AppCompatActivity() {
             intent.putExtra("product", productHomeModel as Serializable)
             startActivity(intent)
         }
+
         override fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int) {
 
 
@@ -178,26 +175,12 @@ class ProductListActivity : AppCompatActivity() {
     }
 
 
-    /*private fun deleteFromOrder(productHomeModel: ProductHomeModel) {
-
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.cancel_your_order))
-        builder.setMessage(getString(R.string.cancelOrder))
-        builder.setPositiveButton(R.string.submit) { _, _ ->
-            productListViewModel.removeFromOrder(productHomeModel)
-        }
-        builder.setNegativeButton(R.string.cancel) { _, _ -> }
-        builder.show()
-
-    }*/
-
-    inner class navClass : ProductOrderAdapter.navInterface {
-        override fun navToOrderView(productOrderModel: ProductOrderModel) {
-            val intent=Intent(this@ProductListActivity,ProductOrderViewActivity::class.java)
-            intent.putExtra("productDetails",productOrderModel)
+    inner class NavToClass : ProductOrderAdapter.navInterface {
+        override fun navToOrderView(productHomeModel: ProductOrderModel) {
+            val intent = Intent(this@ProductListActivity, ProductOrderViewActivity::class.java)
+            intent.putExtra("productDetails", productHomeModel)
             startActivity(intent)
         }
-
 
     }
 }

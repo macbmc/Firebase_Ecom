@@ -1,6 +1,5 @@
 package com.example.firebaseecom.payments
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
@@ -12,11 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-
 import javax.inject.Inject
 
 @HiltViewModel
-
 
 class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: FirestoreRepository) :
     ViewModel() {
@@ -45,7 +42,6 @@ class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: Fire
 
     fun removeAllFromCart(productList: List<ProductHomeModel>) {
         viewModelScope.launch(Dispatchers.IO) {
-
             firestoreRepository.removeFromCartIfOrder(productList)
         }
     }

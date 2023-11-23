@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -55,9 +56,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.viewpager2:viewpager2:1.0.0")//viewpager
-    implementation ("com.github.bumptech.glide:glide:4.12.0")//glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")//glide
     kapt("com.github.bumptech.glide:compiler:4.12.0")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))//firebase
+    implementation("com.google.firebase:firebase-perf")
     implementation ("com.google.android.material:material:1.2.0-alpha05")//NavMenu
     implementation("com.google.firebase:firebase-firestore:24.9.0")//cloudFirestore
 
@@ -90,6 +92,7 @@ dependencies {
 
     implementation("com.razorpay:checkout:1.6.33") //razorpay
 
+    implementation("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
 
 
 

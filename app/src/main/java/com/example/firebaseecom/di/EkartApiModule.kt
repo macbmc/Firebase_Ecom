@@ -22,13 +22,11 @@ object EkartApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() : EkartApi{
+    fun provideRetrofit(): EkartApi {
         val okHttpClient = OkHttpClient.Builder()
-
             .connectTimeout(2, TimeUnit.MINUTES)
             .readTimeout(2, TimeUnit.MINUTES)
             .writeTimeout(30, TimeUnit.SECONDS)
-
             .build()
         return Retrofit.Builder()
             .baseUrl(EkartApiEndPoints.END_POINT_BASE.url)
@@ -44,5 +42,5 @@ object EkartApiModule {
 
     @Provides
     @Singleton
-    fun provideNetworkRepository(repository:NetworkRepositoryImpl):NetworkRepository = repository
+    fun provideNetworkRepository(repository: NetworkRepositoryImpl): NetworkRepository = repository
 }

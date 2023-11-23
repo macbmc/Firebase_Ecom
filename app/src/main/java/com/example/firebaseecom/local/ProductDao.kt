@@ -19,7 +19,7 @@ interface ProductDao {
     @Query("SELECT * FROM ProductTable WHERE productCategory=:category")
     fun getProductByCategory(category:String):List<ProductHomeModel>
 
-    @Query("SELECT * FROM ProductTable WHERE productTitle LIKE '%' || :searchQuery || '%' OR productCategory LIKE '%' || :searchQuery || '%'")
+    @Query("SELECT * FROM ProductTable WHERE en LIKE '%' || :searchQuery || '%' OR productCategory LIKE '%' || :searchQuery ||  '%' OR ml LIKE '%' || :searchQuery || '%'")
     fun searchForProducts(searchQuery:String):List<ProductHomeModel>
 
 }

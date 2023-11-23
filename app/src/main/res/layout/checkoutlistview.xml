@@ -11,11 +11,11 @@
     android:layout_height="wrap_content"
     android:padding="20dp">
     <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="18sp"
-        android:text="@{productOrders.component5()}"/>
+        android:textSize="18sp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

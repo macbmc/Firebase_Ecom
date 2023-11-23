@@ -19,11 +19,9 @@ interface FirestoreRepository {
     suspend fun checkNumDest(dest: String): Int
     suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
-
     suspend fun addToOrders(productList:List<ProductOrderModel>)
     suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
     suspend fun getFromOrders():Resource<List<ProductOrderModel>>
-
     suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>)
 
 
@@ -136,9 +134,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         return adList
     }
 
-
     override suspend fun addToOrders(productList:List<ProductOrderModel>) {
-
         for(productModel in productList)
         {
             try {
@@ -221,7 +217,6 @@ class FirestoreRepositoryImpl @Inject constructor(
         return Resource.Success(productList)
     }
 
-
     override suspend fun getFromOrders(): Resource<List<ProductOrderModel>> {
         var productList: MutableList<ProductOrderModel> = mutableListOf()
         var response = 0
@@ -252,7 +247,6 @@ class FirestoreRepositoryImpl @Inject constructor(
         Log.d("cartdatarepo",productList.toString())
         return Resource.Success(productList)
     }
-
 
     override suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>) {
         val db=firestore.collection("user-cart").document(currentUser!!.uid).collection("items")

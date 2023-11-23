@@ -54,9 +54,7 @@ class ProductListViewModel @Inject constructor(val firestoreRepository: Firestor
         }
     }
 
-
     fun removeFromOrder(productModel: ProductHomeModel) {
-
         viewModelScope.launch(Dispatchers.IO) {
             firestoreRepository.removeFromDest("orders", productModel)
         }

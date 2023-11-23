@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -19,19 +18,19 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
 @AndroidEntryPoint
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity(){
 
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
@@ -39,17 +38,15 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
-
+        Log.d("homeLanguage",langId)
         adView.adapter = carousalAdapter
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
-
         observeCartNumber()
         observeCarousal()
         observeProducts()
@@ -66,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             }
             cartHomeButton.setOnClickListener {
                 val intent = Intent(this@HomeActivity, ProductListActivity::class.java)
-                intent.putExtra("dest", "cart")
+                intent.putExtra("dest", getString(R.string.cart))
                 startActivity(intent)
             }
             catLaptop.setOnClickListener {
@@ -89,6 +86,12 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    private fun getLanguage():String {
+        val locale = resources.configuration.locales.get(0)
+        Log.d("homeLanguage",locale.language )
+        return locale.language
+    }
+
     private fun observeCarousal() {
         homeViewModel.adList.observe(this@HomeActivity, Observer {
             carousalAdapter.setAd(it)
@@ -96,10 +99,8 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.getAd()
     }
 
-
     override fun onRestart() {
         super.onRestart()
-
 
         observeCartNumber()
     }
@@ -117,7 +118,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductHomeAdapter(NavigateClass())
+        val adapter = ProductHomeAdapter(NavigateClass(),langId)
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -145,6 +146,7 @@ class HomeActivity : AppCompatActivity() {
                             Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_SHORT)
                                 .show()
                         }
+                        else -> {}
 
                     }
                 }

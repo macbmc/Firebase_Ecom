@@ -1,6 +1,7 @@
 package com.example.firebaseecom.model
 
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
@@ -9,8 +10,7 @@ import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "ProductTable")
-data class ProductHomeModel
-    (
+data class ProductHomeModel(
     @Json(name = "product_category")
     val productCategory: String?,
     @PrimaryKey
@@ -20,8 +20,10 @@ data class ProductHomeModel
     val productImage: String?,
     @Json(name = "product_price")
     val productPrice: Int?,
+    @Embedded
     @Json(name = "product_title")
-    val productTitle: String?
-):Serializable{
-    constructor() : this("",0, "",0,"")
+    val productTitle: ProductMultiLanguage,
+
+    ) : Serializable {
+    constructor() : this("", 0, "", 0, ProductMultiLanguage("",""))
 }

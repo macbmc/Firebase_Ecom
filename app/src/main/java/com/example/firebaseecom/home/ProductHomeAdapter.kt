@@ -1,6 +1,5 @@
 package com.example.firebaseecom.home
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,9 +9,11 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductListViewBinding
 
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.asMap
 
 class ProductHomeAdapter(
-    private val navigateClass: HomeActivity.NavigateClass
+    private val navigateClass: HomeActivity.NavigateClass,
+    private val langId: String
 ) : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
     private var productDetails: List<ProductHomeModel>? = listOf()
 
@@ -23,11 +24,15 @@ class ProductHomeAdapter(
     }
 
     class ProductViewHolder(
-        private val productListViewBinding: ProductListViewBinding
+        private val productListViewBinding: ProductListViewBinding, private val langId: String
     ) : RecyclerView.ViewHolder(productListViewBinding.root) {
-        @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(productModel: ProductHomeModel?) {
-            productListViewBinding.productDetails = productModel
+            val productTitleLang = productModel?.productTitle?.asMap()
+            productListViewBinding.apply {
+                productDetails = productModel
+                homeProductTitle.text = productTitleLang?.get(langId).toString()
+
+            }
         }
 
     }
@@ -43,7 +48,7 @@ class ProductHomeAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         productListViewBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.product_list_view, parent, false)
-        return ProductViewHolder(productListViewBinding)
+        return ProductViewHolder(productListViewBinding, langId)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {

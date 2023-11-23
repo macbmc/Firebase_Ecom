@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductCategoryViewModel @Inject constructor(val networkRepository: NetworkRepository,
+class ProductCategoryViewModel @Inject constructor(private val networkRepository: NetworkRepository,
    val firestoreRepository: FirestoreRepository) :ViewModel(){
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val products: StateFlow<Resource<List<ProductHomeModel>>> = _products
      fun getProductsByCat(category:String)
     {
-        viewModelScope.async(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
            _products.value= networkRepository.fetchProductByCategory(category)
 
         }

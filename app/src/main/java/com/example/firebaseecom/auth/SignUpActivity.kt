@@ -15,12 +15,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : BaseActivity() {
     private lateinit var signUpBinding: ActivitySignUpBinding
     private lateinit var authViewModel: AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {

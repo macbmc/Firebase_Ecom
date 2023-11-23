@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductSearchBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,16 +24,16 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 
 @AndroidEntryPoint
-class ProductSearchActivity : AppCompatActivity() {
+class ProductSearchActivity : BaseActivity() {
     private lateinit var activityProductSearchBinding: ActivityProductSearchBinding
     private lateinit var productSearchVIewModel: ProductSearchVIewModel
-    val adapter = ProductSearchAdapter(ProductSearchClass())
+    private lateinit var  adapter : ProductSearchAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductSearchBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_search)
         productSearchVIewModel = ViewModelProvider(this)[ProductSearchVIewModel::class.java]
-
+        adapter = ProductSearchAdapter(ProductSearchClass(),langId)
         activityProductSearchBinding.apply {
             searchRecyclerView.adapter = adapter
             searchRecyclerView.layoutManager = LinearLayoutManager(
@@ -65,41 +66,45 @@ class ProductSearchActivity : AppCompatActivity() {
 
     private fun observeProducts(query: String?) {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-            productSearchVIewModel.searchProducts(query!!)
-            productSearchVIewModel.product.collect {
-                when (it) {
-                    is Resource.Success -> {
-                        activityProductSearchBinding.progressBar.isVisible = false
-                        Log.d("queryRes", it.data.toString())
-                        if (it.data.isNotEmpty()) {
-                            activityProductSearchBinding.centerBanner.isVisible = false
-                            adapter.setProducts(it.data)
-                        } else {
-                            activityProductSearchBinding.centerBanner.text =
-                                getString(R.string.no_data)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productSearchVIewModel.searchProducts(query!!)
+                productSearchVIewModel.product.collect {
+                    when (it) {
+                        is Resource.Success -> {
+                            activityProductSearchBinding.progressBar.isVisible = false
+                            Log.d("queryRes", it.data.toString())
+                            if (it.data.isNotEmpty()) {
+                                activityProductSearchBinding.centerBanner.isVisible = false
+                                adapter.setProducts(it.data)
+                            } else {
+                                activityProductSearchBinding.centerBanner.text =
+                                    getString(R.string.no_data)
+                            }
                         }
-                    }
 
-                    is Resource.Loading -> {
-                        activityProductSearchBinding.progressBar.isVisible = true
-                    }
+                        is Resource.Loading -> {
+                            activityProductSearchBinding.progressBar.isVisible = true
+                        }
 
-                    is Resource.Failed -> {
-                        Toast.makeText(this@ProductSearchActivity, it.message, Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                        is Resource.Failed -> {
+                            Toast.makeText(
+                                this@ProductSearchActivity,
+                                it.message,
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
 
+                    }
                 }
             }
-        }
         }
 
     }
 
     inner class ProductSearchClass : ProductSearchAdapter.ProductCategoryInterface {
         override fun addToCart(productHomeModel: ProductHomeModel) {
-           productSearchVIewModel.addToCart(productHomeModel)
+            productSearchVIewModel.addToCart(productHomeModel)
         }
 
         override fun navToDetails(productHomeModel: ProductHomeModel) {

@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.firebaseecom.model.ProductHomeModel
 
 
-@Database(entities = [ProductHomeModel::class], version = 1, exportSchema = false)
+@Database(entities = [ProductHomeModel::class], version = 2, exportSchema = false)
+
 abstract class EkartDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
@@ -26,7 +28,9 @@ abstract class EkartDatabase : RoomDatabase() {
                     context.applicationContext,
                     EkartDatabase::class.java,
                     "product_database"
-                ).build()
+                )
+                    .addMigrations(*DatabaseMigration.MIGRATIONS)
+                    .build()
                 INSTANCE = instance
                 return instance
             }

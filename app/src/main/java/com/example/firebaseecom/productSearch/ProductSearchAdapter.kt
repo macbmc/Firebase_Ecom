@@ -8,11 +8,12 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.asMap
 import dagger.hilt.android.scopes.ActivityScoped
 
 
 @ActivityScoped
-class ProductSearchAdapter(val productSearchClass: ProductSearchActivity.ProductSearchClass) :
+class ProductSearchAdapter(val productSearchClass: ProductSearchActivity.ProductSearchClass,val langId:String) :
     RecyclerView.Adapter<ProductSearchAdapter.MyViewHolder>() {
     interface ProductCategoryInterface {
         fun addToCart(productHomeModel: ProductHomeModel)
@@ -20,14 +21,17 @@ class ProductSearchAdapter(val productSearchClass: ProductSearchActivity.Product
     }
 
     var productList = mutableListOf<ProductHomeModel>()
-    lateinit var cartViewBinding: CartViewBinding
+    private lateinit var cartViewBinding: CartViewBinding
 
-    inner class MyViewHolder(val cartViewBinding: CartViewBinding) :
+    inner class MyViewHolder(private val cartViewBinding: CartViewBinding,val langId:String) :
         RecyclerView.ViewHolder(cartViewBinding.root) {
         fun bind(productHomeModel: ProductHomeModel) {
-            cartViewBinding.productHome = productHomeModel
-            cartViewBinding.deleteBtn.setOnClickListener {
-                productSearchClass.addToCart(productHomeModel)
+            cartViewBinding.apply {
+                productTitleText.text=productHomeModel.productTitle.asMap()[langId].toString()
+                productHome = productHomeModel
+                deleteBtn.setOnClickListener {
+                    productSearchClass.addToCart(productHomeModel)
+                }
             }
         }
 
@@ -40,7 +44,7 @@ class ProductSearchAdapter(val productSearchClass: ProductSearchActivity.Product
     ): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         cartViewBinding = DataBindingUtil.inflate(inflater, R.layout.cart_view, parent, false)
-        return MyViewHolder(cartViewBinding)
+        return MyViewHolder(cartViewBinding,langId)
 
     }
 

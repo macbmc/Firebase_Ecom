@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -16,7 +15,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductMultiLanguage
+import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 
-class ProductDetailsActivity : AppCompatActivity() {
+class ProductDetailsActivity : BaseActivity() {
     private lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
     private lateinit var productHome: ProductHomeModel
@@ -40,15 +42,15 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         productView.adapter = carousalAdapter
         productView.layoutManager = LinearLayoutManager(
-            this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL,
-            false
+            this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL, false
         )
+        val productTitleMap = getLanguageMap(productHome.productTitle)
 
         observeProductDetails()
 
         activityProductDetailsBinding.apply {
-            productTitleText.text = productHome.productTitle
-            productTitleHeader.text = productHome.productTitle
+            productTitleText.text = productTitleMap[langId].toString()
+            productTitleHeader.text = productTitleMap[langId].toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
                 productDetailsViewModel.shareProduct(productHome, this@ProductDetailsActivity)
@@ -76,6 +78,10 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     }
 
+    private fun getLanguageMap(productMultiLanguage: ProductMultiLanguage): Map<String, Any?> {
+        return productMultiLanguage.asMap()
+    }
+
     private fun observeProductDetails() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -85,37 +91,36 @@ class ProductDetailsActivity : AppCompatActivity() {
                         is Resource.Loading -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
                             Toast.makeText(
-                                this@ProductDetailsActivity, "Details Loading", Toast.LENGTH_SHORT
+                                this@ProductDetailsActivity,
+                                getString(R.string.details_loading),
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
 
                         is Resource.Success -> {
-                            activityProductDetailsBinding.progressBar.isVisible = false
-                            val myList = it.data
-                            activityProductDetailsBinding.productDetails =
-                                myList?.singleOrNull { list ->
+                            activityProductDetailsBinding.apply {
+                                progressBar.isVisible = false
+                                val myList = it.data
+                                productDetails = myList?.singleOrNull { list ->
                                     list.productId == productHome.productId
                                 }
-                            carousalAdapter.setAd(activityProductDetailsBinding.productDetails?.productImage!!)
-
+                                productReviewText.text=getLanguageMap(productDetails!!.productReviews)[langId].toString()
+                                productDescText.text=getLanguageMap(productDetails!!.productDescription)[langId].toString()
+                                carousalAdapter.setProduct(productDetails?.productImage!!)
+                            }
                         }
 
                         is Resource.Failed -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
                             Toast.makeText(
-                                this@ProductDetailsActivity,
-                                it.message,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                                this@ProductDetailsActivity, it.message, Toast.LENGTH_SHORT
+                            ).show()
                         }
-
 
                         else -> {}
                     }
                 }
             }
-        }
         }
     }
 }
