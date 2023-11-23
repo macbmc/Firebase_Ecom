@@ -22,8 +22,8 @@ data class ProductHomeModel(
     val productPrice: Int?,
     @Embedded
     @Json(name = "product_title")
-    val productTitle: ProductTitle,
+    val productTitle: ProductMultiLanguage,
 
-) : Serializable {
-    constructor() : this("", 0, "", 0, ProductTitle("",""))
+    ) : Serializable {
+    constructor() : this("", 0, "", 0, ProductMultiLanguage("",""))
 }

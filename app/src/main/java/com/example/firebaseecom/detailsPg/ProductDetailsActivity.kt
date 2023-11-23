@@ -17,7 +17,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
-import com.example.firebaseecom.model.ProductTitle
+import com.example.firebaseecom.model.ProductMultiLanguage
 import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
@@ -42,15 +42,15 @@ class ProductDetailsActivity : BaseActivity() {
 
         productView.adapter = carousalAdapter
         productView.layoutManager = LinearLayoutManager(
-            this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL,
-            false
+            this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL, false
         )
         val productTitleMap = getLanguageMap(productHome.productTitle)
+
         observeProductDetails()
 
         activityProductDetailsBinding.apply {
-            productTitleText.text=productTitleMap.get(langId).toString()
-            productTitleHeader.text=productTitleMap.get(langId).toString()
+            productTitleText.text = productTitleMap[langId].toString()
+            productTitleHeader.text = productTitleMap[langId].toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
                 productDetailsViewModel.shareProduct(productHome, this@ProductDetailsActivity)
@@ -78,8 +78,8 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
 
-    private fun getLanguageMap(productTitle: ProductTitle): Map<String,Any?> {
-       return productTitle.asMap()
+    private fun getLanguageMap(productMultiLanguage: ProductMultiLanguage): Map<String, Any?> {
+        return productMultiLanguage.asMap()
     }
 
     private fun observeProductDetails() {
@@ -91,28 +91,30 @@ class ProductDetailsActivity : BaseActivity() {
                         is Resource.Loading -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
                             Toast.makeText(
-                                this@ProductDetailsActivity, "Details Loading", Toast.LENGTH_SHORT
+                                this@ProductDetailsActivity,
+                                getString(R.string.details_loading),
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
 
                         is Resource.Success -> {
-                            activityProductDetailsBinding.progressBar.isVisible = false
-                            val myList = it.data
-                            activityProductDetailsBinding.productDetails =
-                                myList?.singleOrNull { list ->
+                            activityProductDetailsBinding.apply {
+                                progressBar.isVisible = false
+                                val myList = it.data
+                                productDetails = myList?.singleOrNull { list ->
                                     list.productId == productHome.productId
                                 }
-                            carousalAdapter.setAd(activityProductDetailsBinding.productDetails?.productImage!!)
+                                productReviewText.text=getLanguageMap(productDetails!!.productReviews)[langId].toString()
+                                productDescText.text=getLanguageMap(productDetails!!.productDescription)[langId].toString()
+                                carousalAdapter.setProduct(productDetails?.productImage!!)
+                            }
                         }
 
                         is Resource.Failed -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
                             Toast.makeText(
-                                this@ProductDetailsActivity,
-                                it.message,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                                this@ProductDetailsActivity, it.message, Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         else -> {}

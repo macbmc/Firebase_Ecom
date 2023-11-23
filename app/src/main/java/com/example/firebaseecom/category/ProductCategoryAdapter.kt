@@ -1,6 +1,5 @@
 package com.example.firebaseecom.category
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,10 +9,8 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.asMap
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
+
 @ActivityScoped
 class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.ProductCategoryClass,val langId:String) : RecyclerView.Adapter<ProductCategoryAdapter.MyViewHolder>() {
     interface ProductCategoryInterface{

@@ -8,6 +8,9 @@
         <variable
             name="productDetails"
             type="com.example.firebaseecom.model.ProductDetailsModel" />
+        <variable
+            name="baseActivity"
+            type="com.example.firebaseecom.main.BaseActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +55,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
-                            android:textSize="18dp"
+                            android:textSize="18sp"
                             android:textColor="@color/white"
                             android:id="@+id/productTitleHeader"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +159,6 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
-                    android:text="@{productDetails.component1()}"
                     android:textSize="16sp" />
 
                 <TextView
@@ -180,7 +182,6 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="36dp"
                     android:layout_marginBottom="100dp"
-                    android:text="@{productDetails.component4()}"
                     android:textSize="16sp" />
 
                 </RelativeLayout>

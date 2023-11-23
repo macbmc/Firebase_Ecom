@@ -22,7 +22,7 @@ class ProductCategoryViewModel @Inject constructor(private val networkRepository
     val products: StateFlow<Resource<List<ProductHomeModel>>> = _products
      fun getProductsByCat(category:String)
     {
-        viewModelScope.async(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
            _products.value= networkRepository.fetchProductByCategory(category)
 
         }

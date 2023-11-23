@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="sans-serif-black"
-                        android:text="@string/cart"
+                        android:text="@string/carts"
                         android:textColor="@color/white"
                         android:textSize="22sp" />
                 </RelativeLayout>

@@ -26,8 +26,8 @@ class NetworkRepositoryImpl @Inject constructor(
     private val productDao: ProductDao
 ) :
     NetworkRepository {
-    lateinit var apiCall: Response<List<ProductHomeModel>?>
-    lateinit var apiCallDetails: Response<List<ProductDetailsModel>?>
+    private lateinit var apiCall: Response<List<ProductHomeModel>?>
+    private lateinit var apiCallDetails: Response<List<ProductDetailsModel>?>
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         try {
@@ -79,15 +79,15 @@ class NetworkRepositoryImpl @Inject constructor(
         try {
             productDao.insertProduct(remoteData!!)
         } catch (e: Exception) {
-            Log.e("storeinLocal", e.toString())
+            Log.e("storeInLocal", e.toString())
 
         }
 
     }
 
-    override suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>? {
+    override suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?> {
         try {
-            apiCallDetails = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_PRODUCT_META.url)
+            apiCallDetails = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_DETAIL_MULTILINGUAL.url)
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }

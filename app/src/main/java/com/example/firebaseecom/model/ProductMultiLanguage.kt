@@ -3,9 +3,8 @@ package com.example.firebaseecom.model
 import com.squareup.moshi.Json
 import java.io.Serializable
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 
-data class ProductTitle(
+data class ProductMultiLanguage(
     @Json(name = "en")
     val en : String?,
     @Json(name = "ml")
@@ -14,7 +13,7 @@ data class ProductTitle(
 ): Serializable {
     constructor() : this("", "")
 }
-fun ProductTitle.asMap() = this::class.memberProperties.associate { it.name to it.getter.call(this)}
+fun ProductMultiLanguage.asMap() = this::class.memberProperties.associate { it.name to it.getter.call(this)}
 
 
 

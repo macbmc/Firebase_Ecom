@@ -56,7 +56,7 @@ class ProductOrderAdapter(private val nav: navInterface,val langId: String
         fun bind(productHomeModel: ProductOrderModel,position:Int) {
             orderViewBinding.apply {
                 productHome = productHomeModel
-                productTitleText.text=productHomeModel.productTitle.asMap()[langId].toString()
+                productTitleText.text=productHomeModel.productMultiLanguage.asMap()[langId].toString()
             }
         }
 

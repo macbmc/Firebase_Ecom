@@ -3,7 +3,6 @@
 package com.example.firebaseecom.CartOrder
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
@@ -20,7 +19,7 @@ class ProductOrderViewActivity : BaseActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_product_order_view)
         activityProductOrderViewBinding.apply {
             productOrderModel = intent.extras!!.get("productDetails") as ProductOrderModel
-            titleText.text=productOrderModel?.productTitle!!.asMap()[langId].toString()
+            titleText.text=productOrderModel?.productMultiLanguage!!.asMap()[langId].toString()
             Glide.with(this@ProductOrderViewActivity)
                 .load(productOrderModel?.productImage)
                 .error(R.drawable.placeholder_image)

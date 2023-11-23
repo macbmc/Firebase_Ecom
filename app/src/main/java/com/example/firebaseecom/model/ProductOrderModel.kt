@@ -7,9 +7,9 @@ data class ProductOrderModel(
     val productId: Int?,
     val productImage: String?,
     val productPrice: Int?,
-    val productTitle: ProductTitle,
+    val productMultiLanguage: ProductMultiLanguage,
     val orderDate: String?,
     val deliveryDate:String?
 ):Serializable{
-    constructor() : this("",0, "",0,ProductTitle("",""),"","")
+    constructor() : this("",0, "",0,ProductMultiLanguage("",""),"","")
 }

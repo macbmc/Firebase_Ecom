@@ -41,10 +41,10 @@ class UserProfileActivity : BaseActivity() {
                 userSignout()
             }
             orderLayout.setOnClickListener {
-                navToCartOrders("orders")
+                navToCartOrders(getString(R.string.order))
             }
             cartLayout.setOnClickListener {
-                navToCartOrders("cart")
+                navToCartOrders(getString(R.string.cart))
             }
             editProfile.setOnClickListener {
                 navToEditProfile()

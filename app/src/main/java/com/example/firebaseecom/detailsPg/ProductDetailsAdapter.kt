@@ -1,7 +1,6 @@
 package com.example.firebaseecom.detailsPg
 
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,38 +8,37 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
-import com.example.firebaseecom.databinding.AdCorousalViewBinding
 import com.example.firebaseecom.databinding.ProductDetailsImageViewBinding
 
-class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.CarousalViewHolder>() {
+class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.DetailViewHolder>() {
 
     var imageList= emptyList<String?>()
     private lateinit var productDetailsImageViewBinding: ProductDetailsImageViewBinding
 
-    fun setAd(imageList: List<String>)
+    fun setProduct(imageList: List<String>)
     {
         this.imageList=imageList
 
         notifyDataSetChanged()
     }
-    class CarousalViewHolder(productDetailsImageViewBinding: ProductDetailsImageViewBinding):RecyclerView.ViewHolder(productDetailsImageViewBinding.root) {
+    class DetailViewHolder(productDetailsImageViewBinding: ProductDetailsImageViewBinding):RecyclerView.ViewHolder(productDetailsImageViewBinding.root) {
 
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CarousalViewHolder {
+    ): DetailViewHolder {
 
         val layoutInflater = LayoutInflater.from(parent.context)
         productDetailsImageViewBinding = DataBindingUtil.inflate(layoutInflater,
             R.layout.product_details_image_view,parent
             ,false)
-        return CarousalViewHolder(productDetailsImageViewBinding)
+        return DetailViewHolder(productDetailsImageViewBinding)
 
     }
 
-    override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         val imageUrl=imageList[position]
         Log.d("detailsImg",imageUrl.toString())
         Glide.with(holder.itemView)

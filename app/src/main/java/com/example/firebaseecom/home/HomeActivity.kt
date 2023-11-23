@@ -63,7 +63,7 @@ class HomeActivity : BaseActivity(){
             }
             cartHomeButton.setOnClickListener {
                 val intent = Intent(this@HomeActivity, ProductListActivity::class.java)
-                intent.putExtra("dest", "cart")
+                intent.putExtra("dest", getString(R.string.cart))
                 startActivity(intent)
             }
             catLaptop.setOnClickListener {

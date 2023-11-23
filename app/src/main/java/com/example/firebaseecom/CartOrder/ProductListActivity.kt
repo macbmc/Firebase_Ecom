@@ -29,8 +29,8 @@ import java.io.Serializable
 class ProductListActivity : BaseActivity() {
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productListViewModel: ProductListViewModel
-    private lateinit var cartAdapter : ProductCartAdapter
-    private lateinit var orderAdapter : ProductOrderAdapter
+    private lateinit var cartAdapter: ProductCartAdapter
+    private lateinit var orderAdapter: ProductOrderAdapter
     var productList = arrayListOf<ProductHomeModel>()
     private var dest = ""
 
@@ -41,10 +41,10 @@ class ProductListActivity : BaseActivity() {
         productListViewModel = ViewModelProvider(this)[ProductListViewModel::class.java]
         dest = intent.getStringExtra("dest")!!
         cartAdapter = ProductCartAdapter(ActivityFunctionClass(), langId)
-         orderAdapter = ProductOrderAdapter(NavToClass(), langId)
+        orderAdapter = ProductOrderAdapter(NavToClass(), langId)
         observeProducts(dest)
         activityProductListBinding.apply {
-            if (dest == "orders") {
+            if (dest == getString(R.string.order)) {
                 ButtonHolder.visibility = View.GONE
                 recyclerView.adapter = orderAdapter
             } else {
@@ -83,7 +83,7 @@ class ProductListActivity : BaseActivity() {
     private fun observeProducts(dest: String?) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                if (dest == "orders") {
+                if (dest == getString(R.string.order)) {
                     productListViewModel.getProductFromOrder()
                     productListViewModel.productOrderList.collect {
                         when (it) {
@@ -110,34 +110,36 @@ class ProductListActivity : BaseActivity() {
                         }
                     }
                 } else {
-                    productListViewModel.getProductFromDest(dest!!)
-                    productListViewModel.productCartList.collect {
-                        when (it) {
-                            is Resource.Loading -> {
-                                activityProductListBinding.progressBar.isVisible = true
-                            }
+                    if (dest == getString(R.string.cart)) {
+                        productListViewModel.getProductFromDest("cart")
+                        productListViewModel.productCartList.collect {
+                            when (it) {
+                                is Resource.Loading -> {
+                                    activityProductListBinding.progressBar.isVisible = true
+                                }
 
-                            is Resource.Success -> {
-                                activityProductListBinding.progressBar.isVisible = false
-                                Log.d("cartData", it.data.toString())
-                                cartAdapter.setProduct(it.data)
-                                productList = ArrayList(it.data)
+                                is Resource.Success -> {
+                                    activityProductListBinding.progressBar.isVisible = false
+                                    Log.d("cartData", it.data.toString())
+                                    cartAdapter.setProduct(it.data)
+                                    productList = ArrayList(it.data)
 
-                            }
+                                }
 
-                            is Resource.Failed -> {
-                                activityProductListBinding.progressBar.isVisible = false
-                                Toast.makeText(
-                                    this@ProductListActivity,
-                                    it.message,
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                is Resource.Failed -> {
+                                    activityProductListBinding.progressBar.isVisible = false
+                                    Toast.makeText(
+                                        this@ProductListActivity,
+                                        it.message,
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
                             }
                         }
                     }
-                }
 
+                }
             }
 
         }
