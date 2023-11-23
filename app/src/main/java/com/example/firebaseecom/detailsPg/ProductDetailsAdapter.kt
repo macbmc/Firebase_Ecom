@@ -43,7 +43,7 @@ class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.DetailVie
         Log.d("detailsImg",imageUrl.toString())
         Glide.with(holder.itemView)
             .load(imageUrl)
-            .placeholder(R.drawable.placeholder_image)
+            .thumbnail(Glide.with(holder.itemView).load(R.drawable.preloader))
             .error(R.drawable.error_image)
             .into(holder.itemView.findViewById(R.id.adView))
 

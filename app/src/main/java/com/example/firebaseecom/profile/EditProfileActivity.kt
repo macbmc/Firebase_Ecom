@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
@@ -144,7 +143,7 @@ class EditProfileActivity : AppCompatActivity() {
                 builder.show()
             } else {
                 profileViewModel.getImageUrl()
-                profileViewModel.userImageUrl.observe(this@EditProfileActivity, Observer {
+                profileViewModel.userImageUrl.observe(this@EditProfileActivity) {
                     val user = UserModel(
                         editTextUsername.text.toString(), editTextEmail.text.toString(),
                         it, editTextPhone.text.toString(), editTextAddress.text.toString()
@@ -154,7 +153,7 @@ class EditProfileActivity : AppCompatActivity() {
                     Toast.makeText(this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT)
                         .show()
                     finish()
-                })
+                }
             }
         }
 
@@ -163,7 +162,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     inner class AuthStateChangeImpl : AuthRepositoryImpl.AuthStateChange {
         override fun navToSignUp() {
-            Log.d("After email verfication", "navToSignUp called")
+            Log.d("After email verification", "navToSignUp called")
             val intent = Intent(this@EditProfileActivity, SignUpActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)

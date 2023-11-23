@@ -9,6 +9,8 @@
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
+    android:layoutAnimation="@anim/anim_detailscreen"
+    android:theme="@style/Base.Theme.FirebaseEcom"
     android:layout_height="match_parent"
     android:background="@color/bgColor">
 

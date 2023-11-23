@@ -20,6 +20,7 @@ import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.Serializable
+import java.lang.reflect.Field
 
 @AndroidEntryPoint
 class ProductCategoryActivity : BaseActivity() {
@@ -95,4 +96,15 @@ class ProductCategoryActivity : BaseActivity() {
         }
 
     }
+    /*fun getStringResourceId(stringToSearch: String): Int {
+        val fields: Array<Field> = R.string::class.java.fields
+        for (field in fields) {
+            val id = field.getInt(field)
+            val str = resources.getString(id)
+            if (str == stringToSearch) {
+                return id
+            }
+        }
+        return -1
+    }*/
 }
