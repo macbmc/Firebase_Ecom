@@ -72,4 +72,6 @@
     <string name="tocart" >toCart</string>
     <string name="add_items_to_cart_first">Add items to cart first</string>
     <string name="details_loading">Details Loading</string>
+    <string name="homesearch">homeSearch</string>
+    <string name="toprofile">toProfile</string>
 </resources>

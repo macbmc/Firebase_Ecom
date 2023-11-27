@@ -3,9 +3,7 @@ package com.example.firebaseecom.profile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -40,7 +38,7 @@ class UserProfileActivity : BaseActivity() {
         getUserdata()
 
         activityUserProfileBinding.apply {
-            darkModeBtn.setOnClickListener {changeMode()}
+            darkModeBtn.setOnClickListener { changeMode() }
             navPop.setOnClickListener { finish() }
             userLogout.setOnClickListener {
                 userSignout()
