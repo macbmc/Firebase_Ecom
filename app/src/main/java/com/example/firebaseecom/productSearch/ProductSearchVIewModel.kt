@@ -23,7 +23,18 @@ class ProductSearchVIewModel @Inject constructor(private val networkRepository: 
     fun searchProducts(searchQuery:String)
     {
         viewModelScope.launch(Dispatchers.IO) {
-            _product.value= networkRepository.searchForProducts(searchQuery)
+            when(val result = networkRepository.searchForProducts(searchQuery))
+            {
+                is Resource.Success -> {
+                    if(result.data.isNotEmpty())
+                        _product.value=result
+                    else
+                        _product.value= Resource.Success(listOf())
+                }
+                else->{
+                    _product.value=result
+                }
+            }
         }
     }
     fun addToCart(productModel: ProductHomeModel) {

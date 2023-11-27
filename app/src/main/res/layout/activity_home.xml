@@ -7,237 +7,240 @@
     <data>
 
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layoutAnimation="@anim/anim_detailscreen"
-    android:theme="@style/Base.Theme.FirebaseEcom"
-    android:layout_height="match_parent"
-    android:background="@color/bgColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/bgColor"
+        android:layoutAnimation="@anim/anim_detailscreen"
+        android:theme="@style/Base.Theme.FirebaseEcom">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/homeToolBar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/buttonColor"
-            android:backgroundTint="@color/buttonColor"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/homeToolBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="5dp">
+                android:layout_height="60dp"
+                android:background="@color/buttonColor"
+                android:backgroundTint="@color/buttonColor"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageButton
-                    android:id="@+id/profButton"
-                    android:layout_width="54dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:backgroundTint="@color/buttonColor"
-                    android:src="@drawable/ic_options"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/searchHomeButton"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:backgroundTint="@color/buttonColor"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_search"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    tools:layout_editor_absoluteX="1dp"
+                    tools:layout_editor_absoluteY="5dp">
 
+                    <ImageButton
+                        android:id="@+id/profButton"
+                        android:layout_width="54dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="4dp"
+                        android:backgroundTint="@color/buttonColor"
+                        android:src="@drawable/ic_options"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <FrameLayout
-                    android:id="@+id/cartHomeButton"
-                    android:layout_width="wrap_content"
-                    app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:padding="16dp"
-                    android:focusable="true"
-                    android:clipToPadding="false">
-
-                    <ImageView
+                    <ImageButton
+                        android:id="@+id/searchHomeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_cart"
-                        android:contentDescription="@string/tocart" />
-
-                    <TextView
-                        android:id="@+id/cartNumber"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginTop="-4dp"
-                        android:layout_marginEnd="-4dp"
-                        android:background="@drawable/cart_icon_text_bg"
-                        android:gravity="center"
-                        android:textColor="@color/red" />
-
-                </FrameLayout>
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="@color/buttonColor"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_search"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <FrameLayout
+                        android:id="@+id/cartHomeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:clipToPadding="false"
+                        android:focusable="true"
+                        android:padding="16dp"
+                        app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/tocart"
+                            android:src="@drawable/ic_cart" />
+
+                        <TextView
+                            android:id="@+id/cartNumber"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginTop="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:background="@drawable/cart_icon_text_bg"
+                            android:gravity="center"
+                            android:textColor="@color/textInLayout" />
+
+                    </FrameLayout>
 
 
-        </com.google.android.material.appbar.MaterialToolbar>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:layout_below="@id/homeToolBar">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="200dp"
-            android:id="@+id/carousalAd"
-            android:background="@null">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/carousalView"
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                />
-            <ProgressBar
-                android:id="@+id/homeAdViewProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="120dp"
-                android:visibility="invisible"/>
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_below="@id/homeToolBar"
+                android:fillViewport="true">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/catIcons"
-            android:background="@color/bgColor"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/carousalAd"
-            android:layout_marginTop="24dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/catPhones"
-                android:layout_weight="1"
-                android:backgroundTint="@color/bgColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgPhone"
-                    android:background="@color/bgColor"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/cell_phone_icon" />
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
-                    android:text="@string/phones" />
-            </androidx.cardview.widget.CardView>
+                    <RelativeLayout
+                        android:id="@+id/carousalAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@null">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/catLaptop"
-                android:backgroundTint="@color/bgColor"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/carousalView"
 
-                <ImageView
-                    android:id="@+id/imgLaptop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_laptop" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="50dp"
-                    android:text="@string/laptops" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-
-                android:id="@+id/catTablet"
-                android:layout_weight="0.1"
-                android:layout_width="wrap_content"
-                android:backgroundTint="@color/bgColor"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imgTablets"
-                    android:backgroundTint="@color/bgColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_tablet" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
-                    android:text="@string/tablets" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/homeAdViewProgress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="120dp"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeItemView"
-            android:layout_below="@id/catIcons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:padding="10dp"
-        />
+                    <LinearLayout
+                        android:id="@+id/catIcons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/carousalAd"
+                        android:layout_marginTop="24dp"
+                        android:background="@color/bgColor">
 
-        <ProgressBar
-            android:id="@+id/homeItemViewProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/catPhones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/bgColor">
 
-        </ScrollView>
-    <!--<RelativeLayout
+                            <ImageView
+                                android:id="@+id/imgPhone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/bgColor"
+                                android:src="@drawable/cell_phone_icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="50dp"
+                                android:text="@string/phones" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/catLaptop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/bgColor">
+
+                            <ImageView
+                                android:id="@+id/imgLaptop"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/ic_laptop" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_marginTop="50dp"
+                                android:text="@string/laptops" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+
+                            android:id="@+id/catTablet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:backgroundTint="@color/bgColor">
+
+                            <ImageView
+                                android:id="@+id/imgTablets"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="10dp"
+                                android:backgroundTint="@color/bgColor"
+                                android:src="@drawable/ic_tablet" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="50dp"
+                                android:text="@string/tablets" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/homeItemView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/catIcons"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:padding="10dp" />
+
+                    <ProgressBar
+                        android:id="@+id/homeItemViewProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="60dp"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+            </ScrollView>
+            <!--<RelativeLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -247,6 +250,6 @@
         app:layout_constraintEnd_toEndOf="parent">
 
     </RelativeLayout>-->
-    </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
