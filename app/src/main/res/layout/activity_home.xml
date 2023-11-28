@@ -8,6 +8,7 @@
 
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -57,6 +58,7 @@
                         android:id="@+id/searchHomeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/buttonColor"
@@ -64,6 +66,7 @@
                         android:src="@drawable/ic_search"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
 
                     <FrameLayout
@@ -76,6 +79,7 @@
                         android:padding="16dp"
                         app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
                         app:layout_constraintTop_toTopOf="parent">
+
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -96,6 +100,7 @@
                             android:textColor="@color/textInLayout" />
 
                     </FrameLayout>
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

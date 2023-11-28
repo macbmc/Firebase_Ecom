@@ -2,9 +2,11 @@ package com.example.firebaseecom.utils
 
 import android.app.Application
 import android.content.Context
+
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.util.Log
+
 import androidx.appcompat.app.AppCompatDelegate
 import com.zeugmasolutions.localehelper.LocaleHelper
 import com.zeugmasolutions.localehelper.LocaleHelperApplicationDelegate
@@ -14,6 +16,7 @@ import java.util.Calendar
 
 @HiltAndroidApp
 @ExperimentalCoroutinesApi
+
 
 open class FirebaseEcomApp : Application() {
 
@@ -47,6 +50,7 @@ open class FirebaseEcomApp : Application() {
            {
                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
            }
+
         }
     }
 
@@ -60,6 +64,7 @@ open class FirebaseEcomApp : Application() {
     }
 
 
+
     private fun isNight(): Boolean {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         return (currentHour <= 7 || currentHour >= 18)
@@ -68,6 +73,7 @@ open class FirebaseEcomApp : Application() {
     }
     override fun getApplicationContext(): Context =
         LocaleHelper.onAttach(super.getApplicationContext())
+
 
      fun changeMode(){
          when(sharedPreferences.getInt("theme",AppCompatDelegate.MODE_NIGHT_NO))
@@ -95,4 +101,5 @@ open class FirebaseEcomApp : Application() {
 
 
     }
+
 }

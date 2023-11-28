@@ -26,13 +26,17 @@ import java.io.Serializable
 class ProductSearchActivity : BaseActivity() {
     private lateinit var activityProductSearchBinding: ActivityProductSearchBinding
     private lateinit var productSearchVIewModel: ProductSearchVIewModel
+
     private lateinit var adapter: ProductSearchAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductSearchBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_search)
         productSearchVIewModel = ViewModelProvider(this)[ProductSearchVIewModel::class.java]
+
         adapter = ProductSearchAdapter(ProductSearchClass(), langId)
+
         activityProductSearchBinding.apply {
             searchRecyclerView.adapter = adapter
             searchRecyclerView.layoutManager = LinearLayoutManager(
@@ -77,7 +81,9 @@ class ProductSearchActivity : BaseActivity() {
                         is Resource.Success -> {
                             activityProductSearchBinding.progressBar.isVisible = false
                             Log.d("queryRes", it.data.toString())
+
                             Log.d("query", it.toString())
+
                             if (it.data.isNotEmpty()) {
                                 activityProductSearchBinding.centerBanner.isVisible = false
                                 adapter.setProducts(it.data)

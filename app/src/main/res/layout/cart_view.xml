@@ -27,7 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/productImage"
         android:layout_marginTop="70dp"
+
         android:textColor="@color/textInLayout"
+
         android:layout_marginStart="10dp"
         android:textSize="18sp"
         />
@@ -39,7 +41,9 @@
         android:layout_below="@id/productTitleText"
         android:layout_marginTop="10dp"
         android:text="@string/amount"
+
         android:textColor="@color/textInLayout"
+
         android:layout_marginStart="10dp"
         />
 
