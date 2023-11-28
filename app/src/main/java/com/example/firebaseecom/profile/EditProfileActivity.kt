@@ -17,7 +17,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.auth.SignUpActivity
@@ -25,6 +28,7 @@ import com.example.firebaseecom.databinding.ActivityEditProfileBinding
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepositoryImpl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditProfileActivity : AppCompatActivity() {
@@ -142,17 +146,26 @@ class EditProfileActivity : AppCompatActivity() {
                 }
                 builder.show()
             } else {
-                profileViewModel.getImageUrl()
-                profileViewModel.userImageUrl.observe(this@EditProfileActivity) {
-                    val user = UserModel(
-                        editTextUsername.text.toString(), editTextEmail.text.toString(),
-                        it, editTextPhone.text.toString(), editTextAddress.text.toString()
-                    )
-                    profileViewModel.updateUser(user)
-                    progressBar.isVisible = false
-                    Toast.makeText(this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT)
-                        .show()
-                    finish()
+                lifecycleScope.launch {
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        profileViewModel.getImageUrl()
+                        profileViewModel.userImageUrl.observe(this@EditProfileActivity) {
+                            val user = UserModel(
+                                editTextUsername.text.toString(), editTextEmail.text.toString(),
+                                it, editTextPhone.text.toString(), editTextAddress.text.toString()
+                            )
+                            profileViewModel.updateUser(user)
+                            progressBar.isVisible = false
+                            Toast.makeText(
+                                this@EditProfileActivity,
+                                "Data Updated",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            finish()
+                        }
+                    }
+
                 }
             }
         }

@@ -11,6 +11,7 @@ import com.example.firebaseecom.repositories.StorageRepository
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -57,10 +58,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun getImageUrl() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userImageUrl.postValue(storageRepository.getImageUrl())
+    suspend fun getImageUrl() {
+        val imgUrl=viewModelScope.async(Dispatchers.IO) {
+            storageRepository.getImageUrl()
         }
+        userImageUrl.postValue(imgUrl.await())
     }
 
 }

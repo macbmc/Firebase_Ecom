@@ -61,7 +61,7 @@
     <string name="edit_order">Edit Order</string>
     <string name="validate">Validate</string>
     <string name="login">Login</string>
-    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="don_t_have_an_account_sign_up">Don"t have an account? Sign Up</string>
     <string name="search_for_products">Search for products</string>
     <string name="signup">SignUp</string>
     <string name="already_have_an_account_login">Already have an account? Login</string>
@@ -74,4 +74,5 @@
     <string name="details_loading">Details Loading</string>
     <string name="homesearch">homeSearch</string>
     <string name="toprofile">toProfile</string>
+    <string name="no_internet_connection">No Internet Connection</string>
 </resources>
