@@ -2,11 +2,9 @@ package com.example.firebaseecom.utils
 
 import android.app.Application
 import android.content.Context
-
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.util.Log
-
 import androidx.appcompat.app.AppCompatDelegate
 import com.zeugmasolutions.localehelper.LocaleHelper
 import com.zeugmasolutions.localehelper.LocaleHelperApplicationDelegate

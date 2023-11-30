@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
+
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,6 +23,8 @@ import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
+import com.example.firebaseecom.utils.NetworkState
+import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,7 +33,8 @@ import java.io.Serializable
 @AndroidEntryPoint
 
 
-class HomeActivity : BaseActivity(){
+class HomeActivity : BaseActivity() {
+
 
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
@@ -38,18 +42,25 @@ class HomeActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        observeNetwork()
+
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
-        Log.d("homeLanguage",langId)
+        Log.d("homeLanguage", langId)
+
         adView.adapter = carousalAdapter
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
-        observeCartNumber()
-        observeCarousal()
-        observeProducts()
+
+        //observeCartNumber()
+        //observeCarousal()
+        //observeProducts()
+
 
 
 
@@ -86,16 +97,77 @@ class HomeActivity : BaseActivity(){
 
     }
 
-    private fun getLanguage():String {
+
+    private fun observeNetwork() {
+        val network = NetworkUtil(this)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                network.observeNetworkState().collect {
+                    Log.d("networkState", it.toString())
+                    when (it) {
+                        NetworkState.AVAILABLE -> {
+                            homeBinding.apply {
+                                networkStatusLayout.visibility=View.GONE
+                                homeLayout.isVisible=true
+                                networkProgress.visibility=View.GONE
+                            }
+                            observeCarousal()
+                            observeCartNumber()
+                            observeProducts()
+                        }
+
+                        NetworkState.UNAVAILABLE -> {
+                            homeBinding.apply {
+                                networkText.text=getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible=true
+                                homeLayout.isVisible=false
+                                networkProgress.isVisible=true
+
+                            }
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Connection Unavailable",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        NetworkState.LOSING -> {
+                            homeBinding.apply {
+                                networkText.text=getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible=true
+                            }
+                            Toast.makeText(
+                                this@HomeActivity,
+                                "Connection Losing",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        NetworkState.LOST -> {
+                            homeBinding.apply {
+                                networkText.text=getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible=true
+                            }
+                            Toast.makeText(this@HomeActivity, "Connection Lost", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getLanguage(): String {
         val locale = resources.configuration.locales.get(0)
-        Log.d("homeLanguage",locale.language )
+        Log.d("homeLanguage", locale.language)
+
         return locale.language
     }
 
     private fun observeCarousal() {
-        homeViewModel.adList.observe(this@HomeActivity, Observer {
+        homeViewModel.adList.observe(this@HomeActivity) {
             carousalAdapter.setAd(it)
-        })
+        }
         homeViewModel.getAd()
     }
 
@@ -103,6 +175,7 @@ class HomeActivity : BaseActivity(){
         super.onRestart()
 
         observeCartNumber()
+        //observeNetwork()
     }
 
     private fun observeCartNumber() {
@@ -115,42 +188,44 @@ class HomeActivity : BaseActivity(){
     }
 
 
-
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductHomeAdapter(NavigateClass(),langId)
+
+        val adapter = ProductHomeAdapter(NavigateClass(), langId)
+
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                homeViewModel.getProductHome()
-                homeViewModel.products.collect()
-                {
-                    when (it) {
-                        is Resource.Loading -> {
-                            homeItemViewProgress.visibility = View.VISIBLE
-                            Log.d("itemViewLoader", "Loading")
-                        }
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    homeViewModel.getProductHome()
+                    homeViewModel.products.collect()
+                    {
+                        when (it) {
+                            is Resource.Loading -> {
+                                homeItemViewProgress.visibility = View.VISIBLE
+                                Log.d("itemViewLoader", "Loading")
+                            }
 
-                        is Resource.Success -> {
-                            homeItemViewProgress.visibility = View.INVISIBLE
-                            Log.d("itemViewLoader", "success")
-                            adapter.setProduct(it.data)
+                            is Resource.Success -> {
+                                homeItemViewProgress.visibility = View.INVISIBLE
+                                Log.d("itemViewLoader", "success")
+                                adapter.setProduct(it.data)
+
+                            }
+
+                            is Resource.Failed -> {
+                                homeItemViewProgress.visibility = View.VISIBLE
+                                Log.d("itemViewLoader", "Failed")
+                                Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
 
                         }
-
-                        is Resource.Failed -> {
-                            homeItemViewProgress.visibility = View.VISIBLE
-                            Log.d("itemViewLoader", "Failed")
-                            Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        else -> {}
 
                     }
                 }
-            }}
+            }
         }
 
     }

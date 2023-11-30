@@ -8,13 +8,12 @@
 
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
-        android:layoutAnimation="@anim/anim_detailscreen"
-        android:theme="@style/Base.Theme.FirebaseEcom">
+        android:layoutAnimation="@anim/anim_detailscreen">
+
 
 
         <RelativeLayout
@@ -47,6 +46,8 @@
                         android:layout_width="54dp"
                         android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/toprofile"
+
                         android:layout_marginStart="2dp"
                         android:layout_marginTop="4dp"
                         android:backgroundTint="@color/buttonColor"
@@ -63,10 +64,10 @@
                         android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/buttonColor"
                         android:scaleType="center"
+                        android:contentDescription="@string/homesearch"
                         android:src="@drawable/ic_search"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
 
                     <FrameLayout
@@ -79,7 +80,6 @@
                         android:padding="16dp"
                         app:layout_constraintEnd_toStartOf="@+id/searchHomeButton"
                         app:layout_constraintTop_toTopOf="parent">
-
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -99,6 +99,7 @@
                             android:gravity="center"
                             android:textColor="@color/textInLayout" />
 
+
                     </FrameLayout>
 
 
@@ -113,8 +114,29 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/homeToolBar"
                 android:fillViewport="true">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/networkStatusLayout"
+                    android:visibility="gone"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@drawable/network_status_layout">
+                    <TextView
+                        android:id="@+id/networkText"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/homeLayout"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
@@ -124,7 +146,7 @@
                         android:id="@+id/carousalAd"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="30dp"
                         android:background="@null">
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -244,7 +266,15 @@
                         android:visibility="invisible" />
                 </RelativeLayout>
 
+                </RelativeLayout>
             </ScrollView>
+            <ProgressBar
+                android:id="@+id/networkProgress"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
             <!--<RelativeLayout
         android:id="@+id/view"
         android:layout_width="match_parent"

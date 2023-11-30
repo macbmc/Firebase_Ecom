@@ -102,6 +102,7 @@
                 android:layout_weight=".6"
                 android:backgroundTint="@color/buttonColor"
                 android:text="@string/buy_now"
+                android:textColor="@color/textInLayout"
                 android:textSize="16sp" />
 
             <TextView
