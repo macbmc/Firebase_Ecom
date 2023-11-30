@@ -76,6 +76,8 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:ems="10"
             android:text="@{userDetails.component1()}"
             android:hint="@string/username"
@@ -86,6 +88,8 @@
             android:id="@+id/editTextEmail"
             android:text="@{userDetails.component2()}"
             android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_below="@id/editTextUsername"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -95,40 +99,31 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/edittext_layout"
             android:inputType="text" />
-        <LinearLayout
-            android:id="@+id/phoneLayout"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@id/editTextEmail">
             <EditText
                 android:id="@+id/editTextPhone"
                 android:layout_width="match_parent"
                 android:text="@{userDetails.component4()}"
                 android:layout_height="40dp"
                 android:ems="10"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/editTextEmail"
                 android:hint="@string/phone_number"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/edittext_layout"
                 android:inputType="number"
                 android:layout_weight="0.5"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/validate"
-                android:layout_marginStart="6dp"
-                android:backgroundTint="@color/buttonColor" />
-
-        </LinearLayout>
         <EditText
             android:id="@+id/editTextAddress"
             android:layout_marginTop="20dp"
             android:text="@{userDetails.component5()}"
-            android:layout_below="@id/phoneLayout"
+            android:layout_below="@id/editTextPhone"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:ems="10"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:hint="@string/address"
             android:layout_centerHorizontal="true"
             android:background="@drawable/edittext_layout"

@@ -76,4 +76,6 @@
     <string name="homesearch">homeSearch</string>
     <string name="toprofile">toProfile</string>
     <string name="no_internet_connection">ഇന്റർനെറ്റ് കണക്ഷൻ ഇല്ല</string>
+    <string name="invalid_credentials_try_again">അസാധുവായ ക്രെഡൻഷ്യലുകൾ..വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="invalid_phone_number">അസാധുവായ ഫോൺ നമ്പർ</string>
 </resources>
