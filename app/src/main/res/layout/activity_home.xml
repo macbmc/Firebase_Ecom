@@ -7,11 +7,13 @@
     <data>
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
         android:layoutAnimation="@anim/anim_detailscreen">
+
 
 
         <RelativeLayout
@@ -45,6 +47,7 @@
                         android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
                         android:contentDescription="@string/toprofile"
+
                         android:layout_marginStart="2dp"
                         android:layout_marginTop="4dp"
                         android:backgroundTint="@color/buttonColor"
@@ -56,6 +59,7 @@
                         android:id="@+id/searchHomeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/buttonColor"
@@ -95,7 +99,9 @@
                             android:gravity="center"
                             android:textColor="@color/textInLayout" />
 
+
                     </FrameLayout>
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,10 +136,12 @@
 
                 <RelativeLayout
                     android:id="@+id/homeLayout"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
+
                     <RelativeLayout
                         android:id="@+id/carousalAd"
                         android:layout_width="match_parent"
@@ -143,6 +151,7 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/carousalView"
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true" />
@@ -265,6 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
+
             <!--<RelativeLayout
         android:id="@+id/view"
         android:layout_width="match_parent"

@@ -27,6 +27,7 @@ class ProductSearchActivity : BaseActivity() {
     private lateinit var activityProductSearchBinding: ActivityProductSearchBinding
     private lateinit var productSearchVIewModel: ProductSearchVIewModel
     private lateinit var adapter: ProductSearchAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductSearchBinding =
