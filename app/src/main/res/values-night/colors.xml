@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="buttonColor">#FF0B2201</color>
+    <color name="buttonColor">#2A8502</color>
     <color name="linkTextColor">#03A9F4</color>
     <color name="textInLayout">#FF000000</color>
     <color name="red">#F0463A</color>

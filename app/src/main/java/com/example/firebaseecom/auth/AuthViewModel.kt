@@ -62,6 +62,11 @@ class AuthViewModel @Inject constructor(
 
     }
 
+    fun forgotPassword(email:String)
+    {
+       authRepository.forgotPassword(email)
+    }
+
 
     fun logout() {
         authRepository.userSignOut()

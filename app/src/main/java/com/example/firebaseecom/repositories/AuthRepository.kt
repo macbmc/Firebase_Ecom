@@ -2,6 +2,7 @@ package com.example.firebaseecom.repositories
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.firebaseecom.R
 import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
@@ -19,6 +20,8 @@ interface AuthRepository {
     suspend fun userEmailUpdate(email: String, password: String): AuthState
     suspend fun deleteUserAccount(password: String)
     fun userSignOut()
+
+    fun forgotPassword(email: String)
 
 }
 
@@ -126,6 +129,22 @@ class AuthRepositoryImpl @Inject constructor(
             firebaseAuth.signOut()
         } catch (e: Exception) {
             Log.e("signOut", "$e")
+        }
+    }
+
+    override fun forgotPassword(email: String) {
+        try {
+            firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener {
+                Toast.makeText(context, context.getString(R.string.check_your_mail), Toast.LENGTH_LONG)
+                    .show()
+            }
+                .addOnFailureListener {
+                    Toast.makeText(context, context.getString(R.string.invalid_credentials_try_again), Toast.LENGTH_LONG)
+                        .show()
+                }
+
+        } catch (e: Exception) {
+            Log.d("forgotPassword", e.toString())
         }
     }
 

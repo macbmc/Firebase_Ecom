@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +41,23 @@ class LoginActivity : BaseActivity() {
             toSignUp.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
             }
+            forgotPassword.setOnClickListener{
+                authForgotPassword()
+            }
         }
+    }
+
+    private fun authForgotPassword() {
+        val builder = AlertDialog.Builder(this)
+        val editText = EditText(this)
+        builder.setTitle(getString(R.string.forgot_password))
+        builder.setMessage(getString(R.string.enter_your_email_linked_to_ekart))
+        builder.setView(editText)
+        builder.setPositiveButton(R.string.submit){_,_ ->
+            authViewModel.forgotPassword(editText.text.toString())
+        }
+        builder.setNegativeButton(R.string.cancel){_,_-> }
+        builder.show()
     }
 
     private fun authLogin() {

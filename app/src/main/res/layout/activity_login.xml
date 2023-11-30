@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -83,6 +82,17 @@
         android:layout_marginStart="53dp"
         android:layout_marginTop="15dp"
         android:text="@string/don_t_have_an_account_sign_up"
+        android:textColor="@color/linkTextColor" />
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toSignUp"
+        android:layout_alignStart="@+id/editTextPassword"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/forgot_password_reset_password"
         android:textColor="@color/linkTextColor" />
 
     <ProgressBar
