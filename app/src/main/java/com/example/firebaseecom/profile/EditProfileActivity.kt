@@ -154,6 +154,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 editTextUsername.text.toString(), editTextEmail.text.toString(),
                                 it, editTextPhone.text.toString(), editTextAddress.text.toString()
                             )
+                            Log.d("dataupdate",user.toString())
                             profileViewModel.updateUser(user)
                             progressBar.isVisible = false
                             Toast.makeText(

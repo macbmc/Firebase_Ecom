@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
@@ -37,6 +38,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
+    private val snapHelper = LinearSnapHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,7 @@ class HomeActivity : BaseActivity() {
         val adView = homeBinding.carousalView
         Log.d("homeLanguage", langId)
         adView.adapter = carousalAdapter
+        snapHelper.attachToRecyclerView(adView)
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
@@ -55,7 +58,6 @@ class HomeActivity : BaseActivity() {
         //observeCartNumber()
         //observeCarousal()
         //observeProducts()
-
 
 
         homeBinding.apply {
@@ -100,9 +102,9 @@ class HomeActivity : BaseActivity() {
                     when (it) {
                         NetworkState.AVAILABLE -> {
                             homeBinding.apply {
-                                networkStatusLayout.visibility=View.GONE
-                                homeLayout.isVisible=true
-                                networkProgress.visibility=View.GONE
+                                networkStatusLayout.visibility = View.GONE
+                                homeLayout.isVisible = true
+                                networkProgress.visibility = View.GONE
                             }
                             observeCarousal()
                             observeCartNumber()
@@ -111,10 +113,10 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.UNAVAILABLE -> {
                             homeBinding.apply {
-                                networkText.text=getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible=true
-                                homeLayout.isVisible=false
-                                networkProgress.isVisible=true
+                                networkText.text = getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible = true
+                                homeLayout.isVisible = false
+                                networkProgress.isVisible = true
 
                             }
                             Toast.makeText(
@@ -126,8 +128,8 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.LOSING -> {
                             homeBinding.apply {
-                                networkText.text=getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible=true
+                                networkText.text = getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible = true
                             }
                             Toast.makeText(
                                 this@HomeActivity,
@@ -138,8 +140,8 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.LOST -> {
                             homeBinding.apply {
-                                networkText.text=getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible=true
+                                networkText.text = getString(R.string.no_internet_connection)
+                                networkStatusLayout.isVisible = true
                             }
                             Toast.makeText(this@HomeActivity, "Connection Lost", Toast.LENGTH_SHORT)
                                 .show()
@@ -159,6 +161,7 @@ class HomeActivity : BaseActivity() {
     private fun observeCarousal() {
         homeViewModel.adList.observe(this@HomeActivity) {
             carousalAdapter.setAd(it)
+            homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
         }
         homeViewModel.getAd()
     }

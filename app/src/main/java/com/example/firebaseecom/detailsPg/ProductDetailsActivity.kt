@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
 import com.example.firebaseecom.main.BaseActivity
@@ -31,6 +32,7 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
     private lateinit var productHome: ProductHomeModel
     private val carousalAdapter = ProductDetailsAdapter()
+    val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,7 @@ class ProductDetailsActivity : BaseActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
         productHome = intent.extras!!.get("product") as ProductHomeModel
         val productView = activityProductDetailsBinding.productCarousalView
-
+        snapHelper.attachToRecyclerView(productView)
         productView.adapter = carousalAdapter
         productView.layoutManager = LinearLayoutManager(
             this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL, false
@@ -104,8 +106,10 @@ class ProductDetailsActivity : BaseActivity() {
                                 productDetails = myList?.singleOrNull { list ->
                                     list.productId == productHome.productId
                                 }
-                                productReviewText.text=getLanguageMap(productDetails!!.productReviews)[langId].toString()
-                                productDescText.text=getLanguageMap(productDetails!!.productDescription)[langId].toString()
+                                productReviewText.text =
+                                    getLanguageMap(productDetails!!.productReviews)[langId].toString()
+                                productDescText.text =
+                                    getLanguageMap(productDetails!!.productDescription)[langId].toString()
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
                             }
                         }
