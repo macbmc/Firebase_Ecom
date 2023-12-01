@@ -34,6 +34,7 @@ import java.io.Serializable
 
 class HomeActivity : BaseActivity() {
 
+
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
@@ -41,20 +42,24 @@ class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         observeNetwork()
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
         Log.d("homeLanguage", langId)
+
         adView.adapter = carousalAdapter
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
+
         //observeCartNumber()
         //observeCarousal()
         //observeProducts()
+
 
 
 
@@ -90,6 +95,7 @@ class HomeActivity : BaseActivity() {
 
 
     }
+
 
     private fun observeNetwork() {
         val network = NetworkUtil(this)
@@ -153,6 +159,7 @@ class HomeActivity : BaseActivity() {
     private fun getLanguage(): String {
         val locale = resources.configuration.locales.get(0)
         Log.d("homeLanguage", locale.language)
+
         return locale.language
     }
 
@@ -183,6 +190,7 @@ class HomeActivity : BaseActivity() {
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
         val adapter = ProductHomeAdapter(NavigateClass(), langId)
+
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -212,6 +220,7 @@ class HomeActivity : BaseActivity() {
                             }
 
                         }
+
                     }
                 }
             }
