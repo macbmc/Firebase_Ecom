@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -119,8 +118,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun updateProfileData() {
         activityEditProfileBinding.apply {
             progressBar.isVisible = true
-
-            if (userDetails?.userEmail != editTextEmail.text.toString()) {
+            /*if (userDetails?.userEmail != editTextEmail.text.toString()) {
                 val builder = AlertDialog.Builder(this@EditProfileActivity)
                 val editText = EditText(this@EditProfileActivity)
                 builder.setTitle(getString(R.string.profile_update))
@@ -145,28 +143,31 @@ class EditProfileActivity : AppCompatActivity() {
 
                 }
                 builder.show()
-            } else {
-                lifecycleScope.launch {
-                    repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        profileViewModel.getImageUrl()
-                        profileViewModel.userImageUrl.observe(this@EditProfileActivity) {
-                            val user = UserModel(
-                                editTextUsername.text.toString(), editTextEmail.text.toString(),
-                                it, editTextPhone.text.toString(), editTextAddress.text.toString()
-                            )
-                            profileViewModel.updateUser(user)
-                            progressBar.isVisible = false
-                            Toast.makeText(
-                                this@EditProfileActivity,
-                                "Data Updated",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            finish()
-                        }
-                    }
 
+            } else {*/
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    profileViewModel.getImageUrl()
+                    profileViewModel.userImageUrl.observe(this@EditProfileActivity) {
+                        Log.d("ImageUrl", it.toString())
+                        val user = UserModel(
+                            editTextUsername.text.toString(), editTextEmail.text.toString(),
+                            it, editTextPhone.text.toString(), editTextAddress.text.toString()
+                        )
+                        Log.d("dataupdate", user.toString())
+                        profileViewModel.updateUser(user)
+                        progressBar.isVisible = false
+                        Toast.makeText(
+                            this@EditProfileActivity,
+                            "Data Updated",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        finish()
+                    }
                 }
+
+
             }
         }
 

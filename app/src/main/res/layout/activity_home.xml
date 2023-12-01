@@ -7,13 +7,11 @@
     <data>
 
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
         android:layoutAnimation="@anim/anim_detailscreen">
-
 
 
         <RelativeLayout
@@ -134,7 +132,6 @@
 
                 <RelativeLayout
                     android:id="@+id/homeLayout"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
@@ -146,6 +143,8 @@
                         android:layout_height="200dp"
                         android:layout_marginTop="30dp"
                         android:background="@null">
+
+
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/carousalView"

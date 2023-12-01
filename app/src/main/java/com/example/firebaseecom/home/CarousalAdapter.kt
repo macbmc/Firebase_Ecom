@@ -1,7 +1,6 @@
 package com.example.firebaseecom.home
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,14 @@ import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
 class CarousalAdapter(private val context: Context):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
 
-    var imageList= emptyList<String?>()
-    var lastPosition=-1
+    private var imageList= emptyList<String?>()
+    private var lastPosition=-1
     private lateinit var adCorousalViewBinding: AdCorousalViewBinding
 
     fun setAd(imageList: List<String>)
@@ -23,9 +23,7 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
         this.imageList=imageList
         notifyDataSetChanged()
     }
-    class CarousalViewHolder(adCorousalViewBinding: AdCorousalViewBinding):RecyclerView.ViewHolder(adCorousalViewBinding.root) {
-
-    }
+    class CarousalViewHolder(adCorousalViewBinding: AdCorousalViewBinding):RecyclerView.ViewHolder(adCorousalViewBinding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,23 +39,29 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
     }
 
     override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
-        val imageUrl=imageList[position]
+        val imageUrl=imageList[position % imageList.size]
         setAnimation(holder.itemView,position)
         Glide.with(context)
             .load(imageUrl)
+            .thumbnail(Glide.with(holder.itemView).load(R.drawable.ic_cart))
             .placeholder(R.drawable.placeholder_image)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.adView))
 
     }
 
     override fun getItemCount(): Int {
-       return imageList.count()
+        return if(imageList.isEmpty())
+            0
+        else
+            Integer.MAX_VALUE
+
     }
     private fun setAnimation(itemView: View, position: Int) {
         if(position>lastPosition)
         {
-            val animation= AnimationUtils.loadAnimation(context,R.anim.slide_down)
+            val animation= AnimationUtils.loadAnimation(context,R.anim.slide_from_right)
             itemView.startAnimation(animation)
             lastPosition=position
         }

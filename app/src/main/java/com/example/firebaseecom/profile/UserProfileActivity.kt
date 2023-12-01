@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 
+import android.util.Log
 import android.widget.Toast
 
 import androidx.databinding.DataBindingUtil
@@ -96,9 +97,11 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun navToEditProfile() {
-        val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
-        intent.putExtra("user", activityUserProfileBinding.userDetails as Serializable)
-        startActivity(intent)
+        if(activityUserProfileBinding.userDetails != null) {
+            val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
+            intent.putExtra("user", activityUserProfileBinding.userDetails as Serializable)
+            startActivity(intent)
+        }
     }
 
     private fun navToCartOrders(dest: String) {
@@ -116,6 +119,9 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun getUserdata() {
+
+        profileViewModel.userData()
+
         profileViewModel.userDetails.observe(this) {
             activityUserProfileBinding.apply {
                 userDetails = it
@@ -128,7 +134,14 @@ class UserProfileActivity : BaseActivity() {
                     .into(userImage)
             }
         }
-        profileViewModel.userData()
+
+
+    }
+
+    private fun changeLocale(langId: String) {
+        val newLocale = Locale(langId)
+        localeDelegate.setLocale(this, newLocale)
+
 
     }
 

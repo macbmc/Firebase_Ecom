@@ -23,7 +23,10 @@ class StorageRepositoryImpl @Inject constructor(
     override suspend fun addImagetoStorage(imgUri: Uri) {
         val pathReference = storage.child("profileImages/${currentUser?.uid}")
         try {
-            pathReference.putFile(imgUri)
+           Tasks.await(
+               pathReference.putFile(imgUri)
+           )
+
         } catch (e: Exception) {
             Log.d("addImageToStorage", e.toString())
         }
