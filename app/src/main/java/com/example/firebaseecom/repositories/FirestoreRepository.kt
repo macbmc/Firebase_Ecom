@@ -40,14 +40,14 @@ class FirestoreRepositoryImpl @Inject constructor(
         var status = 400
         Log.d("currentUser",currentUser?.email.toString())
         try {
-            val doc = firestore.collection("users").document(currentUser!!.uid)
-            doc.set(userModel)
-                .addOnSuccessListener {
+            val doc = firestore.collection("users").document(currentUser!!.uid).set(userModel)
+            doc.addOnSuccessListener {
                     status = 200
                     Log.d("success", "$status")
                 }
                 .addOnFailureListener {
                     Log.e("toUse", "${it.message}")
+
                 }
         } catch (e: Exception) {
             Log.e("toUser", "$e")

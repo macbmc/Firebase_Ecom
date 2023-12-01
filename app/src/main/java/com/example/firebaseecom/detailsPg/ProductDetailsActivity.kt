@@ -32,7 +32,7 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
     private lateinit var productHome: ProductHomeModel
     private val carousalAdapter = ProductDetailsAdapter()
-    val snapHelper = LinearSnapHelper()
+    private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

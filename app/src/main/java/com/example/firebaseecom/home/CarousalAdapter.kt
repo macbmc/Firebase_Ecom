@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
@@ -42,7 +43,9 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
         setAnimation(holder.itemView,position)
         Glide.with(context)
             .load(imageUrl)
+            .thumbnail(Glide.with(holder.itemView).load(R.drawable.ic_cart))
             .placeholder(R.drawable.placeholder_image)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.adView))
 

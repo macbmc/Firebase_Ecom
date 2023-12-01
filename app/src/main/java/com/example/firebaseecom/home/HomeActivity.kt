@@ -152,12 +152,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun getLanguage(): String {
-        val locale = resources.configuration.locales.get(0)
-        Log.d("homeLanguage", locale.language)
-        return locale.language
-    }
-
     private fun observeCarousal() {
         homeViewModel.adList.observe(this@HomeActivity) {
             carousalAdapter.setAd(it)
