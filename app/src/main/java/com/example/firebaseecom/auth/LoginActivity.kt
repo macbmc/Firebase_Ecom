@@ -4,8 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class LoginActivity : BaseActivity() {
 
     private lateinit var activityLoginBinding: ActivityLoginBinding
     private lateinit var authViewModel: AuthViewModel
+    private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityLoginBinding = DataBindingUtil.setContentView(
@@ -33,8 +36,35 @@ class LoginActivity : BaseActivity() {
 
         activityLoginBinding.apply {
             logInButton.setOnClickListener {
-                lifecycleScope.launch {
-                    repeatOnLifecycle(Lifecycle.State.STARTED){
+                authLogin()
+            }
+            toSignUp.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
+            }
+            forgotPassword.setOnClickListener{
+                authForgotPassword()
+            }
+        }
+    }
+
+    private fun authForgotPassword() {
+        val builder = AlertDialog.Builder(this)
+        val editText = EditText(this)
+        builder.setTitle(getString(R.string.forgot_password))
+        builder.setMessage(getString(R.string.enter_your_email_linked_to_ekart))
+        builder.setView(editText)
+        builder.setPositiveButton(R.string.submit){_,_ ->
+            authViewModel.forgotPassword(editText.text.toString())
+        }
+        builder.setNegativeButton(R.string.cancel){_,_-> }
+        builder.show()
+    }
+
+    private fun authLogin() {
+        job?.cancel()
+        activityLoginBinding.apply {
+            job = lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
                     authViewModel.apply {
                         logIn(editTextUsername.text.toString(), editTextPassword.text.toString())
                         loginAuth.collect {
@@ -68,10 +98,6 @@ class LoginActivity : BaseActivity() {
                     }
                 }
 
-                }
-            }
-            toSignUp.setOnClickListener{
-                startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
             }
         }
     }

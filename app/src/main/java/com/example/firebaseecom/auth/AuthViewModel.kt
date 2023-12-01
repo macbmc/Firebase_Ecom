@@ -25,6 +25,7 @@ class AuthViewModel @Inject constructor(
 
     private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
     private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
+
     val currentUser: FirebaseUser?
         get() = authRepository.currentUser
 
@@ -48,15 +49,24 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signUp(email: String, password: String, phNum: String) {
-        val userModel = UserModel("", email, "", phNum,"")
+        val userModel = UserModel("", email, "", phNum, "")
         _signUpAuth.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _signUpAuth.value = authRepository.userSignUp(email, password)
+            _signUpAuth.value = authRepository.userSignUp(email, password, phNum)
             Log.d("userData", userModel.toString())
-            firestoreRepository.addToUsers(userModel)
+            Log.d("msgrepo", _signUpAuth.value.toString())
+            if (_signUpAuth.value is Resource.Success) {
+                firestoreRepository.addToUsers(userModel)
+            }
         }
 
     }
+
+    fun forgotPassword(email:String)
+    {
+       authRepository.forgotPassword(email)
+    }
+
 
     fun logout() {
         authRepository.userSignOut()

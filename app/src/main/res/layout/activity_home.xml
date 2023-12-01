@@ -59,7 +59,6 @@
                         android:id="@+id/searchHomeButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/buttonColor"
@@ -99,15 +98,14 @@
                             android:gravity="center"
                             android:textColor="@color/textInLayout" />
 
-
                     </FrameLayout>
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </com.google.android.material.appbar.MaterialToolbar>
+
 
             <ScrollView
                 android:layout_width="match_parent"

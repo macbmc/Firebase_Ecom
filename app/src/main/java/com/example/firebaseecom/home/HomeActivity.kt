@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
-
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -190,7 +189,6 @@ class HomeActivity : BaseActivity() {
 
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
-
         val adapter = ProductHomeAdapter(NavigateClass(), langId)
 
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)

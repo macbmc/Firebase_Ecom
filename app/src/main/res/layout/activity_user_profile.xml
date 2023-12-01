@@ -302,7 +302,6 @@
                     android:textColor="@color/textInLayout"
                     android:textSize="20sp" />
 
-
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="60dp"

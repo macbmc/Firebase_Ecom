@@ -74,5 +74,10 @@
     <string name="details_loading">Details Loading</string>
     <string name="homesearch">homeSearch</string>
     <string name="toprofile">toProfile</string>
-    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="invalid_credentials_try_again">Invalid Credentials..Try Again</string>
+    <string name="invalid_phone_number">Invalid Phone Number</string>
+    <string name="forgot_password_reset_password">Forgot Password? Reset Password</string>
+    <string name="check_your_mail">Check your mail for password reset link</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="enter_your_email_linked_to_ekart">Enter your Email linked to EKart</string>
 </resources>

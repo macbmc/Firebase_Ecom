@@ -110,7 +110,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAd(): List<String> {
-        var adList: MutableList<String> = mutableListOf()
+        val adList: MutableList<String> = mutableListOf()
         val db = firestore.collection("ads")
         try {
             val snapshot = Tasks.await(
@@ -123,7 +123,7 @@ class FirestoreRepositoryImpl @Inject constructor(
             snapshot.let {
                 for (doc in it.documents) {
 
-                    val data = doc.data!!.get("imageUrl").toString()
+                    val data = doc.data!!["imageUrl"].toString()
                     adList.add(data)
                 }
             }
@@ -187,7 +187,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFromDest(dest: String): Resource<List<ProductHomeModel>> {
-        var productList: MutableList<ProductHomeModel> = mutableListOf()
+        val productList: MutableList<ProductHomeModel> = mutableListOf()
         var response = 0
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items")
@@ -218,7 +218,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFromOrders(): Resource<List<ProductOrderModel>> {
-        var productList: MutableList<ProductOrderModel> = mutableListOf()
+        val productList: MutableList<ProductOrderModel> = mutableListOf()
         var response = 0
         val db = firestore.collection("user-orders").document(currentUser!!.uid)
             .collection("items")

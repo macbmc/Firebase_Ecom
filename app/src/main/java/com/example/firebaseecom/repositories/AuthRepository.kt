@@ -1,9 +1,9 @@
 package com.example.firebaseecom.repositories
 
-import android.content.res.Resources
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.firebaseecom.R
-import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.EmailAuthProvider
@@ -14,27 +14,28 @@ import javax.inject.Inject
 
 
 interface AuthRepository {
-    var currentUser: FirebaseUser?
+    val currentUser: FirebaseUser?
     suspend fun userLogin(email: String, password: String): Resource<FirebaseUser>
-    suspend fun userSignUp(email: String, password: String): Resource<FirebaseUser>
-    suspend fun userEmailUpdate(email: String,password: String):AuthState
+    suspend fun userSignUp(email: String, password: String, phNum: String): Resource<FirebaseUser>
+    suspend fun userEmailUpdate(email: String, password: String): AuthState
     suspend fun deleteUserAccount(password: String)
-
     fun userSignOut()
+
+    fun forgotPassword(email: String)
 
 }
 
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val authStateChangeImpl: AuthStateChange
+    private val context: Context
 ) : AuthRepository {
 
-    interface AuthStateChange{
+    interface AuthStateChange {
         fun navToSignUp()
     }
-    override var currentUser: FirebaseUser?
+
+    override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
-        set(value) {}
 
     override suspend fun userLogin(email: String, password: String): Resource<FirebaseUser> {
 
@@ -43,83 +44,82 @@ class AuthRepositoryImpl @Inject constructor(
             Resource.Success(user.user!!)
         } catch (e: Exception) {
             Log.e("SignIn", "$e")
-            Resource.Failed("Invalid Credentials")
+            Resource.Failed(context.getString(R.string.invalid_credentials_try_again))
         }
     }
 
-    override suspend fun userSignUp(email: String, password: String): Resource<FirebaseUser> {
-        val msg = isValidated(password)
-        if (msg != " ") {
-            return Resource.Failed(message = msg)
-        } else {
-
-            return try {
+    override suspend fun userSignUp(
+        email: String,
+        password: String,
+        phNum: String
+    ): Resource<FirebaseUser> {
+        val msg = isValidated(password, phNum)
+        Log.d("msg", msg)
+        return if (msg == "") {
+            try {
                 val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
                 Resource.Success(user.user!!)
             } catch (e: Exception) {
                 Log.e("signUp", "$e")
-                Resource.Failed(e.toString())
+                Resource.Failed(context.getString(R.string.invalid_credentials_try_again))
             }
+
+        } else {
+            Resource.Failed(msg)
         }
     }
 
-    override suspend fun userEmailUpdate(email: String, password: String):AuthState {
-        var auth = EmailAuthProvider.getCredential(currentUser?.email!!,password)
-        var response=400
+    override suspend fun userEmailUpdate(email: String, password: String): AuthState {
+        val auth = EmailAuthProvider.getCredential(currentUser?.email!!, password)
+        var response = 400
         currentUser?.reauthenticate(auth)
 
-            ?.addOnCompleteListener{reAuth->
-                if(reAuth.isSuccessful)
-                {
-                    Log.d("reAuth","success")
+            ?.addOnCompleteListener { reAuth ->
+                if (reAuth.isSuccessful) {
+                    Log.d("reAuth", "success")
                     currentUser?.verifyBeforeUpdateEmail(email)
-                        ?.addOnCompleteListener { emailVerification->
-                            if(emailVerification.isSuccessful)
-                            {
-                                response=200
+                        ?.addOnCompleteListener { emailVerification ->
+                            if (emailVerification.isSuccessful) {
+                                response = 200
 
                             }
-                        }?.addOnFailureListener{
-                            Log.d("emailVerification",it.toString())
+                        }?.addOnFailureListener {
+                            Log.d("emailVerification", it.toString())
                         }
                 }
 
-            }?.addOnFailureListener{
-                Log.d("reAuth",it.toString())
+            }?.addOnFailureListener {
+                Log.d("reAuth", it.toString())
             }
-        if(response!=200)
+        if (response != 200)
             return AuthState.SignedIn()
 
         return AuthState.SignedOut()
     }
 
     override suspend fun deleteUserAccount(password: String) {
-        val authCredential= EmailAuthProvider.getCredential(currentUser?.email!!,password)
+        val authCredential = EmailAuthProvider.getCredential(currentUser?.email!!, password)
         try {
             currentUser?.reauthenticate(authCredential)
-                ?.addOnCompleteListener { reAuth->
-                    if(reAuth.isSuccessful)
-                    {
-                        Log.d("reAuth","success")
-                        currentUser?.delete()?.addOnCompleteListener {delete->
-                            if(delete.isSuccessful)
-                            {
-                                Log.d("delete","success")
+                ?.addOnCompleteListener { reAuth ->
+                    if (reAuth.isSuccessful) {
+                        Log.d("reAuth", "success")
+                        currentUser?.delete()?.addOnCompleteListener { delete ->
+                            if (delete.isSuccessful) {
+                                Log.d("delete", "success")
                                 //currentUser=FirebaseAuth.getInstance().currentUser
                             }
                         }
                             ?.addOnFailureListener {
-                                Log.d("delete",it.toString())
+                                Log.d("delete", it.toString())
                             }
                     }
                 }
                 ?.addOnFailureListener {
-                    Log.d("reAuth",it.toString())
+                    Log.d("reAuth", it.toString())
                 }
-        }
-        catch (e:Exception)
-        {
-            Log.d("deleteUserAccount",e.toString())
+        } catch (e: Exception) {
+            Log.d("deleteUserAccount", e.toString())
         }
     }
 
@@ -132,16 +132,37 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    fun isValidated(password: String): String {
-        var msg = " "
+    override fun forgotPassword(email: String) {
+        try {
+            firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener {
+                Toast.makeText(context, context.getString(R.string.check_your_mail), Toast.LENGTH_LONG)
+                    .show()
+            }
+                .addOnFailureListener {
+                    Toast.makeText(context, context.getString(R.string.invalid_credentials_try_again), Toast.LENGTH_LONG)
+                        .show()
+                }
+
+        } catch (e: Exception) {
+            Log.d("forgotPassword", e.toString())
+        }
+    }
+
+    private fun isValidated(password: String, phNum: String): String {
+        var msg = ""
         var nD = 0
         var nL = 0
 
         if (password.length < 6) {
-            msg = Resources.getSystem().getString(R.string.lengthMsg)
+            msg = context.getString(R.string.lengthMsg)
+            return msg
 
         }
-        for (i in 0 until password.length) {
+        if (phNum.length != 10) {
+            msg = context.getString(R.string.invalid_phone_number)
+            return msg
+        }
+        for (i in password.indices) {
             if (password[i].isDigit()) {
                 nD++
             }
@@ -151,12 +172,13 @@ class AuthRepositoryImpl @Inject constructor(
 
         }
         if (nD < 2) {
-            msg = Resources.getSystem().getString(R.string.DigitMsg)
+            msg = context.getString(R.string.DigitMsg)
         }
         if (nL < 2) {
-            msg = Resources.getSystem().getString(R.string.letterMsg)
+            msg = context.getString(R.string.letterMsg)
         }
         return msg
+
 
     }
 }

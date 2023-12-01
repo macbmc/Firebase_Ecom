@@ -76,4 +76,10 @@
     <string name="homesearch">homeSearch</string>
     <string name="toprofile">toProfile</string>
     <string name="no_internet_connection">ഇന്റർനെറ്റ് കണക്ഷൻ ഇല്ല</string>
+    <string name="invalid_credentials_try_again">അസാധുവായ ക്രെഡൻഷ്യലുകൾ..വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="invalid_phone_number">അസാധുവായ ഫോൺ നമ്പർ</string>
+    <string name="forgot_password_reset_password">പാസ്വേഡ് മറന്നോ? പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക</string>
+    <string name="check_your_mail">പാസ്‌വേഡ് റീസെറ്റ് ലിങ്കിനായി നിങ്ങളുടെ മെയിൽ പരിശോധിക്കുക</string>
+    <string name="forgot_password">പാസ്വേഡ് മറന്നോ?</string>
+    <string name="enter_your_email_linked_to_ekart">EKart-ലേക്ക് ലിങ്ക് ചെയ്‌തിരിക്കുന്ന നിങ്ങളുടെ ഇമെയിൽ നൽകുക</string>
 </resources>
