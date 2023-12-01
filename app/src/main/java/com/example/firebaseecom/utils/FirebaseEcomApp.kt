@@ -15,6 +15,7 @@ import java.util.Calendar
 @HiltAndroidApp
 @ExperimentalCoroutinesApi
 
+
 open class FirebaseEcomApp : Application() {
 
     private val localeHelper = LocaleHelperApplicationDelegate()
@@ -47,6 +48,7 @@ open class FirebaseEcomApp : Application() {
            {
                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
            }
+
         }
     }
 
@@ -60,6 +62,7 @@ open class FirebaseEcomApp : Application() {
     }
 
 
+
     private fun isNight(): Boolean {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         return (currentHour <= 7 || currentHour >= 18)
@@ -68,6 +71,7 @@ open class FirebaseEcomApp : Application() {
     }
     override fun getApplicationContext(): Context =
         LocaleHelper.onAttach(super.getApplicationContext())
+
 
      fun changeMode(){
          when(sharedPreferences.getInt("theme",AppCompatDelegate.MODE_NIGHT_NO))
@@ -95,4 +99,5 @@ open class FirebaseEcomApp : Application() {
 
 
     }
+
 }

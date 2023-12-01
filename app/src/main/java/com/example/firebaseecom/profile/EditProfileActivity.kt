@@ -143,6 +143,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                 }
                 builder.show()
+
             } else {*/
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -165,6 +166,7 @@ class EditProfileActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+
 
             }
         }
