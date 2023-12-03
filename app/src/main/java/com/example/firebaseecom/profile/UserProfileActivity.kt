@@ -145,11 +145,7 @@ class UserProfileActivity : BaseActivity() {
 
     }
 
-    private fun changeLocale(langId: String) {
-        val newLocale = Locale(langId)
-        localeDelegate.setLocale(this, newLocale)
-
-    }
+    
 
 
 
