@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.annotations.Async
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,14 +27,15 @@ class HomeViewModel @Inject constructor(
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
 
 
-    suspend fun getAdData() {
+    private suspend fun getAdData() {
 
         withContext(Dispatchers.IO) {
             val adData = firestoreRepository.getAd()
             adList.postValue(adData)
         }
     }
-    fun getAd(){
+
+    fun getAd() {
         viewModelScope.launch {
             getAdData()
         }
@@ -54,9 +54,9 @@ class HomeViewModel @Inject constructor(
     }
 
     suspend fun checkNumbWishlist(dest: String): Int {
-       val size = viewModelScope.async(Dispatchers.IO){
-           firestoreRepository.checkNumDest(dest)
-       }
+        val size = viewModelScope.async(Dispatchers.IO) {
+            firestoreRepository.checkNumDest(dest)
+        }
         return size.await()
 
     }

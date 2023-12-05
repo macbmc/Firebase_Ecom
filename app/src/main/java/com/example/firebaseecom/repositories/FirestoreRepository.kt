@@ -36,6 +36,7 @@ class FirestoreRepositoryImpl @Inject constructor(
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
+
     override  suspend fun addToUsers(userModel: UserModel): Int {
         var status = 400
         Log.d("currentUser",currentUser?.email.toString())

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -34,8 +35,28 @@ class ProductDetailsActivity : BaseActivity() {
     private val carousalAdapter = ProductDetailsAdapter()
     private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
+
+    private val storagePermissionContract =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionAccepted ->
+            if (isPermissionAccepted)
+                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
+        }
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activityResultLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         productDetailsViewModel = ViewModelProvider(this)[ProductDetailsViewModel::class.java]
         activityProductDetailsBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
@@ -55,7 +76,8 @@ class ProductDetailsActivity : BaseActivity() {
             productTitleHeader.text = productTitleMap[langId].toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
-                productDetailsViewModel.shareProduct(productHome, this@ProductDetailsActivity)
+                storagePermissionContract.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                productDetailsViewModel.shareProduct(productHome)
             }
             backButton.setOnClickListener {
                 finish()
@@ -129,4 +151,5 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
     }
+
 }

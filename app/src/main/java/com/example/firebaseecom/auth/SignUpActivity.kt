@@ -62,7 +62,7 @@ class SignUpActivity : BaseActivity() {
                             editSignUpPhone.text.toString()
                         )
                         signUpAuth.collect {
-                            Log.d("msgact", it.toString())
+                            Log.d("msgAct", it.toString())
                             when (it) {
                                 is Resource.Loading -> {
                                     Log.d("Loading", "Loading")

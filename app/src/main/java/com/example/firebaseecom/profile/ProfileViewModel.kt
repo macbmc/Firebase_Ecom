@@ -1,6 +1,7 @@
 package com.example.firebaseecom.profile
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,6 @@ import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.StorageRepository
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -24,7 +24,7 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     val user = UserModel("", "", "", "", "")
     val userDetails = MutableLiveData<UserModel>()
-    val userImageUrl = MutableLiveData<String>()
+    val userImage = MutableLiveData<String>()
 
     fun updateUser(userModel: UserModel) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -52,18 +52,16 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun storeImage(imageUri: Uri) {
-        viewModelScope.launch(Dispatchers.IO) {
-            storageRepository.addImagetoStorage(imageUri)
-        }
-    }
 
-    suspend fun getImageUrl() {
-        val imgUrl=viewModelScope.async(Dispatchers.IO) {
-            storageRepository.getImageUrl()
-        }
-        userImageUrl.postValue(imgUrl.await())
-    }
+   suspend fun storeImageAndGetUrl(imageUri: Uri){
+       viewModelScope.launch(Dispatchers.IO){
+           storageRepository.storeImageAndGetUrl(imageUri).collect{downloadUrl->
+               Log.d("ImageDownloadUrlModel", downloadUrl)
+               userImage.postValue(downloadUrl)
+           }
+       }
+   }
+
 
 }
 
