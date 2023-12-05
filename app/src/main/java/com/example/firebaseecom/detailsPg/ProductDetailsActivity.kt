@@ -106,10 +106,12 @@ class ProductDetailsActivity : BaseActivity() {
                                 productDetails = myList?.singleOrNull { list ->
                                     list.productId == productHome.productId
                                 }
+
                                 productReviewText.text =
                                     getLanguageMap(productDetails!!.productReviews)[langId].toString()
                                 productDescText.text =
                                     getLanguageMap(productDetails!!.productDescription)[langId].toString()
+
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
                             }
                         }

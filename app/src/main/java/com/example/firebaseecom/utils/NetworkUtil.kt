@@ -51,6 +51,7 @@ class NetworkUtil(context: Context) {
                 override fun onUnavailable() {
                     super.onUnavailable()
                     Log.d("networkStateUtil", "unavailable")
+
                     launch {
                         send(NetworkState.UNAVAILABLE)
                     }

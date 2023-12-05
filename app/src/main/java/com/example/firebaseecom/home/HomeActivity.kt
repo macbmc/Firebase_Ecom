@@ -35,6 +35,7 @@ import java.io.Serializable
 
 class HomeActivity : BaseActivity() {
 
+
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
@@ -43,21 +44,25 @@ class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         observeNetwork()
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         val adView = homeBinding.carousalView
         Log.d("homeLanguage", langId)
+
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
+
         //observeCartNumber()
         //observeCarousal()
         //observeProducts()
+
 
 
         homeBinding.apply {
@@ -102,9 +107,11 @@ class HomeActivity : BaseActivity() {
                     when (it) {
                         NetworkState.AVAILABLE -> {
                             homeBinding.apply {
+
                                 networkStatusLayout.visibility = View.GONE
                                 homeLayout.isVisible = true
                                 networkProgress.visibility = View.GONE
+
                             }
                             observeCarousal()
                             observeCartNumber()
@@ -113,10 +120,12 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.UNAVAILABLE -> {
                             homeBinding.apply {
+
                                 networkText.text = getString(R.string.no_internet_connection)
                                 networkStatusLayout.isVisible = true
                                 homeLayout.isVisible = false
                                 networkProgress.isVisible = true
+
 
                             }
                             Toast.makeText(
@@ -128,8 +137,10 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.LOSING -> {
                             homeBinding.apply {
+
                                 networkText.text = getString(R.string.no_internet_connection)
                                 networkStatusLayout.isVisible = true
+
                             }
                             Toast.makeText(
                                 this@HomeActivity,
@@ -140,8 +151,10 @@ class HomeActivity : BaseActivity() {
 
                         NetworkState.LOST -> {
                             homeBinding.apply {
+
                                 networkText.text = getString(R.string.no_internet_connection)
                                 networkStatusLayout.isVisible = true
+
                             }
                             Toast.makeText(this@HomeActivity, "Connection Lost", Toast.LENGTH_SHORT)
                                 .show()
@@ -156,6 +169,7 @@ class HomeActivity : BaseActivity() {
         homeViewModel.adList.observe(this@HomeActivity) {
             carousalAdapter.setAd(it)
             homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
+
         }
         homeViewModel.getAd()
     }
@@ -180,6 +194,7 @@ class HomeActivity : BaseActivity() {
     private fun observeProducts() {
         val homeItemView = homeBinding.homeItemView
         val adapter = ProductHomeAdapter(NavigateClass(), langId)
+
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
@@ -208,7 +223,9 @@ class HomeActivity : BaseActivity() {
                                     .show()
                             }
 
+
                         }
+
                     }
                 }
             }
