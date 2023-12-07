@@ -139,5 +139,10 @@ class UserProfileActivity : BaseActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUserdata()
+    }
+
 
 }

@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -35,53 +36,78 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
-    private lateinit var imgUri: Uri
+    private var imgUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                android.Manifest.permission.READ_MEDIA_IMAGES
             ) == PackageManager.PERMISSION_DENIED
         ) {
-            val permissionArray = arrayOf(
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+            val permissionArray = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayOf(
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                )
+            } else {
+                arrayOf(
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            }
             requestPermissions(permissionArray, 123)
         }
         galleryLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
-                imgUri = result.data?.data!!
-                Log.d("ImageCapture", imgUri.toString())
-                Glide.with(this).load(imgUri.toString()).error(R.drawable.placeholder_image)
-                    .into(activityEditProfileBinding.userProfileImage)
+                if (result.resultCode != RESULT_CANCELED) {
+                    imgUri = result.data?.data!!
+                    if (imgUri != null) {
+                        Glide.with(this).load(imgUri.toString()).error(R.drawable.placeholder_image)
+                            .into(activityEditProfileBinding.userProfileImage)
+
+                    }
+                }
 
             }
         cameraLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                Glide.with(this).load(imgUri.toString()).error(R.drawable.placeholder_image)
-                    .into(activityEditProfileBinding.userProfileImage)
-                Log.d("ImageCapture", imgUri.toString())
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+                if (result.resultCode != RESULT_CANCELED) {
+                    if (imgUri != null) {
+                        Glide.with(this).load(imgUri.toString()).error(R.drawable.placeholder_image)
+                            .into(activityEditProfileBinding.userProfileImage)
+
+                    }
+                }
+
+
             }
         activityEditProfileBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
         profileViewModel = ViewModelProvider(this@EditProfileActivity)[ProfileViewModel::class.java]
+        getPlaceholderData()
         activityEditProfileBinding.apply {
-            userDetails = intent.extras!!.get("user") as UserModel
-            Glide.with(this@EditProfileActivity).load(userDetails?.userImg).error(R.drawable.ic_add)
-                .into(userProfileImage)
             navPop.setOnClickListener {
                 finish()
             }
             submitBtn.setOnClickListener {
                 updateProfileData(imgUri)
             }
-            userProfileImage.setOnClickListener {
+            imageAdd.setOnClickListener {
                 selectUserProfileImage()
 
             }
         }
     }
+
+    private fun getPlaceholderData() {
+        activityEditProfileBinding.apply {
+            userDetails = intent.extras!!.get("user") as UserModel
+            Glide.with(this@EditProfileActivity).load(userDetails?.userImg).error(R.drawable.ic_add)
+                .into(userProfileImage)
+        }
+    }
+
 
     private fun selectUserProfileImage() {
         val builder = AlertDialog.Builder(this)
@@ -107,33 +133,57 @@ class EditProfileActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun updateProfileData(imgUri: Uri) {
+    private fun updateProfileData(imgUri: Uri?) {
         activityEditProfileBinding.apply {
             progressBar.isVisible = true
+            Toast.makeText(
+                this@EditProfileActivity, "Please Wait", Toast.LENGTH_SHORT
+            ).show()
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repeatOnLifecycle(Lifecycle.State.STARTED)
+                {
                     profileViewModel.storeImageAndGetUrl(imgUri)
                     profileViewModel.userImage.observe(
                         this@EditProfileActivity
                     ) { imgUrl ->
-                        val user = UserModel(
-                            editTextUsername.text.toString(),
-                            editTextEmail.text.toString(),
-                            imgUrl,
-                            editTextPhone.text.toString(),
-                            editTextAddress.text.toString()
-                        )
-                        Log.d("dataUpdate", user.toString())
-                        profileViewModel.updateUser(user)
-                        progressBar.isVisible = false
-                        Toast.makeText(
-                            this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
+                        Log.d("ImageActivity", imgUrl)
+                        when (imgUrl) {
+                            " " -> {
+                                val user = UserModel(
+                                    editTextUsername.text.toString(),
+                                    editTextEmail.text.toString(),
+                                    userDetails!!.userImg,
+                                    editTextPhone.text.toString(),
+                                    editTextAddress.text.toString()
+                                )
+                                Log.d("dataUpdate", user.toString())
+                                profileViewModel.updateUser(user)
+                                progressBar.isVisible = false
+                                Toast.makeText(
+                                    this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT
+                                ).show()
+                                finish()
+                            }
 
+                            else -> {
+                                val user = UserModel(
+                                    editTextUsername.text.toString(),
+                                    editTextEmail.text.toString(),
+                                    imgUrl,
+                                    editTextPhone.text.toString(),
+                                    editTextAddress.text.toString()
+                                )
+                                Log.d("dataUpdate", user.toString())
+                                profileViewModel.updateUser(user)
+                                progressBar.isVisible = false
+                                Toast.makeText(
+                                    this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT
+                                ).show()
+                                finish()
+                            }
+                        }
                     }
                 }
-
             }
         }
 
@@ -150,4 +200,5 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
     }
+
 }

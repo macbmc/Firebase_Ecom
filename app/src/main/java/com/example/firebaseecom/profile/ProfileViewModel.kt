@@ -11,7 +11,6 @@ import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -53,14 +52,20 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-   suspend fun storeImageAndGetUrl(imageUri: Uri){
-       viewModelScope.launch(Dispatchers.IO){
-           storageRepository.storeImageAndGetUrl(imageUri).collect{downloadUrl->
-               Log.d("ImageDownloadUrlModel", downloadUrl)
-               userImage.postValue(downloadUrl)
-           }
-       }
-   }
+    suspend fun storeImageAndGetUrl(imageUri: Uri?) {
+        if (imageUri!=null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                storageRepository.storeImageAndGetUrl(imageUri).collect { downloadUrl ->
+                    Log.d("ImageDownloadUrlModel", downloadUrl)
+                    userImage.postValue(downloadUrl)
+                }
+            }
+        }
+        else
+        {
+            userImage.postValue(" ")
+        }
+    }
 
 
 }

@@ -22,7 +22,7 @@ class StorageRepositoryImp @Inject constructor(
     private val currentUser = firebaseAuth.currentUser
     private val pathReference = storage.child("profileImages/${currentUser?.uid}")
 
-    override suspend fun storeImageAndGetUrl(imageUri: Uri) = flow<String> {
+    override suspend fun storeImageAndGetUrl(imageUri: Uri) = flow {
         try {
             pathReference.putFile(imageUri).await()
             val downloadUrl = pathReference.downloadUrl.await()
