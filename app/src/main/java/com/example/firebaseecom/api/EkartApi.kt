@@ -4,7 +4,6 @@ import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface EkartApi {
@@ -13,9 +12,6 @@ interface EkartApi {
 
     @GET
     suspend fun getProductDetails(@Url url: String): Response<List<ProductDetailsModel>?>
-
-
-
 
 
 }

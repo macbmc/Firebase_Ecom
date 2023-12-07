@@ -3,10 +3,7 @@ package com.example.firebaseecom.profile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-
-import android.util.Log
 import android.widget.Toast
-
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -16,9 +13,7 @@ import com.example.firebaseecom.auth.AuthViewModel
 import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import com.example.firebaseecom.main.BaseActivity
-
 import com.example.firebaseecom.utils.FirebaseEcomApp
-
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.Serializable
@@ -31,7 +26,6 @@ class UserProfileActivity : BaseActivity() {
     private lateinit var activityUserProfileBinding: ActivityUserProfileBinding
     private lateinit var authViewModel: AuthViewModel
     private lateinit var profileViewModel: ProfileViewModel
-
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -91,13 +85,13 @@ class UserProfileActivity : BaseActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
+    override fun onRestart() {
+        super.onRestart()
         getUserdata()
     }
 
     private fun navToEditProfile() {
-        if(activityUserProfileBinding.userDetails != null) {
+        if (activityUserProfileBinding.userDetails != null) {
             val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
             intent.putExtra("user", activityUserProfileBinding.userDetails as Serializable)
             startActivity(intent)
@@ -145,8 +139,10 @@ class UserProfileActivity : BaseActivity() {
 
     }
 
-    
-
+    override fun onResume() {
+        super.onResume()
+        getUserdata()
+    }
 
 
 }

@@ -8,6 +8,10 @@ import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthEmailException
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -54,14 +58,29 @@ class AuthRepositoryImpl @Inject constructor(
         phNum: String
     ): Resource<FirebaseUser> {
         val msg = isValidated(password, phNum)
+        var errorMsg = ""
         Log.d("msg", msg)
         return if (msg == "") {
             try {
                 val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
                 Resource.Success(user.user!!)
-            } catch (e: Exception) {
+            } catch (e: FirebaseAuthException) {
                 Log.e("signUp", "$e")
-                Resource.Failed(context.getString(R.string.invalid_credentials_try_again))
+                when(e)
+                {
+                    is FirebaseAuthUserCollisionException ->{
+                        errorMsg="Credential already in use"
+                    }
+
+                    is FirebaseAuthInvalidCredentialsException ->{
+                        errorMsg = "Credentials not valid"
+                    }
+
+                    else->{
+                        errorMsg = e.message.toString()
+                    }
+                }
+                Resource.Failed(errorMsg)
             }
 
         } else {

@@ -1,6 +1,6 @@
 package com.example.firebaseecom.detailsPg
 
-import android.content.Context
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductDetailsModel
@@ -23,7 +23,8 @@ class ProductDetailsViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    private val _productDetails = MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(Resource.Loading())
+    private val _productDetails =
+        MutableStateFlow<Resource<List<ProductDetailsModel>?>?>(Resource.Loading())
     val productDetails: StateFlow<Resource<List<ProductDetailsModel>?>?> = _productDetails
 
     fun getProductDetails(id: Int) {
@@ -47,8 +48,8 @@ class ProductDetailsViewModel @Inject constructor(
     }
 
 
-    fun shareProduct(productModel: ProductHomeModel,context: Context) {
-        productRepository.getUri(productModel,context)
+    fun shareProduct(productModel: ProductHomeModel) {
+        productRepository.shareProduct(productModel)
 
     }
 

@@ -72,8 +72,8 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_marginTop="90dp"
+        android:layout_below="@+id/forgotPassword"
+        android:layout_marginTop="50dp"
         android:backgroundTint="@color/buttonColor"
         android:text="@string/login" />
 

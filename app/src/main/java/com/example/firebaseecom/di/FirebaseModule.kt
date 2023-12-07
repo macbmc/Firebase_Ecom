@@ -5,7 +5,7 @@ import com.example.firebaseecom.repositories.AuthRepositoryImpl
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.FirestoreRepositoryImpl
 import com.example.firebaseecom.repositories.StorageRepository
-import com.example.firebaseecom.repositories.StorageRepositoryImpl
+import com.example.firebaseecom.repositories.StorageRepositoryImp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,7 +40,7 @@ object FirebaseModule {
     @Provides
     fun provideFirestoreRepository(repository: FirestoreRepositoryImpl): FirestoreRepository = repository
     @Provides
-    fun provideStorageRepository(repositoryImpl: StorageRepositoryImpl): StorageRepository =repositoryImpl
+    fun provideStorageRepository(repositoryImpl: StorageRepositoryImp): StorageRepository =repositoryImpl
 
 
 }

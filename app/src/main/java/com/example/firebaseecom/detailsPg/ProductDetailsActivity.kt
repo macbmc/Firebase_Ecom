@@ -34,6 +34,25 @@ class ProductDetailsActivity : BaseActivity() {
     private val carousalAdapter = ProductDetailsAdapter()
     private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
+
+    /*private val storagePermissionContract =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionAccepted ->
+            if (isPermissionAccepted)
+                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
+        }
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
+            }
+        }*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productDetailsViewModel = ViewModelProvider(this)[ProductDetailsViewModel::class.java]
@@ -55,7 +74,9 @@ class ProductDetailsActivity : BaseActivity() {
             productTitleHeader.text = productTitleMap[langId].toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
-                productDetailsViewModel.shareProduct(productHome, this@ProductDetailsActivity)
+                /*activityResultLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                storagePermissionContract.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)*/
+                productDetailsViewModel.shareProduct(productHome)
             }
             backButton.setOnClickListener {
                 finish()
@@ -129,4 +150,5 @@ class ProductDetailsActivity : BaseActivity() {
             }
         }
     }
+
 }
