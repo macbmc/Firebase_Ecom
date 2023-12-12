@@ -10,20 +10,20 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ProductDetailsImageViewBinding
 
-class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.DetailViewHolder>() {
+class ProductDetailsAdapter : RecyclerView.Adapter<ProductDetailsAdapter.DetailViewHolder>() {
 
-    var imageList= emptyList<String?>()
+    private var imageList = emptyList<String?>()
     private lateinit var productDetailsImageViewBinding: ProductDetailsImageViewBinding
 
-    fun setProduct(imageList: List<String>)
-    {
-        this.imageList=imageList
+    fun setProduct(imageList: List<String>) {
+        this.imageList = imageList
 
         notifyDataSetChanged()
     }
-    class DetailViewHolder(productDetailsImageViewBinding: ProductDetailsImageViewBinding):RecyclerView.ViewHolder(productDetailsImageViewBinding.root) {
 
-    }
+    class DetailViewHolder(productDetailsImageViewBinding: ProductDetailsImageViewBinding) :
+        RecyclerView.ViewHolder(productDetailsImageViewBinding.root)
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,16 +31,17 @@ class ProductDetailsAdapter:RecyclerView.Adapter<ProductDetailsAdapter.DetailVie
     ): DetailViewHolder {
 
         val layoutInflater = LayoutInflater.from(parent.context)
-        productDetailsImageViewBinding = DataBindingUtil.inflate(layoutInflater,
-            R.layout.product_details_image_view,parent
-            ,false)
+        productDetailsImageViewBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.product_details_image_view, parent, false
+        )
         return DetailViewHolder(productDetailsImageViewBinding)
 
     }
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-        val imageUrl=imageList[position]
-        Log.d("detailsImg",imageUrl.toString())
+        val imageUrl = imageList[position]
+        Log.d("detailsImg", imageUrl.toString())
         Glide.with(holder.itemView)
             .load(imageUrl)
             .thumbnail(Glide.with(holder.itemView).load(R.drawable.preloader))

@@ -27,6 +27,7 @@ import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityEditProfileBinding
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepositoryImpl
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -136,12 +137,9 @@ class EditProfileActivity : AppCompatActivity() {
     private fun updateProfileData(imgUri: Uri?) {
         activityEditProfileBinding.apply {
             progressBar.isVisible = true
-            Toast.makeText(
-                this@EditProfileActivity, "Please Wait", Toast.LENGTH_SHORT
-            ).show()
+            ToastUtils().giveToast(getString(R.string.please_wait),this@EditProfileActivity)
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED)
-                {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
                     profileViewModel.storeImageAndGetUrl(imgUri)
                     profileViewModel.userImage.observe(
                         this@EditProfileActivity
@@ -159,9 +157,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 Log.d("dataUpdate", user.toString())
                                 profileViewModel.updateUser(user)
                                 progressBar.isVisible = false
-                                Toast.makeText(
-                                    this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT
-                                ).show()
+                                ToastUtils().giveToast(getString(R.string.data_updated),this@EditProfileActivity)
                                 finish()
                             }
 
@@ -176,9 +172,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 Log.d("dataUpdate", user.toString())
                                 profileViewModel.updateUser(user)
                                 progressBar.isVisible = false
-                                Toast.makeText(
-                                    this@EditProfileActivity, "Data Updated", Toast.LENGTH_SHORT
-                                ).show()
+                                ToastUtils().giveToast(getString(R.string.data_updated),this@EditProfileActivity)
                                 finish()
                             }
                         }

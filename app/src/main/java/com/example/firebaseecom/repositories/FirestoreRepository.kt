@@ -15,15 +15,14 @@ interface FirestoreRepository {
     val currentUser: FirebaseUser?
     suspend fun addToUsers(userModel: UserModel): Int
     suspend fun getFromUsers(): UserModel?
-    suspend fun addToDest(dest: String,productModel: ProductHomeModel)
+    suspend fun addToDest(dest: String, productModel: ProductHomeModel)
     suspend fun checkNumDest(dest: String): Int
-    suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
+    suspend fun removeFromDest(dest: String, productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
-    suspend fun addToOrders(productList:List<ProductOrderModel>)
-    suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
-    suspend fun getFromOrders():Resource<List<ProductOrderModel>>
+    suspend fun addToOrders(productList: List<ProductOrderModel>)
+    suspend fun getFromDest(dest: String): Resource<List<ProductHomeModel>>
+    suspend fun getFromOrders(): Resource<List<ProductOrderModel>>
     suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>)
-
 
 
 }
@@ -37,15 +36,15 @@ class FirestoreRepositoryImpl @Inject constructor(
         get() = firebaseAuth.currentUser
 
 
-    override  suspend fun addToUsers(userModel: UserModel): Int {
+    override suspend fun addToUsers(userModel: UserModel): Int {
         var status = 400
-        Log.d("currentUser",currentUser?.email.toString())
+        Log.d("currentUser", currentUser?.email.toString())
         try {
             val doc = firestore.collection("users").document(currentUser!!.uid).set(userModel)
             doc.addOnSuccessListener {
-                    status = 200
-                    Log.d("success", "$status")
-                }
+                status = 200
+                Log.d("success", "$status")
+            }
                 .addOnFailureListener {
                     Log.e("toUse", "${it.message}")
 
@@ -60,7 +59,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     override suspend fun getFromUsers(): UserModel {
         val uid = currentUser?.uid
-        Log.d("currentUser",currentUser?.email.toString())
+        Log.d("currentUser", currentUser?.email.toString())
         val db = firestore.collection("users").document(uid.toString())
         var userInfo = UserModel()
 
@@ -73,10 +72,9 @@ class FirestoreRepositoryImpl @Inject constructor(
                     }
             )
             val data = snapshot.data
-            data.let{
+            data.let {
 
             }
-            Log.d("userinforepoIN",snapshot.data.toString())
             userInfo = UserModel(
                 data?.get("userName").toString(), data?.get("userEmail").toString(),
                 data?.get("userImg").toString(), data?.get("phNo").toString(),
@@ -84,17 +82,15 @@ class FirestoreRepositoryImpl @Inject constructor(
             )
 
         } catch (e: Exception) {
-            Log.d("exceptio", e.toString())
+            Log.d("exception", e.toString())
         }
-        Log.d("userinforepo",userInfo.toString())
 
         return userInfo
 
     }
 
 
-
-    override suspend fun addToDest(dest:String,productModel: ProductHomeModel) {
+    override suspend fun addToDest(dest: String, productModel: ProductHomeModel) {
         try {
             val db = firestore.collection("user-$dest").document(currentUser!!.uid)
                 .collection("items").document(productModel.productId.toString())
@@ -135,9 +131,8 @@ class FirestoreRepositoryImpl @Inject constructor(
         return adList
     }
 
-    override suspend fun addToOrders(productList:List<ProductOrderModel>) {
-        for(productModel in productList)
-        {
+    override suspend fun addToOrders(productList: List<ProductOrderModel>) {
+        for (productModel in productList) {
             try {
                 val db = firestore.collection("user-orders").document(currentUser!!.uid)
                     .collection("items").document(productModel.productId.toString())
@@ -160,7 +155,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         db.delete()
     }
 
-    override suspend fun checkNumDest(dest: String): Int{
+    override suspend fun checkNumDest(dest: String): Int {
         var count = 0
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items")
@@ -177,12 +172,9 @@ class FirestoreRepositoryImpl @Inject constructor(
                     count++
                 }
             }
+        } catch (e: Exception) {
+            Log.e("ErrorNumbCheck", e.toString())
         }
-        catch (e:Exception)
-        {
-            Log.e("ErrorNumbCheck",e.toString())
-        }
-        Log.d("cartNUmrepo",count.toString())
         return count
 
     }
@@ -214,7 +206,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         if (response != 200) {
             return Resource.Failed("No Available Data")
         }
-        Log.d("cartdatarepo",productList.toString())
+
         return Resource.Success(productList)
     }
 
@@ -245,16 +237,15 @@ class FirestoreRepositoryImpl @Inject constructor(
         if (response != 200) {
             return Resource.Failed("No Available Data")
         }
-        Log.d("cartdatarepo",productList.toString())
+
         return Resource.Success(productList)
     }
 
     override suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>) {
-        val db=firestore.collection("user-cart").document(currentUser!!.uid).collection("items")
-        for(productModel in productList)
-        {
+        val db = firestore.collection("user-cart").document(currentUser!!.uid).collection("items")
+        for (productModel in productList) {
             db.document(productModel.productId.toString()).get().addOnSuccessListener {
-                if(it.exists())
+                if (it.exists())
                     db.document(productModel.productId.toString()).delete()
             }
         }

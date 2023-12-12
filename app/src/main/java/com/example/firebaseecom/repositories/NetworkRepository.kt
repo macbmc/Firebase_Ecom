@@ -2,7 +2,7 @@ package com.example.firebaseecom.repositories
 
 import android.util.Log
 import com.example.firebaseecom.api.EkartApiEndPoints
-import com.example.firebaseecom.api.EkartApi
+import com.example.firebaseecom.api.EkartApiService
 import com.example.firebaseecom.local.ProductDao
 import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
@@ -22,7 +22,7 @@ interface NetworkRepository {
 }
 
 class NetworkRepositoryImpl @Inject constructor(
-    private val ekartApi: EkartApi,
+    private val ekartApiService: EkartApiService,
     private val productDao: ProductDao
 ) :
     NetworkRepository {
@@ -31,7 +31,7 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         try {
-            apiCall = ekartApi.getProducts(EkartApiEndPoints.END_POINT_PRODUCTS.url)
+            apiCall = ekartApiService.getProducts(EkartApiEndPoints.END_POINT_PRODUCTS.url)
             Log.d("apiCall","success")
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
@@ -87,7 +87,7 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?> {
         try {
-            apiCallDetails = ekartApi.getProductDetails(EkartApiEndPoints.END_POINT_DETAIL_MULTILINGUAL.url)
+            apiCallDetails = ekartApiService.getProductDetails(EkartApiEndPoints.END_POINT_DETAIL_MULTILINGUAL.url)
         } catch (e: Exception) {
             Log.d("apiCall", e.toString())
         }

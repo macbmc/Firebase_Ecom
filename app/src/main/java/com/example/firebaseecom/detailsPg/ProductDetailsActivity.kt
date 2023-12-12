@@ -5,7 +5,6 @@ package com.example.firebaseecom.detailsPg
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -22,6 +21,7 @@ import com.example.firebaseecom.model.ProductMultiLanguage
 import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -93,8 +93,10 @@ class ProductDetailsActivity : BaseActivity() {
             }
             buttonAddToCart.setOnClickListener {
                 productDetailsViewModel.addToCart(productHome)
-                Toast.makeText(this@ProductDetailsActivity, "Added To Cart", Toast.LENGTH_SHORT)
-                    .show()
+                ToastUtils().giveToast(
+                    getString(R.string.added_to_cart),
+                    this@ProductDetailsActivity
+                )
             }
 
         }
@@ -113,11 +115,10 @@ class ProductDetailsActivity : BaseActivity() {
                     when (it) {
                         is Resource.Loading -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
-                            Toast.makeText(
-                                this@ProductDetailsActivity,
+                            ToastUtils().giveToast(
                                 getString(R.string.details_loading),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                this@ProductDetailsActivity
+                            )
                         }
 
                         is Resource.Success -> {
@@ -139,9 +140,7 @@ class ProductDetailsActivity : BaseActivity() {
 
                         is Resource.Failed -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
-                            Toast.makeText(
-                                this@ProductDetailsActivity, it.message, Toast.LENGTH_SHORT
-                            ).show()
+                            ToastUtils().giveToast(it.message, this@ProductDetailsActivity)
                         }
 
                         else -> {}

@@ -8,7 +8,6 @@ import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -58,7 +57,6 @@ class AuthRepositoryImpl @Inject constructor(
         phNum: String
     ): Resource<FirebaseUser> {
         val msg = isValidated(password, phNum)
-        var errorMsg = ""
         Log.d("msg", msg)
         return if (msg == "") {
             try {
@@ -66,18 +64,17 @@ class AuthRepositoryImpl @Inject constructor(
                 Resource.Success(user.user!!)
             } catch (e: FirebaseAuthException) {
                 Log.e("signUp", "$e")
-                when(e)
-                {
-                    is FirebaseAuthUserCollisionException ->{
-                        errorMsg="Credential already in use"
+                val errorMsg = when (e) {
+                    is FirebaseAuthUserCollisionException -> {
+                        context.getString(R.string.credential_already_in_use)
                     }
 
-                    is FirebaseAuthInvalidCredentialsException ->{
-                        errorMsg = "Credentials not valid"
+                    is FirebaseAuthInvalidCredentialsException -> {
+                        context.getString(R.string.credentials_not_valid)
                     }
 
-                    else->{
-                        errorMsg = e.message.toString()
+                    else -> {
+                        e.message.toString()
                     }
                 }
                 Resource.Failed(errorMsg)
@@ -154,11 +151,19 @@ class AuthRepositoryImpl @Inject constructor(
     override fun forgotPassword(email: String) {
         try {
             firebaseAuth.sendPasswordResetEmail(email).addOnSuccessListener {
-                Toast.makeText(context, context.getString(R.string.check_your_mail), Toast.LENGTH_LONG)
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.check_your_mail),
+                    Toast.LENGTH_LONG
+                )
                     .show()
             }
                 .addOnFailureListener {
-                    Toast.makeText(context, context.getString(R.string.invalid_credentials_try_again), Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.invalid_credentials_try_again),
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
 

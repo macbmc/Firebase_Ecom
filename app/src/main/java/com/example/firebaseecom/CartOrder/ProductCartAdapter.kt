@@ -1,18 +1,19 @@
+package com.example.firebaseecom.CartOrder
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.asMap
 
-class ProductCartAdapter (
+class ProductCartAdapter(
     val activityFunctionClass: ProductListActivity.ActivityFunctionClass,
-    val langId:String
+    val langId: String
 ) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
@@ -27,16 +28,16 @@ class ProductCartAdapter (
 
         parent: ViewGroup,
         viewType: Int
-    ): ProductCartAdapter.MyViewHolder {
+    ): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         cartViewBinding = DataBindingUtil.inflate(layoutInflater, R.layout.cart_view, parent, false)
-        return MyViewHolder(cartViewBinding,langId)
+        return MyViewHolder(cartViewBinding, langId)
 
     }
 
-    override fun onBindViewHolder(holder: ProductCartAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val productHome = productList[position]
-        holder.bind(productHome,position)
+        holder.bind(productHome, position)
         Glide.with(holder.itemView)
             .load(productHome.productImage)
             .error(R.drawable.placeholder_image)
@@ -56,22 +57,21 @@ class ProductCartAdapter (
         activityFunctionClass.addTotalPrice(productList)
     }
 
-    inner class MyViewHolder(private val cartViewBinding: CartViewBinding,val langId: String) :
+    inner class MyViewHolder(private val cartViewBinding: CartViewBinding, val langId: String) :
         RecyclerView.ViewHolder(cartViewBinding.root) {
-        fun bind(productHomeModel: ProductHomeModel,position:Int) {
+        fun bind(productHomeModel: ProductHomeModel, position: Int) {
             cartViewBinding.apply {
-                Log.d("cartTitle",langId)
-                productTitleText.text=productHomeModel.productTitle.asMap()[langId].toString()
+                Log.d("cartTitle", langId)
+                productTitleText.text = productHomeModel.productTitle.asMap()[langId].toString()
                 productHome = productHomeModel
                 deleteBtn.setOnClickListener {
-                    activityFunctionClass.deleteFromCart(productHomeModel,position)
-                    productList.removeAt(adapterPosition)
-                    notifyItemRemoved(adapterPosition)
+                    activityFunctionClass.deleteFromCart(productHomeModel, position)
+                    productList.removeAt(bindingAdapterPosition)
+                    notifyItemRemoved(bindingAdapterPosition)
                     activityFunctionClass.addTotalPrice(productList)
 
                 }
             }
-
 
 
         }

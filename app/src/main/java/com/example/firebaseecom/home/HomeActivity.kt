@@ -1,10 +1,10 @@
 package com.example.firebaseecom.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -26,6 +26,7 @@ import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -41,27 +42,21 @@ class HomeActivity : BaseActivity() {
     private val carousalAdapter = CarousalAdapter(this@HomeActivity)
     private val snapHelper = LinearSnapHelper()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        observeNetwork()
-
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        observeNetwork()
         val adView = homeBinding.carousalView
         Log.d("homeLanguage", langId)
-
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
         adView.layoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
-
-        //observeCartNumber()
-        //observeCarousal()
-        //observeProducts()
 
 
 
@@ -98,8 +93,13 @@ class HomeActivity : BaseActivity() {
 
     }
 
+    private fun loadOnRefresh() {
+        observeNetwork()
+    }
+
     private fun observeNetwork() {
         val network = NetworkUtil(this)
+        homeBinding.networkProgress.visibility = View.VISIBLE
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 network.observeNetworkState().collect {
@@ -128,11 +128,10 @@ class HomeActivity : BaseActivity() {
 
 
                             }
-                            Toast.makeText(
-                                this@HomeActivity,
-                                "Connection Unavailable",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            ToastUtils().giveToast(
+                                getString(R.string.connection_unavailable),
+                                this@HomeActivity
+                            )
                         }
 
                         NetworkState.LOSING -> {
@@ -142,11 +141,11 @@ class HomeActivity : BaseActivity() {
                                 networkStatusLayout.isVisible = true
 
                             }
-                            Toast.makeText(
-                                this@HomeActivity,
-                                "Connection Losing",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+                            ToastUtils().giveToast(
+                                getString(R.string.connection_losing),
+                                this@HomeActivity
+                            )
                         }
 
                         NetworkState.LOST -> {
@@ -156,8 +155,10 @@ class HomeActivity : BaseActivity() {
                                 networkStatusLayout.isVisible = true
 
                             }
-                            Toast.makeText(this@HomeActivity, "Connection Lost", Toast.LENGTH_SHORT)
-                                .show()
+                            ToastUtils().giveToast(
+                                getString(R.string.connection_lost),
+                                this@HomeActivity
+                            )
                         }
                     }
                 }
@@ -178,7 +179,6 @@ class HomeActivity : BaseActivity() {
         super.onRestart()
 
         observeCartNumber()
-        //observeNetwork()
     }
 
     private fun observeCartNumber() {
@@ -219,8 +219,7 @@ class HomeActivity : BaseActivity() {
                             is Resource.Failed -> {
                                 homeItemViewProgress.visibility = View.VISIBLE
                                 Log.d("itemViewLoader", "Failed")
-                                Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_SHORT)
-                                    .show()
+                                ToastUtils().giveToast(it.message, this@HomeActivity)
                             }
 
 
@@ -241,4 +240,5 @@ class HomeActivity : BaseActivity() {
         }
 
     }
+
 }

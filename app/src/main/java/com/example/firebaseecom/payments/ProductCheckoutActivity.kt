@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.api.RazorPayJson
 import com.example.firebaseecom.api.RazorpayKey
-import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityProductCheckoutBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
@@ -30,7 +28,7 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
     private lateinit var activityProductCheckoutBinding: ActivityProductCheckoutBinding
     private lateinit var productCheckoutViewModel: ProductCheckoutViewModel
     private var productList = arrayListOf<ProductHomeModel>()
-    private lateinit var adapter : ProductCheckoutAdapter
+    private lateinit var adapter: ProductCheckoutAdapter
     var totalAmount = 0.0
     private val checkOut = Checkout()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +39,7 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
         checkOut.setKeyID(RazorpayKey.EKART_RAZORPAY_KEY.key)
         checkOut.setImage(R.drawable.ic_cart)
         productList = (intent.extras?.get("productList") as? ArrayList<ProductHomeModel>)!!
-        adapter = ProductCheckoutAdapter(ActivityFunctionClass(),langId)
+        adapter = ProductCheckoutAdapter(ActivityFunctionClass(), langId)
         activityProductCheckoutBinding.apply {
             productListView.layoutManager = LinearLayoutManager(
                 this@ProductCheckoutActivity,

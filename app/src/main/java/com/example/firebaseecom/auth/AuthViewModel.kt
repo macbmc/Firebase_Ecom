@@ -54,7 +54,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _signUpAuth.value = authRepository.userSignUp(email, password, phNum)
             Log.d("userData", userModel.toString())
-            Log.d("msgrepo", _signUpAuth.value.toString())
+            Log.d("msgRepo", _signUpAuth.value.toString())
             if (_signUpAuth.value is Resource.Success) {
                 firestoreRepository.addToUsers(userModel)
             }

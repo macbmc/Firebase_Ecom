@@ -6,6 +6,7 @@ import com.example.firebaseecom.profile.EditProfileActivity
 import com.example.firebaseecom.repositories.AuthRepositoryImpl
 import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.repositories.ProductRepositoryImpl
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +26,9 @@ object EkartAppModule {
     fun provideAuthStateChange(): AuthRepositoryImpl.AuthStateChange {
         return EditProfileActivity().AuthStateChangeImpl()
     }
+
+    @Provides
+    fun provideToastUtils(toastUtils: ToastUtils):ToastUtils = toastUtils
 
 
 }

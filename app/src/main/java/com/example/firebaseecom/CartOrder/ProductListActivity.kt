@@ -1,11 +1,9 @@
 package com.example.firebaseecom.CartOrder
 
-import ProductCartAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -21,6 +19,7 @@ import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -54,6 +53,7 @@ class ProductListActivity : BaseActivity() {
                 finish()
             }
             destText.text = dest
+            changeHeading()
             recyclerView.layoutManager = LinearLayoutManager(
                 this@ProductListActivity, LinearLayoutManager.VERTICAL,
                 false
@@ -66,16 +66,28 @@ class ProductListActivity : BaseActivity() {
                     Log.d("productList", productList.toString())
                     startActivity(intent)
                 } else {
-                    Toast.makeText(
-                        this@ProductListActivity,
+                    ToastUtils().giveToast(
                         getString(R.string.add_items_to_cart_first),
-                        Toast.LENGTH_SHORT
+                        this@ProductListActivity,
                     )
-                        .show()
                 }
 
             }
 
+        }
+
+
+    }
+
+    private fun changeHeading() {
+        when (dest) {
+            "cart" -> {
+                activityProductListBinding.destText.text = getString(R.string.cart)
+            }
+
+            "orders" -> {
+                activityProductListBinding.destText.text = getString(R.string.order)
+            }
         }
 
     }
@@ -100,12 +112,7 @@ class ProductListActivity : BaseActivity() {
 
                             is Resource.Failed -> {
                                 activityProductListBinding.progressBar.isVisible = false
-                                Toast.makeText(
-                                    this@ProductListActivity,
-                                    it.message,
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ToastUtils().giveToast(it.message, this@ProductListActivity)
                             }
                         }
                     }
@@ -128,12 +135,7 @@ class ProductListActivity : BaseActivity() {
 
                                 is Resource.Failed -> {
                                     activityProductListBinding.progressBar.isVisible = false
-                                    Toast.makeText(
-                                        this@ProductListActivity,
-                                        it.message,
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    ToastUtils().giveToast(it.message, this@ProductListActivity)
                                 }
                             }
                         }

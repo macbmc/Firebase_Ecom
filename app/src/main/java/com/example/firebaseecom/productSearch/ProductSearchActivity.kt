@@ -18,6 +18,7 @@ import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -46,7 +47,8 @@ class ProductSearchActivity : BaseActivity() {
                 }
                 else
                 {
-                    Toast.makeText(this@ProductSearchActivity,"Search meaningful text",Toast.LENGTH_SHORT).show()
+                    ToastUtils().giveToast(getString(R.string.search_meaningful_text),this@ProductSearchActivity)
+
                 }
             }
             backButton.setOnClickListener {
@@ -93,12 +95,7 @@ class ProductSearchActivity : BaseActivity() {
                         }
 
                         is Resource.Failed -> {
-                            Toast.makeText(
-                                this@ProductSearchActivity,
-                                it.message,
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
+                            ToastUtils().giveToast(it.message,this@ProductSearchActivity)
                         }
 
                     }

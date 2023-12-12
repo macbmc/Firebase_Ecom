@@ -81,4 +81,13 @@
     <string name="check_your_mail">Check your mail for password reset link</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="enter_your_email_linked_to_ekart">Enter your Email linked to EKart</string>
+    <string name="credential_already_in_use">Credential already in use</string>
+    <string name="credentials_not_valid">Credentials not valid</string>
+    <string name="added_to_cart">Added To Cart</string>
+    <string name="connection_unavailable">Connection Unavailable</string>
+    <string name="connection_losing">Connection Losing</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="search_meaningful_text">Search meaningful text</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="data_updated">Data Updated</string>
 </resources>
