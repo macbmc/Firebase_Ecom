@@ -21,6 +21,7 @@ import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.offers.OfferZoneActivity
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.NetworkState
@@ -39,7 +40,7 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
-    private val carousalAdapter = CarousalAdapter(this@HomeActivity)
+    private val carousalAdapter = CarousalAdapter(this@HomeActivity, ActivityFunctionClass())
     private val snapHelper = LinearSnapHelper()
 
     @SuppressLint("ClickableViewAccessibility")
@@ -241,4 +242,10 @@ class HomeActivity : BaseActivity() {
 
     }
 
+    inner class ActivityFunctionClass : CarousalAdapter.ActivityFunctionInterface {
+        override fun navToOfferZone() {
+            startActivity(Intent(this@HomeActivity, OfferZoneActivity::class.java))
+        }
+
+    }
 }

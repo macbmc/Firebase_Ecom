@@ -91,4 +91,8 @@
     <string name="search_meaningful_text">അർത്ഥവത്തായ വാചകം തിരയുക</string>
     <string name="please_wait">കാത്തിരിക്കൂ</string>
     <string name="data_updated">ഡാറ്റ അപ്ഡേറ്റ് ചെയ്തു</string>
+    <string name="no_offers_available_for_this_category">ഈ വിഭാഗത്തിന് ഓഫറുകളൊന്നും ലഭ്യമല്ല</string>
+    <string name="no_results_for_your_search">നിങ്ങളുടെ തിരയലിന് ഫലങ്ങളൊന്നുമില്ല</string>
+    <string name="data_from_local_is_null">ലോക്കലിൽ നിന്നുള്ള ഡാറ്റ അസാധുവാണ്</string>
+    <string name="offerZone">ഓഫർ സോൺ</string>
 </resources>

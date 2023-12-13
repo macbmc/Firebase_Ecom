@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.utils.Resource
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
-    private val networkRepository: NetworkRepository
+    private val networkRepository: NetworkRepository,
+    private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
@@ -44,11 +46,11 @@ class HomeViewModel @Inject constructor(
     fun getProductHome() {
         _products.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _products.value = networkRepository.fetchFromLocal()
+            _products.value = databaseRepository.fetchFromLocal()
             val remoteData = networkRepository.fetchFromRemote()
             if (remoteData != null) {
-                networkRepository.storeInLocal(remoteData)
-                _products.value = networkRepository.fetchFromLocal()
+                databaseRepository.storeInLocal(remoteData)
+                _products.value = databaseRepository.fetchFromLocal()
             }
         }
     }

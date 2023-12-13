@@ -7,4 +7,5 @@
     <color name="linkTextColor">#03A9F4</color>
     <color name="red">#E10D0D</color>
     <color name="bgColor">#FFF3E1E1</color>
+    <color name="elevatedLayout">#DAB3B3</color>
 </resources>
