@@ -2,7 +2,9 @@ package com.example.firebaseecom.profile
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -27,11 +29,15 @@ class UserProfileActivity : BaseActivity() {
     private lateinit var activityUserProfileBinding: ActivityUserProfileBinding
     private lateinit var authViewModel: AuthViewModel
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("NEW_USER_DIALOG", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
         activityUserProfileBinding =
@@ -98,6 +104,9 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun userSignout() {
+        editor.putInt("setValue",0)
+        editor.apply()
+        Log.d("setValueSIgnout", sharedPreferences.getInt("setValue", 0).toString())
         val intent = Intent(this@UserProfileActivity, SignUpActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

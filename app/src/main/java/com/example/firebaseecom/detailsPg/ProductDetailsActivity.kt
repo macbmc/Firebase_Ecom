@@ -115,10 +115,6 @@ class ProductDetailsActivity : BaseActivity() {
                     when (it) {
                         is Resource.Loading -> {
                             activityProductDetailsBinding.progressBar.isVisible = true
-                            ToastUtils().giveToast(
-                                getString(R.string.details_loading),
-                                this@ProductDetailsActivity
-                            )
                         }
 
                         is Resource.Success -> {

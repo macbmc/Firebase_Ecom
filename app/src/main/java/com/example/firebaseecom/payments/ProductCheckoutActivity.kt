@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +17,7 @@ import com.example.firebaseecom.databinding.ActivityProductCheckoutBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.utils.ToastUtils
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,9 +83,8 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPaymentSuccess(p0: String?) {
-        Toast.makeText(this, "Order Placed", Toast.LENGTH_SHORT).show()
+        ToastUtils().giveToast("Order Placed", this)
         productCheckoutViewModel.addToOrders(productList)
-        Log.d("productListSize", productList.size.toString())
         productCheckoutViewModel.removeAllFromCart(productList)
         val intent = Intent(this, HomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -94,6 +93,7 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
-        Toast.makeText(this, p1, Toast.LENGTH_SHORT).show()
+        ToastUtils().giveToast("Payment Failed", this)
+        Log.e("Razorpay", p1!!)
     }
 }

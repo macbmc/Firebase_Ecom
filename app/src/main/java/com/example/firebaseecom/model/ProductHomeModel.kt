@@ -19,7 +19,7 @@ data class ProductHomeModel(
     @Json(name = "product_image")
     val productImage: String?,
     @Json(name = "product_price")
-    val productPrice: Int?,
+    var productPrice: Int?,
     @Embedded
     @Json(name = "product_title")
     val productTitle: ProductMultiLanguage,

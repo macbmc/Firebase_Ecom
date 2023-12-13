@@ -26,6 +26,8 @@ interface AuthRepository {
 
     fun forgotPassword(email: String)
 
+    fun checkForNewUser(): Boolean
+
 }
 
 class AuthRepositoryImpl @Inject constructor(
@@ -39,6 +41,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
+
+    companion object {
+        private var isNewUser = false
+    }
+
 
     override suspend fun userLogin(email: String, password: String): Resource<FirebaseUser> {
 
@@ -61,7 +68,9 @@ class AuthRepositoryImpl @Inject constructor(
         return if (msg == "") {
             try {
                 val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-                Resource.Success(user.user!!)
+                isNewUser = user.additionalUserInfo!!.isNewUser
+                Log.d("userValueRepoOg", isNewUser.toString())
+                Resource.Success(user?.user!!)
             } catch (e: FirebaseAuthException) {
                 Log.e("signUp", "$e")
                 val errorMsg = when (e) {
@@ -170,6 +179,19 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Log.d("forgotPassword", e.toString())
         }
+    }
+
+    override fun checkForNewUser(): Boolean {
+        try {
+            Log.d("userValueRepo", isNewUser.toString())
+            if (isNewUser) {
+                return true
+            }
+        } catch (e: Exception) {
+            Log.d("userValueRepo", e.cause.toString())
+        }
+        return false
+
     }
 
     private fun isValidated(password: String, phNum: String): String {

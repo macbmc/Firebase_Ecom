@@ -1,9 +1,11 @@
 package com.example.firebaseecom.home
 
-import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -21,6 +23,7 @@ import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.offers.OfferZoneActivity
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.NetworkState
@@ -39,13 +42,16 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
-    private val carousalAdapter = CarousalAdapter(this@HomeActivity)
+    private val carousalAdapter = CarousalAdapter(this@HomeActivity, ActivityFunctionClass())
     private val snapHelper = LinearSnapHelper()
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPreferences = getSharedPreferences("NEW_USER_DIALOG", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+        checkForNewUser()
         super.onCreate(savedInstanceState)
-
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         observeNetwork()
@@ -175,11 +181,6 @@ class HomeActivity : BaseActivity() {
         homeViewModel.getAd()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
-        observeCartNumber()
-    }
 
     private fun observeCartNumber() {
         lifecycleScope.launch {
@@ -239,6 +240,42 @@ class HomeActivity : BaseActivity() {
             startActivity(intent)
         }
 
+    }
+
+    inner class ActivityFunctionClass : CarousalAdapter.ActivityFunctionInterface {
+        override fun navToOfferZone() {
+            startActivity(Intent(this@HomeActivity, OfferZoneActivity::class.java))
+        }
+
+    }
+
+    private fun checkForNewUser() {
+        if (sharedPreferences.getInt("setValue", 0) == 0) {
+            Log.d("setValue",sharedPreferences.getInt("setValue", 0).toString())
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    if (homeViewModel.checkForNewUser()) {
+                        editor.putInt("setValue", 1)
+                        editor.apply()
+                        showNewUserDialog()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun showNewUserDialog() {
+        val alertDialog = AlertDialog.Builder(this)
+        val optionDialog = alertDialog.create()
+        val alertViewInflater = LayoutInflater.from(this).inflate(R.layout.newuser_alert_dialog,null)
+        alertDialog.setView(alertViewInflater)
+        alertDialog.setPositiveButton(R.string.con) { _, _ ->
+            optionDialog.dismiss()
+            //startActivity(Intent(this@HomeActivity,OfferZoneActivity::class.java))
+        }
+            .setCancelable(true)
+        alertDialog.show()
     }
 
 }

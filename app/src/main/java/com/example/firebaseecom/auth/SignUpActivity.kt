@@ -1,5 +1,6 @@
 package com.example.firebaseecom.auth
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -62,7 +63,6 @@ class SignUpActivity : BaseActivity() {
                             editSignUpPhone.text.toString()
                         )
                         signUpAuth.collect {
-                            Log.d("msgAct", it.toString())
                             when (it) {
                                 is Resource.Loading -> {
                                     Log.d("Loading", "Loading")
@@ -78,6 +78,7 @@ class SignUpActivity : BaseActivity() {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                     startActivity(intent)
                                     finish()
+
 
                                 }
 
@@ -98,4 +99,5 @@ class SignUpActivity : BaseActivity() {
             }
         }
     }
+
 }
