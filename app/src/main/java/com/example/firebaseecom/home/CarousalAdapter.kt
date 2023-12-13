@@ -12,11 +12,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
-class CarousalAdapter(private val context: Context):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
+class CarousalAdapter(private val context: Context,val activityFunctionClass: HomeActivity.ActivityFunctionClass):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
 
     private var imageList= emptyList<String?>()
     private var lastPosition=-1
     private lateinit var adCorousalViewBinding: AdCorousalViewBinding
+
+    interface ActivityFunctionInterface{
+        fun navToOfferZone()
+    }
 
     fun setAd(imageList: List<String>)
     {
@@ -41,13 +45,15 @@ class CarousalAdapter(private val context: Context):RecyclerView.Adapter<Carousa
     override fun onBindViewHolder(holder: CarousalViewHolder, position: Int) {
         val imageUrl=imageList[position % imageList.size]
         setAnimation(holder.itemView,position)
-        Glide.with(context)
+        Glide.with(holder.itemView)
             .load(imageUrl)
-            .thumbnail(Glide.with(holder.itemView).load(R.drawable.ic_cart))
             .placeholder(R.drawable.placeholder_image)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.adView))
+        holder.itemView.setOnClickListener {
+            activityFunctionClass.navToOfferZone()
+        }
 
     }
 

@@ -10,8 +10,10 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.R
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOffersModel
+import com.example.firebaseecom.utils.Resource
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -21,6 +23,16 @@ import javax.inject.Inject
 interface ProductRepository {
 
     fun shareProduct(productHomeModel: ProductHomeModel)
+
+    suspend fun getOffersByCategory(
+        offerProducts: List<ProductHomeModel>,
+        category: String
+    ): Resource<List<ProductHomeModel>>
+
+    suspend fun getNewDiscount(
+        offerProducts: List<ProductHomeModel>,
+        offersModel: List<ProductOffersModel>
+    ): List<ProductHomeModel>
 
 
 }
@@ -83,6 +95,43 @@ class ProductRepositoryImpl @Inject constructor(
                 }
 
             })
+    }
+
+    override suspend fun getOffersByCategory(
+        offerProducts: List<ProductHomeModel>,
+        category: String
+    ): Resource<List<ProductHomeModel>> {
+        val offerByCategoryList = mutableListOf<ProductHomeModel>()
+        offerProducts.forEach { offerProduct ->
+            if (offerProduct.productCategory.equals(category))
+                offerByCategoryList.add(offerProduct)
+        }
+        if (offerByCategoryList.isEmpty())
+            return Resource.Failed(context.getString(R.string.no_offers_available_for_this_category))
+
+        return Resource.Success(offerByCategoryList)
+
+
+    }
+
+    override suspend fun getNewDiscount(
+        offerProducts: List<ProductHomeModel>,
+        offersModel: List<ProductOffersModel>
+    ): List<ProductHomeModel> {
+
+
+        for (products in offerProducts) {
+            for (offers in offersModel) {
+                if (products.productId == offers.productId) {
+                    val discount =
+                        products.productPrice?.times(offers.productDiscount?.toDouble()!!.div(100))
+                    products.productPrice = products.productPrice?.minus(discount!!.toInt())
+                }
+            }
+        }
+
+        return offerProducts
+
     }
 
 

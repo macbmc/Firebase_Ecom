@@ -1,6 +1,6 @@
 package com.example.firebaseecom.di
 
-import com.example.firebaseecom.api.EkartApi
+import com.example.firebaseecom.api.EkartApiService
 import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.repositories.NetworkRepositoryImpl
@@ -22,7 +22,7 @@ object EkartApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): EkartApi {
+    fun provideRetrofit(): EkartApiService {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(2, TimeUnit.MINUTES)
             .readTimeout(2, TimeUnit.MINUTES)
@@ -37,7 +37,7 @@ object EkartApiModule {
                 )
             )
             .build()
-            .create(EkartApi::class.java)
+            .create(EkartApiService::class.java)
     }
 
     @Provides

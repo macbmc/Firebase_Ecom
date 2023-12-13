@@ -7,8 +7,6 @@ import java.io.Serializable
 data class ProductDetailsModel(
     @Json(name = "product_description")
     val productDescription: ProductMultiLanguage,
-    @Json(name = "product_discount")
-    val productDiscount: String?,
     @Json(name = "product_id")
     val productId: Int?,
     @Json(name = "product_reviews")
@@ -17,6 +15,6 @@ data class ProductDetailsModel(
     val productImage: List<String>?
 ) : Serializable {
 
-    constructor() : this(ProductMultiLanguage("",""), "", 0, ProductMultiLanguage("",""), listOf())
+    constructor() : this(ProductMultiLanguage("",""), 0, ProductMultiLanguage("",""), listOf())
 
 }

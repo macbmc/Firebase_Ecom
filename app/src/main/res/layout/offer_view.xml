@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="productHome"
+            type="com.example.firebaseecom.model.ProductHomeModel" />
+    </data>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border">
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/placeholder_image"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/productTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/productImage"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/textInLayout"
+            android:layout_marginStart="10dp"
+            android:text="@{productHome.productTitle.en}"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/productPriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Integer.toString(productHome.component4())}"
+            android:layout_toEndOf="@+id/productImage"
+            android:layout_below="@id/productTitleText"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/red"
+            android:textSize="22sp"
+            />
+
+
+    </RelativeLayout>
+</layout>

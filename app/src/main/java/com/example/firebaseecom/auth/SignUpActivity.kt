@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -16,6 +15,7 @@ import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -84,10 +84,7 @@ class SignUpActivity : BaseActivity() {
                                 is Resource.Failed -> {
                                     progressBar.isVisible = false
                                     Log.d("failed", it.message)
-                                    Toast.makeText(
-                                        this@SignUpActivity, it.message,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    ToastUtils().giveToast(it.message, this@SignUpActivity)
                                 }
 
                                 else -> {}

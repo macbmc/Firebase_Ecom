@@ -124,17 +124,6 @@
                     android:textColor="@color/black"
                     android:textSize="22sp" />
 
-                <TextView
-                    android:id="@+id/productDiscountText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/productTitleText"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_toEndOf="@id/productPriceText"
-                    android:text="@{productDetails.component2()}"
-                    android:textColor="@color/red"
-                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView3"

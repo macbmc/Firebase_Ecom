@@ -14,6 +14,7 @@ import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.FirebaseEcomApp
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.Serializable
@@ -56,22 +57,14 @@ class UserProfileActivity : BaseActivity() {
             }
             malayalamLanguageLayout.setOnClickListener {
 
-                Toast.makeText(
-                    this@UserProfileActivity,
-                    getString(R.string.malayalam),
-                    Toast.LENGTH_SHORT
-                ).show()
+                ToastUtils().giveToast(getString(R.string.malayalam),this@UserProfileActivity)
 
                 changeLocale("ml")
 
             }
             englishLanguageLayout.setOnClickListener {
 
-                Toast.makeText(
-                    this@UserProfileActivity,
-                    getString(R.string.english),
-                    Toast.LENGTH_SHORT
-                ).show()
+                ToastUtils().giveToast(getString(R.string.english),this@UserProfileActivity)
 
                 changeLocale("en")
             }

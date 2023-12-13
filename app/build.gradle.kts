@@ -94,7 +94,14 @@ dependencies {
 
     implementation("com.razorpay:checkout:1.6.33") //razorpay
 
-    implementation("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
+    implementation("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")//locale
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
+
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
 

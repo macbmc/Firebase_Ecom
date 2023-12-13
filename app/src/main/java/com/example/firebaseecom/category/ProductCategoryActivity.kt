@@ -17,10 +17,10 @@ import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.Serializable
-import java.lang.reflect.Field
 
 @AndroidEntryPoint
 class ProductCategoryActivity : BaseActivity() {
@@ -28,18 +28,18 @@ class ProductCategoryActivity : BaseActivity() {
 
     private lateinit var activityProductListBinding: ActivityProductListBinding
     private lateinit var productCategoryViewModel: ProductCategoryViewModel
-    private lateinit var adapter : ProductCategoryAdapter
+    private lateinit var adapter: ProductCategoryAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProductListBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_list)
         productCategoryViewModel = ViewModelProvider(this)[ProductCategoryViewModel::class.java]
         val category = intent.getStringExtra("category")
-        adapter = ProductCategoryAdapter(ProductCategoryClass(),langId)
+        adapter = ProductCategoryAdapter(ProductCategoryClass(), langId)
         observeProducts(category!!)
         activityProductListBinding.apply {
 
-            ButtonHolder.visibility=View.GONE
+            ButtonHolder.visibility = View.GONE
             destText.text = category
             backButton.setOnClickListener {
                 finish()
@@ -55,27 +55,26 @@ class ProductCategoryActivity : BaseActivity() {
 
     private fun observeProducts(category: String) {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-            productCategoryViewModel.getProductsByCat(category)
-            productCategoryViewModel.products.collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        activityProductListBinding.progressBar.isVisible = true
-                    }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productCategoryViewModel.getProductsByCat(category)
+                productCategoryViewModel.products.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            activityProductListBinding.progressBar.isVisible = true
+                        }
 
-                    is Resource.Success -> {
-                        activityProductListBinding.progressBar.isVisible = false
-                        adapter.setProducts(it.data)
-                    }
+                        is Resource.Success -> {
+                            activityProductListBinding.progressBar.isVisible = false
+                            adapter.setProducts(it.data)
+                        }
 
-                    is Resource.Failed -> {
-                        activityProductListBinding.progressBar.isVisible = true
-                        Toast.makeText(this@ProductCategoryActivity, it.message, Toast.LENGTH_SHORT)
-                            .show()
+                        is Resource.Failed -> {
+                            activityProductListBinding.progressBar.isVisible = true
+                            ToastUtils().giveToast(it.message, this@ProductCategoryActivity)
+                        }
                     }
                 }
             }
-        }
         }
 
     }
@@ -96,15 +95,4 @@ class ProductCategoryActivity : BaseActivity() {
         }
 
     }
-    /*fun getStringResourceId(stringToSearch: String): Int {
-        val fields: Array<Field> = R.string::class.java.fields
-        for (field in fields) {
-            val id = field.getInt(field)
-            val str = resources.getString(id)
-            if (str == stringToSearch) {
-                return id
-            }
-        }
-        return -1
-    }*/
 }

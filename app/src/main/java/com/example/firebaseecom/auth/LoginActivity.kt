@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -17,6 +16,7 @@ import com.example.firebaseecom.databinding.ActivityLoginBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity() {
             toSignUp.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
             }
-            forgotPassword.setOnClickListener{
+            forgotPassword.setOnClickListener {
                 authForgotPassword()
             }
         }
@@ -53,10 +53,10 @@ class LoginActivity : BaseActivity() {
         builder.setTitle(getString(R.string.forgot_password))
         builder.setMessage(getString(R.string.enter_your_email_linked_to_ekart))
         builder.setView(editText)
-        builder.setPositiveButton(R.string.submit){_,_ ->
+        builder.setPositiveButton(R.string.submit) { _, _ ->
             authViewModel.forgotPassword(editText.text.toString())
         }
-        builder.setNegativeButton(R.string.cancel){_,_-> }
+        builder.setNegativeButton(R.string.cancel) { _, _ -> }
         builder.show()
     }
 
@@ -87,9 +87,7 @@ class LoginActivity : BaseActivity() {
                                 is Resource.Failed -> {
                                     Log.d("failed", it.message)
                                     progressBar.visibility = View.INVISIBLE
-                                    Toast.makeText(
-                                        this@LoginActivity, it.message, Toast.LENGTH_LONG
-                                    ).show()
+                                    ToastUtils().giveToast(it.message, this@LoginActivity)
                                 }
 
                                 else -> {}

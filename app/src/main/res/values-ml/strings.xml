@@ -82,4 +82,17 @@
     <string name="check_your_mail">പാസ്‌വേഡ് റീസെറ്റ് ലിങ്കിനായി നിങ്ങളുടെ മെയിൽ പരിശോധിക്കുക</string>
     <string name="forgot_password">പാസ്വേഡ് മറന്നോ?</string>
     <string name="enter_your_email_linked_to_ekart">EKart-ലേക്ക് ലിങ്ക് ചെയ്‌തിരിക്കുന്ന നിങ്ങളുടെ ഇമെയിൽ നൽകുക</string>
+    <string name="credential_already_in_use">ക്രെഡൻഷ്യൽ ഇതിനകം ഉപയോഗത്തിലാണ്</string>
+    <string name="credentials_not_valid">ക്രെഡൻഷ്യലുകൾ അസാധുവാണ്</string>
+    <string name="added_to_cart">കാർട്ടിൽ ചേർത്തു</string>
+    <string name="connection_unavailable">കണക്ഷൻ ലഭ്യമല്ല</string>
+    <string name="connection_losing">കണക്ഷൻ നഷ്ടപ്പെടുന്നു</string>
+    <string name="connection_lost">കണക്ഷൻ  വിച്ഛേദിക്കപ്പെട്ടു</string>
+    <string name="search_meaningful_text">അർത്ഥവത്തായ വാചകം തിരയുക</string>
+    <string name="please_wait">കാത്തിരിക്കൂ</string>
+    <string name="data_updated">ഡാറ്റ അപ്ഡേറ്റ് ചെയ്തു</string>
+    <string name="no_offers_available_for_this_category">ഈ വിഭാഗത്തിന് ഓഫറുകളൊന്നും ലഭ്യമല്ല</string>
+    <string name="no_results_for_your_search">നിങ്ങളുടെ തിരയലിന് ഫലങ്ങളൊന്നുമില്ല</string>
+    <string name="data_from_local_is_null">ലോക്കലിൽ നിന്നുള്ള ഡാറ്റ അസാധുവാണ്</string>
+    <string name="offerZone">ഓഫർ സോൺ</string>
 </resources>
