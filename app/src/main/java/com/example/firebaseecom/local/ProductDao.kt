@@ -10,6 +10,7 @@ import com.example.firebaseecom.model.ProductHomeModel
 
 interface ProductDao {
 
+
     @Insert(onConflict=OnConflictStrategy.REPLACE )
     suspend fun insertProduct(productList:List<ProductHomeModel>)
 
@@ -24,5 +25,8 @@ interface ProductDao {
 
     @Query("SELECT * FROM ProductTable WHERE productId =:productId")
     fun getOfferProduct(productId:Int):ProductHomeModel
+
+    @Query("DELETE FROM ProductTable")
+    fun deleteAll()
 
 }

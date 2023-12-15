@@ -8,6 +8,7 @@ import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
+import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val productRepository: ProductRepository,
     private val firestoreRepository: FirestoreRepository,
     private val authRepository: AuthRepository,
     private val networkRepository: NetworkRepository,
@@ -29,6 +31,10 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
+
+    companion object {
+        val getChange = MutableLiveData<Boolean>()
+    }
 
 
     private suspend fun getAdData() {
@@ -54,8 +60,24 @@ class HomeViewModel @Inject constructor(
             if (remoteData != null) {
                 databaseRepository.storeInLocal(remoteData)
                 _products.value = databaseRepository.fetchFromLocal()
+                when (localData) {
+                    is Resource.Success -> {
+                        val localDbData = localData.data
+                        getProductChange(localDbData, remoteData)
+                    }
+
+                    else -> {}
+                }
             }
         }
+    }
+
+    private suspend fun getProductChange(
+        localData: List<ProductHomeModel>,
+        remoteData: List<ProductHomeModel>
+    ) {
+        val productChange = productRepository.getChangeInProduct(localData, remoteData)
+        getChange.postValue(productChange)
     }
 
     suspend fun checkNumbWishlist(dest: String): Int {
@@ -72,5 +94,6 @@ class HomeViewModel @Inject constructor(
         }
         return ifNewUser.await()
     }
+
 }
 

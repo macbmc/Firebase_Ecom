@@ -36,7 +36,7 @@ class UserProfileActivity : BaseActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = getSharedPreferences("NEW_USER_DIALOG", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("IN_APP_MESSAGING", MODE_PRIVATE)
         editor = sharedPreferences.edit()
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
@@ -104,7 +104,7 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun userSignout() {
-        editor.putInt("setValue",0)
+        editor.putInt("newUserTrigger",0)
         editor.apply()
         Log.d("setValueSIgnout", sharedPreferences.getInt("setValue", 0).toString())
         val intent = Intent(this@UserProfileActivity, SignUpActivity::class.java)

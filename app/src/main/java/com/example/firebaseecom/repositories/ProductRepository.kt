@@ -34,6 +34,10 @@ interface ProductRepository {
         offersModel: List<ProductOffersModel>
     ): List<ProductHomeModel>
 
+    suspend fun getChangeInProduct(
+        localData: List<ProductHomeModel>,
+        remoteData: List<ProductHomeModel>
+    ): Boolean
 
 }
 
@@ -131,6 +135,16 @@ class ProductRepositoryImpl @Inject constructor(
         }
 
         return offerProducts
+
+    }
+
+    override suspend fun getChangeInProduct(
+        localData: List<ProductHomeModel>,
+        remoteData: List<ProductHomeModel>
+    ): Boolean {
+        Log.d("changeInProductlocal",localData.toString())
+        Log.d("changeInProductRemote",remoteData.toString())
+        return localData != remoteData
 
     }
 

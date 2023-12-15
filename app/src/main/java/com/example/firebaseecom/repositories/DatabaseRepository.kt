@@ -37,6 +37,7 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     override suspend fun storeInLocal(remoteData: List<ProductHomeModel>?) {
         try {
+            productDao.deleteAll()
             productDao.insertProduct(remoteData!!)
         } catch (e: Exception) {
             Log.e("storeInLocal", e.toString())
@@ -46,15 +47,17 @@ class DatabaseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchFromLocal(): Resource<List<ProductHomeModel>> {
-        var productData = listOf<ProductHomeModel>()
+
+        var productData = mutableListOf<ProductHomeModel>()
         try {
-            productData = productDao.getProductFromDb()
+            productData = productDao.getProductFromDb().toMutableList()
         } catch (e: Exception) {
             Log.d("fetchFromLocal", e.toString())
         }
         if (productData.isEmpty()) {
             return Resource.Failed(context.getString(R.string.data_from_local_is_null))
         }
+
         return Resource.Success(productData)
     }
 

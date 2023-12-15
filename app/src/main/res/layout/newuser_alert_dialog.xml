@@ -31,10 +31,10 @@
         android:layout_toEndOf="@id/ekartLogo"
         android:textSize="22sp" />
     <TextView
+        android:id="@+id/dialogContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/greetingText"
-        android:text="@string/enjoy_shopping"
         android:textColor="@color/linkTextColor"
         android:layout_marginTop="18dp"
         android:layout_toEndOf="@id/ekartLogo"

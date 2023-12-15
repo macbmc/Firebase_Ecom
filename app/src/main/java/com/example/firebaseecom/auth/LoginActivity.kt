@@ -76,11 +76,12 @@ class LoginActivity : BaseActivity() {
 
                                 is Resource.Success -> {
                                     Log.d("success", "${it.data}")
-                                    startActivity(
-                                        Intent(
-                                            this@LoginActivity, HomeActivity::class.java
-                                        )
-                                    )
+                                    val intent =
+                                        Intent(this@LoginActivity, HomeActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent)
+                                    finish()
 
                                 }
 

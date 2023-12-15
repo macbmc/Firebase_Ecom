@@ -1,11 +1,9 @@
 package com.example.firebaseecom.home
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -21,11 +19,13 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.home.HomeViewModel.Companion.getChange
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.offers.OfferZoneActivity
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
+import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
@@ -48,15 +48,14 @@ class HomeActivity : BaseActivity() {
     private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        sharedPreferences = getSharedPreferences("NEW_USER_DIALOG", MODE_PRIVATE)
-        editor = sharedPreferences.edit()
-        checkForNewUser()
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("IN_APP_MESSAGING", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        checkForNewUser()
         observeNetwork()
         val adView = homeBinding.carousalView
-        Log.d("homeLanguage", langId)
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
         adView.layoutManager = LinearLayoutManager(
@@ -200,7 +199,7 @@ class HomeActivity : BaseActivity() {
         homeItemView.adapter = adapter
         homeBinding.apply {
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repeatOnLifecycle(Lifecycle.State.CREATED) {
                     homeViewModel.getProductHome()
                     homeViewModel.products.collect()
                     {
@@ -214,6 +213,7 @@ class HomeActivity : BaseActivity() {
                                 homeItemViewProgress.visibility = View.INVISIBLE
                                 Log.d("itemViewLoader", "success")
                                 adapter.setProduct(it.data)
+                                observeNewProducts()
 
                             }
 
@@ -249,14 +249,21 @@ class HomeActivity : BaseActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        observeNetwork()
+    }
+
     private fun checkForNewUser() {
-        if (sharedPreferences.getInt("setValue", 0) == 0) {
-            Log.d("setValue",sharedPreferences.getInt("setValue", 0).toString())
+        if (sharedPreferences.getInt("newUserTrigger", 0) == 0) {
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    if (homeViewModel.checkForNewUser()) {
-                        editor.putInt("setValue", 1)
+                repeatOnLifecycle(Lifecycle.State.CREATED) {
+                    val isNewUser = homeViewModel.checkForNewUser()
+                    Log.d("AlertDialogNewUser", isNewUser.toString())
+                    if (isNewUser) {
+                        editor.putInt("newUserTrigger", 1)
                         editor.apply()
+                        Log.d("AlertDialogInsideNewUser", "called")
                         showNewUserDialog()
                     }
                 }
@@ -266,16 +273,49 @@ class HomeActivity : BaseActivity() {
 
 
     private fun showNewUserDialog() {
-        val alertDialog = AlertDialog.Builder(this)
-        val optionDialog = alertDialog.create()
-        val alertViewInflater = LayoutInflater.from(this).inflate(R.layout.newuser_alert_dialog,null)
-        alertDialog.setView(alertViewInflater)
-        alertDialog.setPositiveButton(R.string.con) { _, _ ->
-            optionDialog.dismiss()
-            //startActivity(Intent(this@HomeActivity,OfferZoneActivity::class.java))
-        }
-            .setCancelable(true)
-        alertDialog.show()
+        Log.d("ShowAlertDialog", "called")
+        AlertDialogUtils().showAlertDialog(this, getString(R.string.enjoy_shopping))
     }
 
+    private fun observeNewProducts() {
+        Log.d("observeNewProducts", sharedPreferences.getInt("newProductTrigger", 0).toString())
+        if (sharedPreferences.getInt("newProductTrigger", 0) == 0) {
+            getChange.observe(this@HomeActivity) {
+                if (it) {
+                    editor.putInt("newProductTrigger", 1)
+                    editor.apply()
+                    AlertDialogUtils().showAlertDialog(
+                        this@HomeActivity,
+                        getString(R.string.new_products)
+                    )
+                }
+            }
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        editor.putInt("newProductTrigger", 0)
+        editor.apply()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        editor.putInt("newProductTrigger", 0)
+        editor.apply()
+    }
 }
+
+
+/*,
+{
+    "product_id": 110,
+    "product_title": {
+    "en": "Apple iPhone 15",
+    "ml": "ആപ്പിൾ ഐഫോൺ 15 പ്രോ"
+},
+    "product_price": 135000,
+    "product_category": "Phone",
+    "product_image": "https://firebasestorage.googleapis.com/v0/b/imageapi-ecom.appspot.com/o/i-1-removebg-preview.png?alt=media&token=f0857e4c-d67b-4c74-a61a-d0670c627784"
+}*/
