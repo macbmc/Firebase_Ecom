@@ -1,8 +1,11 @@
 package com.example.firebaseecom.home
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
@@ -78,6 +81,10 @@ class HomeViewModel @Inject constructor(
     ) {
         val productChange = productRepository.getChangeInProduct(localData, remoteData)
         getChange.postValue(productChange)
+        Log.d("ObserveNewProductModel",productChange.toString())
+    }
+    fun changeNewProductStatus(){
+        getChange.postValue(false)
     }
 
     suspend fun checkNumbWishlist(dest: String): Int {
@@ -93,6 +100,16 @@ class HomeViewModel @Inject constructor(
             authRepository.checkForNewUser()
         }
         return ifNewUser.await()
+    }
+
+    suspend fun getOfferType():List<OfferModelClass>?
+    {
+        val activeOffer = viewModelScope.async(Dispatchers.IO){
+            networkRepository.fetchOfferTypes()
+        }
+        Log.d("activeOfferModel",activeOffer.await().toString())
+        return activeOffer.await()
+
     }
 
 }

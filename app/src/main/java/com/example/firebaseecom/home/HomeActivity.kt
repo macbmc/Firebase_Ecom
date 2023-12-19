@@ -1,5 +1,6 @@
 package com.example.firebaseecom.home
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -28,9 +29,11 @@ import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
+import com.example.firebaseecom.utils.NotificationUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -46,6 +49,8 @@ class HomeActivity : BaseActivity() {
     private val snapHelper = LinearSnapHelper()
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private var networkJob: Job? = null
+    private var productJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,8 @@ class HomeActivity : BaseActivity() {
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         checkForNewUser()
         observeNetwork()
+        observeNewProducts()
+        observeActiveOffers()
         val adView = homeBinding.carousalView
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
@@ -98,14 +105,12 @@ class HomeActivity : BaseActivity() {
 
     }
 
-    private fun loadOnRefresh() {
-        observeNetwork()
-    }
 
     private fun observeNetwork() {
+        networkJob?.cancel()
         val network = NetworkUtil(this)
         homeBinding.networkProgress.visibility = View.VISIBLE
-        lifecycleScope.launch {
+        networkJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 network.observeNetworkState().collect {
                     Log.d("networkState", it.toString())
@@ -192,14 +197,15 @@ class HomeActivity : BaseActivity() {
 
 
     private fun observeProducts() {
+        productJob?.cancel()
         val homeItemView = homeBinding.homeItemView
         val adapter = ProductHomeAdapter(NavigateClass(), langId)
 
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.CREATED) {
+            productJob = lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
                     homeViewModel.getProductHome()
                     homeViewModel.products.collect()
                     {
@@ -213,7 +219,6 @@ class HomeActivity : BaseActivity() {
                                 homeItemViewProgress.visibility = View.INVISIBLE
                                 Log.d("itemViewLoader", "success")
                                 adapter.setProduct(it.data)
-                                observeNewProducts()
 
                             }
 
@@ -259,11 +264,9 @@ class HomeActivity : BaseActivity() {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.CREATED) {
                     val isNewUser = homeViewModel.checkForNewUser()
-                    Log.d("AlertDialogNewUser", isNewUser.toString())
                     if (isNewUser) {
                         editor.putInt("newUserTrigger", 1)
                         editor.apply()
-                        Log.d("AlertDialogInsideNewUser", "called")
                         showNewUserDialog()
                     }
                 }
@@ -271,51 +274,45 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    private fun observeActiveOffers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED)
+            {
+                val activeOffer = homeViewModel.getOfferType()
+                if (activeOffer != null)
+                    NotificationUtils(this@HomeActivity).showOfferNotificationWithImage(activeOffer)
+            }
+        }
+    }
+
 
     private fun showNewUserDialog() {
-        Log.d("ShowAlertDialog", "called")
         AlertDialogUtils().showAlertDialog(this, getString(R.string.enjoy_shopping))
     }
 
     private fun observeNewProducts() {
-        Log.d("observeNewProducts", sharedPreferences.getInt("newProductTrigger", 0).toString())
-        if (sharedPreferences.getInt("newProductTrigger", 0) == 0) {
-            getChange.observe(this@HomeActivity) {
-                if (it) {
-                    editor.putInt("newProductTrigger", 1)
-                    editor.apply()
-                    AlertDialogUtils().showAlertDialog(
-                        this@HomeActivity,
-                        getString(R.string.new_products)
-                    )
-                }
+        getChange.observe(this@HomeActivity) {
+            if (it) {
+                showNewProductNotification()
             }
+
         }
+        homeViewModel.changeNewProductStatus()
+
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        editor.putInt("newProductTrigger", 0)
-        editor.apply()
+    private fun showNewProductNotification() {
+        val intent = Intent(this, OfferZoneActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        AlertDialogUtils().showAlertDialog(
+            this@HomeActivity,
+            getString(R.string.new_products)
+        )
+        NotificationUtils(this).showNotification(pendingIntent, getString(R.string.new_products))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        editor.putInt("newProductTrigger", 0)
-        editor.apply()
-    }
+
 }
 
 
-/*,
-{
-    "product_id": 110,
-    "product_title": {
-    "en": "Apple iPhone 15",
-    "ml": "ആപ്പിൾ ഐഫോൺ 15 പ്രോ"
-},
-    "product_price": 135000,
-    "product_category": "Phone",
-    "product_image": "https://firebasestorage.googleapis.com/v0/b/imageapi-ecom.appspot.com/o/i-1-removebg-preview.png?alt=media&token=f0857e4c-d67b-4c74-a61a-d0670c627784"
-}*/

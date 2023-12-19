@@ -3,6 +3,7 @@ package com.example.firebaseecom.repositories
 import android.util.Log
 import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.api.EkartApiService
+import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
@@ -17,6 +18,8 @@ interface NetworkRepository {
     suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>?
 
     suspend fun fetchProductOffers(): List<ProductOffersModel>?
+
+    suspend fun fetchOfferTypes():  List<OfferModelClass>?
 }
 
 class NetworkRepositoryImpl @Inject constructor(
@@ -26,6 +29,7 @@ class NetworkRepositoryImpl @Inject constructor(
     private lateinit var apiCall: Response<List<ProductHomeModel>?>
     private lateinit var apiCallDetails: Response<List<ProductDetailsModel>?>
     private lateinit var apiCallOffers: Response<List<ProductOffersModel>?>
+    private lateinit var apiCallActiveOffers: Response<List<OfferModelClass>?>
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         try {
@@ -82,5 +86,27 @@ class NetworkRepositoryImpl @Inject constructor(
         return null
     }
 
+    override suspend fun fetchOfferTypes(): List<OfferModelClass>? {
+        try {
+            apiCallActiveOffers = ekartApiService.getActiveOffers(EkartApiEndPoints.END_POINT_OFFER_TYPES.url)
+            Log.d("activeOffer", "success")
+        } catch (e: Exception) {
+            Log.d("activeOffer", e.toString())
+        }
+        if (::apiCallActiveOffers.isInitialized) {
+
+            if (apiCallActiveOffers.code() != 200) {
+                return null
+            }
+            return apiCallActiveOffers.body()
+        }
+        return null
+
+
+    }
+
 
 }
+
+
+
