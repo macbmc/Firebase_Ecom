@@ -98,4 +98,5 @@
     <string name="enjoy_shopping">Enjoy Shopping</string>
     <string name="welcome_to_ekart">Welcome to EKart</string>
     <string name="new_products">"New Products Added\nCheck them out "</string>
+    <string name="completeProfileMsg">Please complete\nyour\n User Profile</string>
 </resources>

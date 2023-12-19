@@ -1,11 +1,9 @@
 package com.example.firebaseecom.profile
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -15,6 +13,7 @@ import com.example.firebaseecom.auth.AuthViewModel
 import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import com.example.firebaseecom.main.BaseActivity
+import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.FirebaseEcomApp
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +32,6 @@ class UserProfileActivity : BaseActivity() {
     private lateinit var editor: SharedPreferences.Editor
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("IN_APP_MESSAGING", MODE_PRIVATE)
@@ -63,14 +61,14 @@ class UserProfileActivity : BaseActivity() {
             }
             malayalamLanguageLayout.setOnClickListener {
 
-                ToastUtils().giveToast(getString(R.string.malayalam),this@UserProfileActivity)
+                ToastUtils().giveToast(getString(R.string.malayalam), this@UserProfileActivity)
 
                 changeLocale("ml")
 
             }
             englishLanguageLayout.setOnClickListener {
 
-                ToastUtils().giveToast(getString(R.string.english),this@UserProfileActivity)
+                ToastUtils().giveToast(getString(R.string.english), this@UserProfileActivity)
 
                 changeLocale("en")
             }
@@ -104,9 +102,8 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun userSignout() {
-        editor.putInt("newUserTrigger",0)
+        editor.putInt("newUserTrigger", 0)
         editor.apply()
-        Log.d("setValueSIgnout", sharedPreferences.getInt("setValue", 0).toString())
         val intent = Intent(this@UserProfileActivity, SignUpActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
@@ -119,8 +116,19 @@ class UserProfileActivity : BaseActivity() {
         profileViewModel.userData()
 
         profileViewModel.userDetails.observe(this) {
+            Log.d("userDialog", "called")
             activityUserProfileBinding.apply {
                 userDetails = it
+                Log.d("userDialog", sharedPreferences.getInt("userProfileDialog", 0).toString())
+                if (userDetails?.userName!!.isEmpty() || userDetails?.userImg!!.isEmpty() || userDetails?.address!!.isEmpty()) {
+                    if (sharedPreferences.getInt("userProfileDialog", 0) == 0) {
+                        showProfileCompleteDialog()
+                        editor.putInt("userProfileDialog", 1)
+                        editor.apply()
+                    }
+
+                }
+
                 if (userDetails?.userName!!.isNotEmpty()) {
                     greetingText.text = getString(R.string.hey, userDetails?.userName)
                 }
@@ -133,6 +141,14 @@ class UserProfileActivity : BaseActivity() {
 
 
     }
+
+    private fun showProfileCompleteDialog() {
+        AlertDialogUtils().showAlertDialog(
+            this@UserProfileActivity,
+            getString(R.string.completeProfileMsg)
+        )
+    }
+
 
     private fun changeLocale(langId: String) {
         val newLocale = Locale(langId)

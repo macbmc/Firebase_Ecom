@@ -259,6 +259,16 @@ class HomeActivity : BaseActivity() {
         observeNetwork()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        editor.putInt("userProfileDialog", 0)
+        editor.apply()
+        Log.d("userDialogchanged", sharedPreferences.getInt("userProfileDialog", 0).toString())
+
+    }
+
+
+
     private fun checkForNewUser() {
         if (sharedPreferences.getInt("newUserTrigger", 0) == 0) {
             lifecycleScope.launch {
