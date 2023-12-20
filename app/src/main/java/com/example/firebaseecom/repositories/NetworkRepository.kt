@@ -19,7 +19,6 @@ interface NetworkRepository {
 
     suspend fun fetchProductOffers(): List<ProductOffersModel>?
 
-    suspend fun fetchOfferTypes():  List<OfferModelClass>?
 }
 
 class NetworkRepositoryImpl @Inject constructor(
@@ -86,24 +85,6 @@ class NetworkRepositoryImpl @Inject constructor(
         return null
     }
 
-    override suspend fun fetchOfferTypes(): List<OfferModelClass>? {
-        try {
-            apiCallActiveOffers = ekartApiService.getActiveOffers(EkartApiEndPoints.END_POINT_OFFER_TYPES.url)
-            Log.d("activeOffer", "success")
-        } catch (e: Exception) {
-            Log.d("activeOffer", e.toString())
-        }
-        if (::apiCallActiveOffers.isInitialized) {
-
-            if (apiCallActiveOffers.code() != 200) {
-                return null
-            }
-            return apiCallActiveOffers.body()
-        }
-        return null
-
-
-    }
 
 
 }

@@ -1,6 +1,9 @@
 package com.example.firebaseecom.auth
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
+import com.example.firebaseecom.broadcastReciever.AlarmReciever
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
@@ -20,6 +24,7 @@ import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity() {
@@ -28,6 +33,7 @@ class SignUpActivity : BaseActivity() {
     private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setAlarmTrigger()
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
@@ -49,6 +55,30 @@ class SignUpActivity : BaseActivity() {
 
             }
         }
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private fun setAlarmTrigger() {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 18)
+            set(Calendar.MINUTE, 4)
+            set(Calendar.SECOND, 0)
+        }
+
+        val intent = Intent(this, AlarmReciever::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,pendingIntent)
+
     }
 
     private fun authSignUp() {

@@ -62,7 +62,6 @@ class HomeActivity : BaseActivity() {
         checkForNewUser()
         observeNetwork()
         observeNewProducts()
-        observeActiveOffersToShowDialog()
         val adView = homeBinding.carousalView
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
@@ -282,18 +281,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun observeActiveOffersToShowDialog() {
-        val intent = Intent(this, OfferZoneActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED)
-            {
-                val activeOffer = homeViewModel.getOfferType()
-                if (activeOffer != null)
-                    NotificationUtils(this@HomeActivity).showOfferNotificationWithImage(activeOffer,pendingIntent)
-            }
-        }
-    }
+
 
 
     private fun showNewUserDialog() {

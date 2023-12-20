@@ -102,15 +102,6 @@ class HomeViewModel @Inject constructor(
         return ifNewUser.await()
     }
 
-    suspend fun getOfferType():List<OfferModelClass>?
-    {
-        val activeOffer = viewModelScope.async(Dispatchers.IO){
-            networkRepository.fetchOfferTypes()
-        }
-        Log.d("activeOfferModel",activeOffer.await().toString())
-        return activeOffer.await()
-
-    }
 
 }
 

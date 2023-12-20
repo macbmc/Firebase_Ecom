@@ -16,10 +16,10 @@ interface EkartApiService {
     suspend fun getProductDetails(@Url url: String): Response<List<ProductDetailsModel>?>
 
     @GET
-    suspend fun getProductOffers(@Url url: String) : Response<List<ProductOffersModel>?>
+    suspend fun getProductOffers(@Url url: String): Response<List<ProductOffersModel>?>
 
     @GET
-    suspend fun getActiveOffers(@Url url:String) : Response<List<OfferModelClass>?>
+    suspend fun getSeasonalOffers(@Url url: String): Response<List<OfferModelClass>?>
 
 
 }
