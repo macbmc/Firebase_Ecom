@@ -28,6 +28,14 @@
         android:theme="@style/Theme.FirebaseEcom"
         tools:targetApi="31">
 
+        <service android:name=".service.PushNotificationUtils"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"/>
+            </intent-filter>
+
+        </service>
+
 
         <activity
             android:name=".offers.OfferZoneActivity"

@@ -57,13 +57,15 @@ class NotificationUtils(
 
     }
 
-    fun showOfferNotificationWithImage(activeOfferList: List<OfferModelClass>?) {
-        lateinit var bitmap: Bitmap
+    fun showOfferNotificationWithImage(
+        activeOfferList: List<OfferModelClass>?,
+        pendingIntent: PendingIntent
+    ) {
         val n = (0..activeOfferList?.size!!.minus(1)).random()
         val activeOffer = activeOfferList[n]
 
         try {
-            val target = Glide.with(context)
+            Glide.with(context)
                 .asBitmap()
                 .load(activeOffer.offerImage)
                 .into(object : CustomTarget<Bitmap>() {
@@ -90,6 +92,8 @@ class NotificationUtils(
                                 .setContentTitle(activeOffer.offerName)
                                 .setContentText(activeOffer.offerText)
                                 .setLargeIcon(resource)
+                                .setContentIntent(pendingIntent)
+                                .setAutoCancel(true)
 
                         } else {
                             nBuilder = Notification.Builder(context)
@@ -97,9 +101,11 @@ class NotificationUtils(
                                 .setContentTitle(activeOffer.offerName)
                                 .setContentText(activeOffer.offerText)
                                 .setLargeIcon(resource)
+                                .setContentIntent(pendingIntent)
+                                .setAutoCancel(true)
 
                         }
-                        nManager.notify(101, nBuilder.build())
+                        nManager.notify(102, nBuilder.build())
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {

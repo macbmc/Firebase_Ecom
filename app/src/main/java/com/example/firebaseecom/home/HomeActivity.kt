@@ -58,10 +58,11 @@ class HomeActivity : BaseActivity() {
         editor = sharedPreferences.edit()
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        changeUserDialog()
         checkForNewUser()
         observeNetwork()
         observeNewProducts()
-        observeActiveOffers()
+        observeActiveOffersToShowDialog()
         val adView = homeBinding.carousalView
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
@@ -103,6 +104,12 @@ class HomeActivity : BaseActivity() {
         }
 
 
+    }
+
+    private fun changeUserDialog() {
+        editor.putInt("userProfileDialog", 0)
+        editor.apply()
+        Log.d("userDialogChanged", sharedPreferences.getInt("userProfileDialog", 0).toString())
     }
 
 
@@ -259,15 +266,6 @@ class HomeActivity : BaseActivity() {
         observeNetwork()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        editor.putInt("userProfileDialog", 0)
-        editor.apply()
-        Log.d("userDialogchanged", sharedPreferences.getInt("userProfileDialog", 0).toString())
-
-    }
-
-
 
     private fun checkForNewUser() {
         if (sharedPreferences.getInt("newUserTrigger", 0) == 0) {
@@ -284,13 +282,15 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun observeActiveOffers() {
+    private fun observeActiveOffersToShowDialog() {
+        val intent = Intent(this, OfferZoneActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED)
             {
                 val activeOffer = homeViewModel.getOfferType()
                 if (activeOffer != null)
-                    NotificationUtils(this@HomeActivity).showOfferNotificationWithImage(activeOffer)
+                    NotificationUtils(this@HomeActivity).showOfferNotificationWithImage(activeOffer,pendingIntent)
             }
         }
     }
