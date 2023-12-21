@@ -45,24 +45,16 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateUserEmail(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            authRepository.userEmailUpdate(email, password)
-        }
-    }
-
 
     suspend fun storeImageAndGetUrl(imageUri: Uri?) {
-        if (imageUri!=null) {
+        if (imageUri != null) {
             viewModelScope.launch(Dispatchers.IO) {
                 storageRepository.storeImageAndGetUrl(imageUri).collect { downloadUrl ->
                     Log.d("ImageDownloadUrlModel", downloadUrl)
                     userImage.postValue(downloadUrl)
                 }
             }
-        }
-        else
-        {
+        } else {
             userImage.postValue(" ")
         }
     }

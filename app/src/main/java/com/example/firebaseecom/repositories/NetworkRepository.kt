@@ -28,7 +28,6 @@ class NetworkRepositoryImpl @Inject constructor(
     private lateinit var apiCall: Response<List<ProductHomeModel>?>
     private lateinit var apiCallDetails: Response<List<ProductDetailsModel>?>
     private lateinit var apiCallOffers: Response<List<ProductOffersModel>?>
-    private lateinit var apiCallActiveOffers: Response<List<OfferModelClass>?>
 
     override suspend fun fetchFromRemote(): List<ProductHomeModel>? {
         try {

@@ -4,9 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.firebaseecom.R
-import com.example.firebaseecom.utils.AuthState
 import com.example.firebaseecom.utils.Resource
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -20,8 +18,6 @@ interface AuthRepository {
     val currentUser: FirebaseUser?
     suspend fun userLogin(email: String, password: String): Resource<FirebaseUser>
     suspend fun userSignUp(email: String, password: String, phNum: String): Resource<FirebaseUser>
-    suspend fun userEmailUpdate(email: String, password: String): AuthState
-    suspend fun deleteUserAccount(password: String)
     fun userSignOut()
 
     fun forgotPassword(email: String)
@@ -91,60 +87,6 @@ class AuthRepositoryImpl @Inject constructor(
 
         } else {
             Resource.Failed(msg)
-        }
-    }
-
-    override suspend fun userEmailUpdate(email: String, password: String): AuthState {
-        val auth = EmailAuthProvider.getCredential(currentUser?.email!!, password)
-        var response = 400
-        currentUser?.reauthenticate(auth)
-
-            ?.addOnCompleteListener { reAuth ->
-                if (reAuth.isSuccessful) {
-                    Log.d("reAuth", "success")
-                    currentUser?.verifyBeforeUpdateEmail(email)
-                        ?.addOnCompleteListener { emailVerification ->
-                            if (emailVerification.isSuccessful) {
-                                response = 200
-
-                            }
-                        }?.addOnFailureListener {
-                            Log.d("emailVerification", it.toString())
-                        }
-                }
-
-            }?.addOnFailureListener {
-                Log.d("reAuth", it.toString())
-            }
-        if (response != 200)
-            return AuthState.SignedIn()
-
-        return AuthState.SignedOut()
-    }
-
-    override suspend fun deleteUserAccount(password: String) {
-        val authCredential = EmailAuthProvider.getCredential(currentUser?.email!!, password)
-        try {
-            currentUser?.reauthenticate(authCredential)
-                ?.addOnCompleteListener { reAuth ->
-                    if (reAuth.isSuccessful) {
-                        Log.d("reAuth", "success")
-                        currentUser?.delete()?.addOnCompleteListener { delete ->
-                            if (delete.isSuccessful) {
-                                Log.d("delete", "success")
-                                //currentUser=FirebaseAuth.getInstance().currentUser
-                            }
-                        }
-                            ?.addOnFailureListener {
-                                Log.d("delete", it.toString())
-                            }
-                    }
-                }
-                ?.addOnFailureListener {
-                    Log.d("reAuth", it.toString())
-                }
-        } catch (e: Exception) {
-            Log.d("deleteUserAccount", e.toString())
         }
     }
 

@@ -47,12 +47,13 @@ class AlarmReciever : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        val intent = Intent(context, SignUpActivity::class.java)
+        Log.d("IntentReceiver", intent.action.toString())
+        val onClickIntent = Intent(context, SignUpActivity::class.java)
         val pendingIntent =
-            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getActivity(context, 0, onClickIntent, PendingIntent.FLAG_IMMUTABLE)
         CoroutineScope(Dispatchers.IO).launch {
             activeOfferList = getOfferList()
-            val n = (0..activeOfferList?.size!!.minus(1)).random()
+            val n = (0..activeOfferList.size.minus(1)).random()
             val activeOffer = activeOfferList[n]
             try {
                 Glide.with(context)
@@ -110,6 +111,7 @@ class AlarmReciever : BroadcastReceiver() {
 
 
     }
+
 
     private suspend fun getOfferList(): List<OfferModelClass> {
 
