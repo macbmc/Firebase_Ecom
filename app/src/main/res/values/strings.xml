@@ -92,6 +92,11 @@
     <string name="data_updated">Data Updated</string>
     <string name="no_offers_available_for_this_category">No offers available for this category</string>
     <string name="no_results_for_your_search">No results for your search</string>
-    <string name="data_from_local_is_null">data from local is null</string>
+    <string name="data_from_local_is_null">""</string>
     <string name="offerZone">Offer Zone</string>
+    <string name="con">Continue</string>
+    <string name="enjoy_shopping">Enjoy Shopping</string>
+    <string name="welcome_to_ekart">Welcome to EKart</string>
+    <string name="new_products">"New Products Added\nCheck them out "</string>
+    <string name="completeProfileMsg">Please complete\nyour\n User Profile</string>
 </resources>

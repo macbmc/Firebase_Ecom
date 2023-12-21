@@ -18,7 +18,6 @@ class NetworkUtil(context: Context) {
     fun observeNetworkState(): Flow<NetworkState> {
         return callbackFlow {
             if (connectivityManager.activeNetwork == null) {
-                Log.d("networkStateUtil", "unavailable")
                 launch {
                     send(NetworkState.UNAVAILABLE)
                 }
@@ -26,7 +25,6 @@ class NetworkUtil(context: Context) {
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    Log.d("networkStateUtil", "Available")
                     launch {
                         send(NetworkState.AVAILABLE)
                     }
@@ -34,7 +32,6 @@ class NetworkUtil(context: Context) {
 
                 override fun onLosing(network: Network, maxMsToLive: Int) {
                     super.onLosing(network, maxMsToLive)
-                    Log.d("networkStateUtil", "Losing")
                     launch {
                         send(NetworkState.LOSING)
                     }
@@ -42,7 +39,6 @@ class NetworkUtil(context: Context) {
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
-                    Log.d("networkStateUtil", "Lost")
                     launch {
                         send(NetworkState.LOST)
                     }
@@ -50,7 +46,6 @@ class NetworkUtil(context: Context) {
 
                 override fun onUnavailable() {
                     super.onUnavailable()
-                    Log.d("networkStateUtil", "unavailable")
 
                     launch {
                         send(NetworkState.UNAVAILABLE)

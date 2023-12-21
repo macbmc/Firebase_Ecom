@@ -1,5 +1,9 @@
 package com.example.firebaseecom.auth
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +15,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
+import com.example.firebaseecom.broadcastReciever.AlarmReciever
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
+import com.example.firebaseecom.utils.AlarmTriggerUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity() {
@@ -27,6 +34,7 @@ class SignUpActivity : BaseActivity() {
     private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setAlarmTrigger()
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
@@ -50,6 +58,11 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    private fun setAlarmTrigger() {
+        AlarmTriggerUtils().setAlarmTriggerForNotification(this)
+
+    }
+
     private fun authSignUp() {
         signUpBinding.apply {
             job?.cancel()
@@ -62,7 +75,6 @@ class SignUpActivity : BaseActivity() {
                             editSignUpPhone.text.toString()
                         )
                         signUpAuth.collect {
-                            Log.d("msgAct", it.toString())
                             when (it) {
                                 is Resource.Loading -> {
                                     Log.d("Loading", "Loading")
@@ -78,6 +90,7 @@ class SignUpActivity : BaseActivity() {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                     startActivity(intent)
                                     finish()
+
 
                                 }
 
@@ -98,4 +111,5 @@ class SignUpActivity : BaseActivity() {
             }
         }
     }
+
 }

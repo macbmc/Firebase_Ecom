@@ -1,7 +1,8 @@
 package com.example.firebaseecom.home
 
-import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,16 +20,20 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityHomeBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
+import com.example.firebaseecom.home.HomeViewModel.Companion.getChange
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.offers.OfferZoneActivity
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
+import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
+import com.example.firebaseecom.utils.NotificationUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -42,16 +47,22 @@ class HomeActivity : BaseActivity() {
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity, ActivityFunctionClass())
     private val snapHelper = LinearSnapHelper()
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+    private var networkJob: Job? = null
+    private var productJob: Job? = null
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        sharedPreferences = getSharedPreferences("IN_APP_MESSAGING", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        changeUserDialog()
+        checkForNewUser()
         observeNetwork()
+        observeNewProducts()
         val adView = homeBinding.carousalView
-        Log.d("homeLanguage", langId)
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
         adView.layoutManager = LinearLayoutManager(
@@ -94,14 +105,18 @@ class HomeActivity : BaseActivity() {
 
     }
 
-    private fun loadOnRefresh() {
-        observeNetwork()
+    private fun changeUserDialog() {
+        editor.putInt("userProfileDialog", 0)
+        editor.apply()
+        Log.d("userDialogChanged", sharedPreferences.getInt("userProfileDialog", 0).toString())
     }
 
+
     private fun observeNetwork() {
+        networkJob?.cancel()
         val network = NetworkUtil(this)
         homeBinding.networkProgress.visibility = View.VISIBLE
-        lifecycleScope.launch {
+        networkJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 network.observeNetworkState().collect {
                     Log.d("networkState", it.toString())
@@ -176,11 +191,6 @@ class HomeActivity : BaseActivity() {
         homeViewModel.getAd()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
-        observeCartNumber()
-    }
 
     private fun observeCartNumber() {
         lifecycleScope.launch {
@@ -193,13 +203,14 @@ class HomeActivity : BaseActivity() {
 
 
     private fun observeProducts() {
+        productJob?.cancel()
         val homeItemView = homeBinding.homeItemView
         val adapter = ProductHomeAdapter(NavigateClass(), langId)
 
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
-            lifecycleScope.launch {
+            productJob = lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     homeViewModel.getProductHome()
                     homeViewModel.products.collect()
@@ -248,4 +259,58 @@ class HomeActivity : BaseActivity() {
         }
 
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        observeNetwork()
+    }
+
+
+    private fun checkForNewUser() {
+        if (sharedPreferences.getInt("newUserTrigger", 0) == 0) {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.CREATED) {
+                    val isNewUser = homeViewModel.checkForNewUser()
+                    if (isNewUser) {
+                        editor.putInt("newUserTrigger", 1)
+                        editor.apply()
+                        showNewUserDialog()
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+    private fun showNewUserDialog() {
+        AlertDialogUtils().showAlertDialog(this, getString(R.string.enjoy_shopping))
+    }
+
+    private fun observeNewProducts() {
+        getChange.observe(this@HomeActivity) {
+            if (it) {
+                showNewProductNotification()
+            }
+
+        }
+        homeViewModel.changeNewProductStatus()
+
+
+    }
+
+    private fun showNewProductNotification() {
+        val intent = Intent(this, OfferZoneActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        AlertDialogUtils().showAlertDialog(
+            this@HomeActivity,
+            getString(R.string.new_products)
+        )
+        NotificationUtils(this).showNotification(pendingIntent, getString(R.string.new_products))
+    }
+
+
 }
+
+

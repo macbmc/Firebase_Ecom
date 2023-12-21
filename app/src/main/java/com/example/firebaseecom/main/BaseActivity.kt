@@ -5,11 +5,15 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
 import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegate
 import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegateImpl
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 abstract class BaseActivity: AppCompatActivity() {
@@ -52,4 +56,6 @@ abstract class BaseActivity: AppCompatActivity() {
     open fun updateLocale(locale: Locale) {
         localeDelegate.setLocale(this, locale)
     }
+
+
 }

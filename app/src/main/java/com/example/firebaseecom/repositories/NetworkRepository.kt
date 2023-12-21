@@ -3,6 +3,7 @@ package com.example.firebaseecom.repositories
 import android.util.Log
 import com.example.firebaseecom.api.EkartApiEndPoints
 import com.example.firebaseecom.api.EkartApiService
+import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
@@ -17,6 +18,7 @@ interface NetworkRepository {
     suspend fun fetchDetailsFromRemote(): Resource<List<ProductDetailsModel>?>?
 
     suspend fun fetchProductOffers(): List<ProductOffersModel>?
+
 }
 
 class NetworkRepositoryImpl @Inject constructor(
@@ -83,4 +85,8 @@ class NetworkRepositoryImpl @Inject constructor(
     }
 
 
+
 }
+
+
+

@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -137,7 +136,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun updateProfileData(imgUri: Uri?) {
         activityEditProfileBinding.apply {
             progressBar.isVisible = true
-            ToastUtils().giveToast(getString(R.string.please_wait),this@EditProfileActivity)
+            ToastUtils().giveToast(getString(R.string.please_wait), this@EditProfileActivity)
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     profileViewModel.storeImageAndGetUrl(imgUri)
@@ -157,7 +156,10 @@ class EditProfileActivity : AppCompatActivity() {
                                 Log.d("dataUpdate", user.toString())
                                 profileViewModel.updateUser(user)
                                 progressBar.isVisible = false
-                                ToastUtils().giveToast(getString(R.string.data_updated),this@EditProfileActivity)
+                                ToastUtils().giveToast(
+                                    getString(R.string.data_updated),
+                                    this@EditProfileActivity
+                                )
                                 finish()
                             }
 
@@ -172,7 +174,10 @@ class EditProfileActivity : AppCompatActivity() {
                                 Log.d("dataUpdate", user.toString())
                                 profileViewModel.updateUser(user)
                                 progressBar.isVisible = false
-                                ToastUtils().giveToast(getString(R.string.data_updated),this@EditProfileActivity)
+                                ToastUtils().giveToast(
+                                    getString(R.string.data_updated),
+                                    this@EditProfileActivity
+                                )
                                 finish()
                             }
                         }

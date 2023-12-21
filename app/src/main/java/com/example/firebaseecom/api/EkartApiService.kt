@@ -1,5 +1,6 @@
 package com.example.firebaseecom.api
 
+import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductDetailsModel
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
@@ -15,7 +16,10 @@ interface EkartApiService {
     suspend fun getProductDetails(@Url url: String): Response<List<ProductDetailsModel>?>
 
     @GET
-    suspend fun getProductOffers(@Url url: String) : Response<List<ProductOffersModel>?>
+    suspend fun getProductOffers(@Url url: String): Response<List<ProductOffersModel>?>
+
+    @GET
+    suspend fun getSeasonalOffers(@Url url: String): Response<List<OfferModelClass>?>
 
 
 }

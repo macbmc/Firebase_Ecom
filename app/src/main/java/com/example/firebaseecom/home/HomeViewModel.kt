@@ -1,12 +1,17 @@
 package com.example.firebaseecom.home
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
+import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val productRepository: ProductRepository,
     private val firestoreRepository: FirestoreRepository,
+    private val authRepository: AuthRepository,
     private val networkRepository: NetworkRepository,
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
@@ -27,6 +34,10 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
+
+    companion object {
+        val getChange = MutableLiveData<Boolean>()
+    }
 
 
     private suspend fun getAdData() {
@@ -46,13 +57,34 @@ class HomeViewModel @Inject constructor(
     fun getProductHome() {
         _products.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            _products.value = databaseRepository.fetchFromLocal()
+            val localData = databaseRepository.fetchFromLocal()
+            _products.value = localData
             val remoteData = networkRepository.fetchFromRemote()
             if (remoteData != null) {
                 databaseRepository.storeInLocal(remoteData)
                 _products.value = databaseRepository.fetchFromLocal()
+                when (localData) {
+                    is Resource.Success -> {
+                        val localDbData = localData.data
+                        getProductChange(localDbData, remoteData)
+                    }
+
+                    else -> {}
+                }
             }
         }
+    }
+
+    private suspend fun getProductChange(
+        localData: List<ProductHomeModel>,
+        remoteData: List<ProductHomeModel>
+    ) {
+        val productChange = productRepository.getChangeInProduct(localData, remoteData)
+        getChange.postValue(productChange)
+        Log.d("ObserveNewProductModel",productChange.toString())
+    }
+    fun changeNewProductStatus(){
+        getChange.postValue(false)
     }
 
     suspend fun checkNumbWishlist(dest: String): Int {
@@ -62,5 +94,14 @@ class HomeViewModel @Inject constructor(
         return size.await()
 
     }
+
+    suspend fun checkForNewUser(): Boolean {
+        val ifNewUser = viewModelScope.async(Dispatchers.IO) {
+            authRepository.checkForNewUser()
+        }
+        return ifNewUser.await()
+    }
+
+
 }
 

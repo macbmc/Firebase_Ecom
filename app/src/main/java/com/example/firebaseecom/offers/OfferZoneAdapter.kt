@@ -9,20 +9,21 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.OfferViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 
-class OfferZoneAdapter(private val fragmentFunctionClass: FragmentFunctionInterface) : RecyclerView.Adapter<OfferZoneAdapter.MyViewHolder>() {
+class OfferZoneAdapter(private val fragmentFunctionClass: FragmentFunctionInterface) :
+    RecyclerView.Adapter<OfferZoneAdapter.MyViewHolder>() {
 
     private lateinit var offerViewBinding: OfferViewBinding
     private var productList = mutableListOf<ProductHomeModel>()
 
-    interface FragmentFunctionInterface{
+    interface FragmentFunctionInterface {
         fun navToDetails(product: ProductHomeModel)
     }
+
     class MyViewHolder(val offerViewBinding: OfferViewBinding) :
         RecyclerView.ViewHolder(offerViewBinding.root) {
-          fun bind(product:ProductHomeModel)
-          {
-              offerViewBinding.productHome=product
-          }
+        fun bind(product: ProductHomeModel) {
+            offerViewBinding.productHome = product
+        }
     }
 
     override fun onCreateViewHolder(
@@ -34,7 +35,7 @@ class OfferZoneAdapter(private val fragmentFunctionClass: FragmentFunctionInterf
         return MyViewHolder(offerViewBinding)
     }
 
-    override fun onBindViewHolder(holder: OfferZoneAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val product = productList[position]
         holder.bind(product)
         Glide.with(holder.itemView)
@@ -49,9 +50,8 @@ class OfferZoneAdapter(private val fragmentFunctionClass: FragmentFunctionInterf
         return productList.size
     }
 
-    fun setProducts(productList:List<ProductHomeModel>)
-    {
-        this.productList=productList.toMutableList()
+    fun setProducts(productList: List<ProductHomeModel>) {
+        this.productList = productList.toMutableList()
         notifyDataSetChanged()
     }
 }
