@@ -20,13 +20,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/home_product_border">
 
+        <TextView
+            android:id="@+id/discountSymb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="20sp"
+            android:textColor="@color/red"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="11dp" />
         <ImageView
             android:id="@+id/homeProductView"
-            android:layout_width="fill_parent"
+            android:layout_below="@id/discountSymb"
+            android:layout_width="match_parent"
             android:layout_height="174dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="16dp"
             android:background="@null"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/placeholder_image" />

@@ -1,12 +1,11 @@
 package com.example.firebaseecom.home
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firebaseecom.model.OfferModelClass
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
@@ -34,6 +33,8 @@ class HomeViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
+
+    val offerData = MutableLiveData<List<ProductOffersModel>>()
 
     companion object {
         val getChange = MutableLiveData<Boolean>()
@@ -81,9 +82,10 @@ class HomeViewModel @Inject constructor(
     ) {
         val productChange = productRepository.getChangeInProduct(localData, remoteData)
         getChange.postValue(productChange)
-        Log.d("ObserveNewProductModel",productChange.toString())
+        Log.d("ObserveNewProductModel", productChange.toString())
     }
-    fun changeNewProductStatus(){
+
+    fun changeNewProductStatus() {
         getChange.postValue(false)
     }
 
@@ -100,6 +102,14 @@ class HomeViewModel @Inject constructor(
             authRepository.checkForNewUser()
         }
         return ifNewUser.await()
+    }
+
+    suspend fun getOffers() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val offer = networkRepository.fetchProductOffers()
+            if (offer != null)
+                offerData.postValue(offer!!)
+        }
     }
 
 
