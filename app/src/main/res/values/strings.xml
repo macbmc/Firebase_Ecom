@@ -99,4 +99,12 @@
     <string name="welcome_to_ekart">Welcome to EKart</string>
     <string name="new_products">"New Products Added\nCheck them out "</string>
     <string name="completeProfileMsg">Please complete\nyour\n User Profile</string>
+    <string name="discountText">- %1$s %</string>
+    <string name="applyCoupon">Apply Coupon</string>
+    <string name="view_available_coupons">View available coupons</string>
+    <string name="no_available_coupons">No Available coupons</string>
+    <string name="addCoupon">Add Coupon\n</string>
+    <string name="select_a_coupon_first">Enter a valid coupon </string>
+    <string name="coupon_applied">Coupon Applied</string>
+    <string name="delivery_coupon_applied">Delivery coupon applied</string>
 </resources>

@@ -35,6 +35,7 @@ class OfferZoneViewModel @Inject constructor(
                 val discountedProducts = productRepository.getNewDiscount(offerProducts!!,offerData)
                 offerProductByCategory.value =
                     productRepository.getOffersByCategory(discountedProducts, category)
+                Log.d("offerZoneModel",offerProductByCategory.value.toString())
             }
         }
     }

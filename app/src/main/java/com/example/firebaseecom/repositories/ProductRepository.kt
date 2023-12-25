@@ -126,6 +126,7 @@ class ProductRepositoryImpl @Inject constructor(
 
         for (products in offerProducts) {
             for (offers in offersModel) {
+                Log.d("offerDataProductRepo","call")
                 if (products.productId == offers.productId) {
                     val discount =
                         products.productPrice?.times(offers.productDiscount?.toDouble()!!.div(100))

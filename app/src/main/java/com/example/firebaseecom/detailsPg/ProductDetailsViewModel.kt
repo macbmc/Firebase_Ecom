@@ -1,6 +1,5 @@
 package com.example.firebaseecom.detailsPg
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductDetailsModel
@@ -37,13 +36,6 @@ class ProductDetailsViewModel @Inject constructor(
     fun addToCart(productModel: ProductHomeModel) {
         viewModelScope.launch(Dispatchers.IO) {
             firestoreRepository.addToDest("cart", productModel)
-        }
-    }
-
-    fun addToOrders(productModel: ProductHomeModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            firestoreRepository.addToDest("orders", productModel)
-
         }
     }
 
