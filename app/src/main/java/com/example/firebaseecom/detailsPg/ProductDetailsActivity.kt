@@ -91,13 +91,15 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun addToBuy() {
-        when (activityProductDetailsBinding.editTextCoupon.text.toString()) {
-            selectedOffer.couponDiscount -> {
-                val discount =
-                    productHome.productPrice?.times(
-                        selectedOffer.productDiscount?.toDouble()!!.div(100)
-                    )
-                productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
+        if (::selectedOffer.isInitialized) {
+            when (activityProductDetailsBinding.editTextCoupon.text.toString()) {
+                selectedOffer.couponDiscount -> {
+                    val discount =
+                        productHome.productPrice?.times(
+                            selectedOffer.productDiscount?.toDouble()!!.div(100)
+                        )
+                    productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
+                }
             }
         }
 
@@ -135,6 +137,7 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun showAvailableCoupons() {
         activityProductDetailsBinding.apply {
+            Log.d("offerList", offers.toString())
             for (offer in offers) {
                 if (offer.productId == productHome.productId) {
                     selectedOffer = offer
@@ -150,10 +153,17 @@ class ProductDetailsActivity : BaseActivity() {
                         editTextCoupon.text = offer.couponVouchers?.toEditable()
                     }
 
-                } else {
-                   ToastUtils().giveToast(getString(R.string.no_available_coupons),this@ProductDetailsActivity)
                 }
 
+            }
+            if (!::selectedOffer.isInitialized)
+                ToastUtils().giveToast(
+                    getString(R.string.no_available_coupons),
+                    this@ProductDetailsActivity
+                )
+            else {
+                Log.d("smoothScroll", "called")
+                layoutScrollView.post { layoutScrollView.smoothScrollTo(0, couponList.bottom) }
             }
         }
 
@@ -202,6 +212,14 @@ class ProductDetailsActivity : BaseActivity() {
         }
     }
 
-    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+    private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+
+    override fun onResume() {
+        super.onResume()
+        productList = arrayListOf()
+        activityProductDetailsBinding.editTextCoupon.text = null
+        productHome = intent.extras!!.get("product") as ProductHomeModel
+
+    }
 
 }
