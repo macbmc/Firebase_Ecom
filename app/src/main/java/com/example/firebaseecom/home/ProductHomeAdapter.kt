@@ -41,7 +41,9 @@ class ProductHomeAdapter(
                 for (offer in offerDetails!!) {
                     if (offer.productId == productModel?.productId) {
                         Log.d("offerDatadiscount", offer.couponDiscount.toString())
-                        discountSymb.text=offer.productOfferDesc
+                        Glide.with(itemView)
+                            .load(offer.offerImage)
+                            .into(discountImage)
                     }
 
                 }

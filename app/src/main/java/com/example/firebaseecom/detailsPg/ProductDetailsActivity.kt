@@ -76,13 +76,8 @@ class ProductDetailsActivity : BaseActivity() {
                 showAvailableCoupons()
             }
             buttonBuyNow.setOnClickListener {
-                productList.add(productHome)
-                val intent =
-                    Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
-                if (productList.isNotEmpty()) {
-                    intent.putExtra("productList", productList)
-                }
-                startActivity(intent)
+                addToBuy()
+
             }
             buttonAddToCart.setOnClickListener {
                 productDetailsViewModel.addToCart(productHome)
@@ -95,12 +90,27 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
 
-    private fun getNewPrice() {
-        val discount =
-            productHome.productPrice?.times(selectedOffer.productDiscount?.toDouble()!!.div(100))
-        productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
+    private fun addToBuy() {
+        when (activityProductDetailsBinding.editTextCoupon.text.toString()) {
+            selectedOffer.couponDiscount -> {
+                val discount =
+                    productHome.productPrice?.times(
+                        selectedOffer.productDiscount?.toDouble()!!.div(100)
+                    )
+                productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
+            }
+        }
 
+        productList.add(productHome)
+        Log.d("productList", productList.toString())
+        val intent =
+            Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
+        if (productList.isNotEmpty()) {
+            intent.putExtra("productList", productList)
+        }
+        startActivity(intent)
     }
+
 
     private fun acceptCoupon() {
         activityProductDetailsBinding.apply {
@@ -108,20 +118,17 @@ class ProductDetailsActivity : BaseActivity() {
                 getString(R.string.select_a_coupon_first), this@ProductDetailsActivity
             )
             else {
-                ToastUtils().giveToast(
-                    getString(R.string.coupon_applied), this@ProductDetailsActivity
-                )
-                when (editTextCoupon.text.toString()) {
-                    selectedOffer.couponDiscount -> {
-                        getNewPrice()
-                    }
+                if (editTextCoupon.text.toString() == selectedOffer.couponDiscount || editTextCoupon.text.toString() == selectedOffer.couponVouchers)
+                    ToastUtils().giveToast(
+                        getString(R.string.coupon_applied),
+                        this@ProductDetailsActivity
+                    )
+                else
+                    ToastUtils().giveToast(
+                        getString(R.string.select_a_coupon_first),
+                        this@ProductDetailsActivity
+                    )
 
-                    selectedOffer.couponVouchers -> {
-                        ToastUtils().giveToast(
-                            getString(R.string.delivery_coupon_applied), this@ProductDetailsActivity
-                        )
-                    }
-                }
             }
         }
     }
@@ -144,7 +151,7 @@ class ProductDetailsActivity : BaseActivity() {
                     }
 
                 } else {
-                    noCoupons.isVisible = true
+                   ToastUtils().giveToast(getString(R.string.no_available_coupons),this@ProductDetailsActivity)
                 }
 
             }

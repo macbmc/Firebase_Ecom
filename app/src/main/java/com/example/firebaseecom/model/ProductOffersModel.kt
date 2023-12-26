@@ -8,6 +8,8 @@ import java.io.Serializable
 data class ProductOffersModel(
     @Json(name = "product_id")
     val productId: Int?,
+    @Json(name = "product_offer_img")
+    val offerImage: String?,
     @Json(name = "product_discount_percent")
     val productDiscount: Int?,
     @Json(name = "product_offer_description")
@@ -21,6 +23,6 @@ data class ProductOffersModel(
     @Json(name = "coupon_vouchers_description")
     val couponVouchersDesc: String?
 ) : Serializable {
-    constructor() : this(0, 0, "", "", "", "", "")
+    constructor() : this(0, "",0, "", "", "", "", "")
 }
 

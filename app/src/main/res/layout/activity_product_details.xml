@@ -197,17 +197,8 @@
                         android:text="@string/view_available_coupons"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
-                    <TextView
-                        android:id="@+id/noCoupons"
-                        android:layout_below="@id/viewCoupons"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/no_available_coupons"
-                        android:visibility="invisible" />
                     <RelativeLayout
-                        android:visibility="gone"
+                       android:visibility="gone"
                         android:id="@+id/couponList"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="60dp"
