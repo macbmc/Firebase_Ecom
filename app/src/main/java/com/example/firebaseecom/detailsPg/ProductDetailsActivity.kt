@@ -77,7 +77,6 @@ class ProductDetailsActivity : BaseActivity() {
             }
             buttonBuyNow.setOnClickListener {
                 productList.add(productHome)
-                Log.d("productList", productList.toString())
                 val intent =
                     Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
                 if (productList.isNotEmpty()) {
