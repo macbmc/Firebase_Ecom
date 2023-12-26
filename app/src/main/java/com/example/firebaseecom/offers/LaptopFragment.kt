@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -49,29 +51,35 @@ class LaptopFragment : Fragment() {
     }
 
     private fun observeOfferProducts() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED)
-            {
-                offerZoneViewModel.getOffersByCategory("Laptop")
-                offerZoneViewModel.offerProductByCategory.collect {
-                    when (it) {
-                        is Resource.Success -> {
-                            Log.d("offerZone", "success")
-                            adapter.setProducts(it.data)
-                        }
+        fragmentPhoneBinding.apply {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED)
+                {
+                    offerZoneViewModel.getOffersByCategory("Laptop")
+                    offerZoneViewModel.offerProductByCategory.collect {
+                        when (it) {
+                            is Resource.Success -> {
+                                Log.d("offerZone", "success")
+                                adapter.setProducts(it.data)
+                                progressBar.visibility = View.GONE
+                            }
 
-                        is Resource.Loading -> {
-                            Log.d("offerZone", "loading")
-                        }
+                            is Resource.Loading -> {
+                                Log.d("offerZone", "loading")
+                                progressBar.isVisible = true
+                            }
 
-                        is Resource.Failed -> {
-                            Log.d("offerZone", it.message)
+                            is Resource.Failed -> {
+                                Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
+                                Log.d("offerZone", it.message)
+                            }
                         }
                     }
                 }
             }
         }
     }
+
     inner class FragmentFunctionClass : OfferZoneAdapter.FragmentFunctionInterface {
         override fun navToDetails(product: ProductHomeModel) {
             val intent = Intent(activity, ProductDetailsActivity::class.java)

@@ -17,11 +17,11 @@ class AlarmTriggerUtils {
         alarmManager.cancel(pendingIntent)
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            if (get(Calendar.HOUR_OF_DAY) >= 10 && get(Calendar.MINUTE) >= 30) {
+            if (get(Calendar.HOUR_OF_DAY) >= 10 ) {
                 add(Calendar.DAY_OF_YEAR, 1)
             }
             set(Calendar.HOUR_OF_DAY, 10)
-            set(Calendar.MINUTE, 30)
+            set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
 

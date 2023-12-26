@@ -4,6 +4,7 @@ package com.example.firebaseecom.detailsPg
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -18,6 +19,7 @@ import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductMultiLanguage
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
@@ -31,27 +33,12 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var activityProductDetailsBinding: ActivityProductDetailsBinding
     private lateinit var productDetailsViewModel: ProductDetailsViewModel
     private lateinit var productHome: ProductHomeModel
+    private lateinit var selectedOffer: ProductOffersModel
+    private lateinit var offers: List<ProductOffersModel>
     private val carousalAdapter = ProductDetailsAdapter()
     private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
 
-    /*private val storagePermissionContract =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionAccepted ->
-            if (isPermissionAccepted)
-                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
-            else
-                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
-        }
-    private val activityResultLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Permission declined", Toast.LENGTH_SHORT).show()
-            }
-        }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +46,8 @@ class ProductDetailsActivity : BaseActivity() {
         activityProductDetailsBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
         productHome = intent.extras!!.get("product") as ProductHomeModel
+        val bundle = intent.extras
+        offers = bundle?.getSerializable("offers") as List<ProductOffersModel>
         val productView = activityProductDetailsBinding.productCarousalView
         snapHelper.attachToRecyclerView(productView)
         productView.adapter = carousalAdapter
@@ -74,31 +63,108 @@ class ProductDetailsActivity : BaseActivity() {
             productTitleHeader.text = productTitleMap[langId].toString()
             productPriceText.text = productHome.productPrice.toString()
             shareButton.setOnClickListener {
-                /*activityResultLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                storagePermissionContract.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)*/
+
                 productDetailsViewModel.shareProduct(productHome)
             }
             backButton.setOnClickListener {
                 finish()
             }
+            couponButton.setOnClickListener {
+                acceptCoupon()
+            }
+            viewCoupons.setOnClickListener {
+                showAvailableCoupons()
+            }
             buttonBuyNow.setOnClickListener {
-                productList.add(productHome)
-                Log.d("productList", productList.toString())
-                val intent =
-                    Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
-                if (productList.isNotEmpty()) {
-                    intent.putExtra("productList", productList)
-                }
-                startActivity(intent)
+                addToBuy()
+
             }
             buttonAddToCart.setOnClickListener {
                 productDetailsViewModel.addToCart(productHome)
                 ToastUtils().giveToast(
-                    getString(R.string.added_to_cart),
-                    this@ProductDetailsActivity
+                    getString(R.string.added_to_cart), this@ProductDetailsActivity
                 )
             }
 
+        }
+
+    }
+
+    private fun addToBuy() {
+        if (::selectedOffer.isInitialized) {
+            when (activityProductDetailsBinding.editTextCoupon.text.toString()) {
+                selectedOffer.couponDiscount -> {
+                    val discount =
+                        productHome.productPrice?.times(
+                            selectedOffer.productDiscount?.toDouble()!!.div(100)
+                        )
+                    productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
+                }
+            }
+        }
+
+        productList.add(productHome)
+        Log.d("productList", productList.toString())
+        val intent =
+            Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
+        if (productList.isNotEmpty()) {
+            intent.putExtra("productList", productList)
+        }
+        startActivity(intent)
+    }
+
+
+    private fun acceptCoupon() {
+        activityProductDetailsBinding.apply {
+            if (editTextCoupon.text.isEmpty()) ToastUtils().giveToast(
+                getString(R.string.select_a_coupon_first), this@ProductDetailsActivity
+            )
+            else {
+                if (editTextCoupon.text.toString() == selectedOffer.couponDiscount || editTextCoupon.text.toString() == selectedOffer.couponVouchers)
+                    ToastUtils().giveToast(
+                        getString(R.string.coupon_applied),
+                        this@ProductDetailsActivity
+                    )
+                else
+                    ToastUtils().giveToast(
+                        getString(R.string.select_a_coupon_first),
+                        this@ProductDetailsActivity
+                    )
+
+            }
+        }
+    }
+
+    private fun showAvailableCoupons() {
+        activityProductDetailsBinding.apply {
+            Log.d("offerList", offers.toString())
+            for (offer in offers) {
+                if (offer.productId == productHome.productId) {
+                    selectedOffer = offer
+                    couponDiscountHead.text = offer.couponDiscount
+                    couponVoucherHead.text = offer.couponVouchers
+                    couponDiscountDesc.text = offer.couponDiscountDesc
+                    couponVoucherDesc.text = offer.couponVouchersDesc
+                    couponList.isVisible = true
+                    couponDiscountButton.setOnClickListener {
+                        editTextCoupon.text = offer.couponDiscount?.toEditable()
+                    }
+                    couponVoucherButton.setOnClickListener {
+                        editTextCoupon.text = offer.couponVouchers?.toEditable()
+                    }
+
+                }
+
+            }
+            if (!::selectedOffer.isInitialized)
+                ToastUtils().giveToast(
+                    getString(R.string.no_available_coupons),
+                    this@ProductDetailsActivity
+                )
+            else {
+                Log.d("smoothScroll", "called")
+                layoutScrollView.post { layoutScrollView.smoothScrollTo(0, couponList.bottom) }
+            }
         }
 
     }
@@ -144,6 +210,16 @@ class ProductDetailsActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+
+    override fun onResume() {
+        super.onResume()
+        productList = arrayListOf()
+        activityProductDetailsBinding.editTextCoupon.text = null
+        productHome = intent.extras!!.get("product") as ProductHomeModel
+
     }
 
 }

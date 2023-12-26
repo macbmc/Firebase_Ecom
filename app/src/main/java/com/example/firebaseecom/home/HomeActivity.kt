@@ -23,6 +23,7 @@ import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.home.HomeViewModel.Companion.getChange
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.offers.OfferZoneActivity
 import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
@@ -205,13 +206,14 @@ class HomeActivity : BaseActivity() {
     private fun observeProducts() {
         productJob?.cancel()
         val homeItemView = homeBinding.homeItemView
-        val adapter = ProductHomeAdapter(NavigateClass(), langId)
+        val adapter = ProductHomeAdapter(this, NavigateClass(), langId)
 
         homeItemView.layoutManager = GridLayoutManager(this@HomeActivity, 2)
         homeItemView.adapter = adapter
         homeBinding.apply {
             productJob = lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    homeViewModel.getOffers()
                     homeViewModel.getProductHome()
                     homeViewModel.products.collect()
                     {
@@ -223,8 +225,11 @@ class HomeActivity : BaseActivity() {
 
                             is Resource.Success -> {
                                 homeItemViewProgress.visibility = View.INVISIBLE
-                                Log.d("itemViewLoader", "success")
-                                adapter.setProduct(it.data)
+                                homeViewModel.offerData.observe(this@HomeActivity) { offerData ->
+                                    Log.d("offerData", offerData.toString())
+                                    adapter.setProduct(it.data, offerData)
+                                }
+
 
                             }
 
@@ -245,9 +250,15 @@ class HomeActivity : BaseActivity() {
     }
 
     inner class NavigateClass : ProductHomeAdapter.NavigationInterface {
-        override fun navigateToDetails(productModel: ProductHomeModel) {
+        override fun navigateToDetails(
+            productModel: ProductHomeModel,
+            offersModelList: List<ProductOffersModel>
+        ) {
+            val bundle = Bundle()
+            bundle.putSerializable("offers",offersModelList as Serializable)
             val intent = Intent(this@HomeActivity, ProductDetailsActivity::class.java)
             intent.putExtra("product", productModel as Serializable)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
 
@@ -280,8 +291,6 @@ class HomeActivity : BaseActivity() {
             }
         }
     }
-
-
 
 
     private fun showNewUserDialog() {
