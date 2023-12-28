@@ -107,4 +107,5 @@
     <string name="select_a_coupon_first">Enter a valid coupon </string>
     <string name="coupon_applied">Coupon Applied</string>
     <string name="delivery_coupon_applied">Delivery coupon applied</string>
+    <string name="track_order">Track Order</string>
 </resources>

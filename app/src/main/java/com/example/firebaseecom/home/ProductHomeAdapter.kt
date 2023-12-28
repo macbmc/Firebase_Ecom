@@ -40,7 +40,7 @@ class ProductHomeAdapter(
                 homeProductTitle.text = productTitleLang?.get(langId).toString()
                 for (offer in offerDetails!!) {
                     if (offer.productId == productModel?.productId) {
-                        Log.d("offerDatadiscount", offer.couponDiscount.toString())
+                        Log.d("offerDatadiscount", productModel?.productId.toString())
                         Glide.with(itemView)
                             .load(offer.offerImage)
                             .into(discountImage)

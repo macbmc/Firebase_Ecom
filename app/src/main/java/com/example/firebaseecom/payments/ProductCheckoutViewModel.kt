@@ -30,7 +30,8 @@ class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: Fire
         for (productModel in productList) {
             val productOrderModel = ProductOrderModel(
                 productModel.productCategory, productModel.productId, productModel.productImage,
-                productModel.productPrice, productModel.productTitle, today.toString(), dDay.toString()
+                productModel.productPrice, productModel.productTitle, today.toString(), dDay.toString(),
+                listOf()
             )
             productOrderList.add(productOrderModel)
         }

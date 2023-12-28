@@ -9,7 +9,8 @@ data class ProductOrderModel(
     val productPrice: Int?,
     val productMultiLanguage: ProductMultiLanguage,
     val orderDate: String?,
-    val deliveryDate:String?
+    val deliveryDate:String?,
+    val currentGeoPoint:List<Double>
 ):Serializable{
-    constructor() : this("",0, "",0,ProductMultiLanguage("",""),"","")
+    constructor() : this("",0, "",0,ProductMultiLanguage("",""),"","", listOf())
 }
