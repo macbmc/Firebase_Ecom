@@ -6,6 +6,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
@@ -39,7 +40,14 @@ class ProductOrderViewActivity : BaseActivity() {
             deliverDate.text = getString(R.string.delivery_date, productOrderModel?.deliveryDate)
             navPop.setOnClickListener { finish() }
             trackButton.setOnClickListener {
-                navToProductTrack()
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    navToProductTrack()
+                }
+                else
+                {
+                    Toast.makeText(this@ProductOrderViewActivity,"Grant Location permission",Toast.LENGTH_LONG).show()
+                }
+
             }
         }
 

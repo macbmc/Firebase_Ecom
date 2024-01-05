@@ -184,12 +184,14 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun observeCarousal() {
+        homeViewModel.getAd()
         homeViewModel.adList.observe(this@HomeActivity) {
+            homeBinding.homeAdViewProgress.isVisible = true
             carousalAdapter.setAd(it)
+            homeBinding.homeAdViewProgress.isVisible = false
             homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
 
         }
-        homeViewModel.getAd()
     }
 
 
@@ -255,7 +257,7 @@ class HomeActivity : BaseActivity() {
             offersModelList: List<ProductOffersModel>
         ) {
             val bundle = Bundle()
-            bundle.putSerializable("offers",offersModelList as Serializable)
+            bundle.putSerializable("offers", offersModelList as Serializable)
             val intent = Intent(this@HomeActivity, ProductDetailsActivity::class.java)
             intent.putExtra("product", productModel as Serializable)
             intent.putExtras(bundle)

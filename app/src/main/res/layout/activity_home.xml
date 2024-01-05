@@ -160,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="120dp"
+                            android:layout_marginTop="100dp"
                             android:visibility="invisible" />
                     </RelativeLayout>
 
@@ -258,10 +258,11 @@
 
                     <ProgressBar
                         android:id="@+id/homeItemViewProgress"
+                        android:layout_below="@id/catIcons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="60dp"
+                        android:layout_centerHorizontal="true"
                         android:visibility="invisible" />
                 </RelativeLayout>
 

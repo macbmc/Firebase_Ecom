@@ -95,4 +95,19 @@
     <string name="no_results_for_your_search">നിങ്ങളുടെ തിരയലിന് ഫലങ്ങളൊന്നുമില്ല</string>
     <string name="data_from_local_is_null">ലോക്കലിൽ നിന്നുള്ള ഡാറ്റ അസാധുവാണ്</string>
     <string name="offerZone">ഓഫർ സോൺ</string>
+    <string name="con" >Continue</string>
+    <string name="enjoy_shopping">Enjoy Shopping</string>
+    <string name="welcome_to_ekart">Welcome to EKart</string>
+    <string name="new_products">"New Products Added\nCheck them out "</string>
+    <string name="completeProfileMsg">Please complete\nyour\n User Profile</string>
+    <string name="discountText">- %1$s %</string>
+    <string name="applyCoupon">Apply Coupon</string>
+    <string name="view_available_coupons">View available coupons</string>
+    <string name="no_available_coupons">No Available coupons</string>
+    <string name="addCoupon">Add Coupon\n</string>
+    <string name="select_a_coupon_first">Enter a valid coupon </string>
+    <string name="coupon_applied">Coupon Applied</string>
+    <string name="delivery_coupon_applied">Delivery coupon applied</string>
+    <string name="track_order">Track Order</string>
+    <string name="location_info">Your Product is at  %1$s</string>
 </resources>
