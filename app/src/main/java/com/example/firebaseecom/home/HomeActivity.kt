@@ -202,7 +202,7 @@ class HomeActivity : BaseActivity() {
             homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
 
             val timer = Timer()
-            timer.schedule(object : TimerTask() {
+            timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     if (adLayoutManager.findLastCompletelyVisibleItemPosition() < carousalAdapter.itemCount - 1) {
                         adLayoutManager.smoothScrollToPosition(
@@ -218,7 +218,9 @@ class HomeActivity : BaseActivity() {
                         )
                     }
                 }
-            }, 2000, 4000)
+            }, 4000, 6000)
+
+
 
 
         }

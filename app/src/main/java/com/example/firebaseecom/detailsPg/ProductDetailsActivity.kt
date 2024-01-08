@@ -197,6 +197,7 @@ class ProductDetailsActivity : BaseActivity() {
                                     getLanguageMap(productDetails!!.productDescription)[langId].toString()
 
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
+
                             }
                         }
 
