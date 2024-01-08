@@ -51,7 +51,13 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
                 finish()
             }
             PaymentBtn.setOnClickListener {
-                launchPay()
+                if (activityProductCheckoutBinding.editTextAddress.text.isNotEmpty())
+                    launchPay()
+                else
+                    ToastUtils().giveToast(
+                        "Enter valid delivery address",
+                        this@ProductCheckoutActivity
+                    )
             }
 
         }
@@ -84,7 +90,10 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onPaymentSuccess(p0: String?) {
         ToastUtils().giveToast("Order Placed", this)
-        productCheckoutViewModel.addToOrders(productList)
+        productCheckoutViewModel.addToOrders(
+            productList,
+            activityProductCheckoutBinding.editTextAddress.text.toString()
+        )
         productCheckoutViewModel.removeAllFromCart(productList)
         val intent = Intent(this, HomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -94,7 +94,7 @@
     <string name="no_results_for_your_search">No results for your search</string>
     <string name="data_from_local_is_null">""</string>
     <string name="offerZone">Offer Zone</string>
-    <string name="con">Continue</string>
+    <string name="con" >Continue</string>
     <string name="enjoy_shopping">Enjoy Shopping</string>
     <string name="welcome_to_ekart">Welcome to EKart</string>
     <string name="new_products">"New Products Added\nCheck them out "</string>
@@ -107,4 +107,7 @@
     <string name="select_a_coupon_first">Enter a valid coupon </string>
     <string name="coupon_applied">Coupon Applied</string>
     <string name="delivery_coupon_applied">Delivery coupon applied</string>
+    <string name="track_order">Track Order</string>
+    <string name="location_info">Your Product is at  %1$s</string>
+    <string name="deliveryLocation">Delivery Location</string>
 </resources>

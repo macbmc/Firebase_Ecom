@@ -107,6 +107,12 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
 
 
+    implementation("org.osmdroid:osmdroid-android:6.1.17")
+    //implementation("org.osmdroid:osmdroid-api:6.1.17")
+    //implementation("org.osmdroid:osmdroid-routing:6.1.17")
+
+
+
 
 
 

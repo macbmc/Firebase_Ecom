@@ -24,13 +24,14 @@ class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: Fire
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addToOrders(productList: List<ProductHomeModel>) {
+    fun addToOrders(productList: List<ProductHomeModel>,address:String) {
 
         val productOrderList = mutableListOf<ProductOrderModel>()
         for (productModel in productList) {
             val productOrderModel = ProductOrderModel(
                 productModel.productCategory, productModel.productId, productModel.productImage,
-                productModel.productPrice, productModel.productTitle, today.toString(), dDay.toString()
+                productModel.productPrice, productModel.productTitle, today.toString(),address, dDay.toString(),
+                listOf(),""
             )
             productOrderList.add(productOrderModel)
         }
