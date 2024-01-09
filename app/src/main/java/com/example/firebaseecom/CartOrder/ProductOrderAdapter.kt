@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.OrderViewBinding
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.model.asMap
 
@@ -19,6 +20,7 @@ class ProductOrderAdapter(private val nav: navInterface,val langId: String
 
     var productList = mutableListOf<ProductOrderModel>()
     private lateinit var orderViewBinding: OrderViewBinding
+
     override fun onCreateViewHolder(
 
         parent: ViewGroup,
