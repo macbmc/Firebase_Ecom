@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -42,23 +43,29 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
         adapter = ProductCheckoutAdapter(ActivityFunctionClass(), langId)
         activityProductCheckoutBinding.apply {
             productListView.layoutManager = LinearLayoutManager(
-                this@ProductCheckoutActivity,
-                LinearLayoutManager.VERTICAL,
-                false
+                this@ProductCheckoutActivity, LinearLayoutManager.VERTICAL, false
             )
             productListView.adapter = adapter
             backButton.setOnClickListener {
                 finish()
             }
             PaymentBtn.setOnClickListener {
-                if (activityProductCheckoutBinding.editTextAddress.text.isNotEmpty())
-                    launchPay()
-                else
-                    ToastUtils().giveToast(
-                        "Enter valid delivery address",
-                        this@ProductCheckoutActivity
-                    )
+                if (activityProductCheckoutBinding.editTextAddress.text.isNotEmpty()) launchPay()
+                else ToastUtils().giveToast(
+                    getString(R.string.enter_valid_delivery_address), this@ProductCheckoutActivity
+                )
             }
+            if(intent.getStringExtra("offerDesc")!=null)
+            {
+                mrpPrice.text = intent.getStringExtra("productMrp")
+                couponText.text = intent.getStringExtra("offerDesc")
+                couponPrice.text = intent.getIntExtra("offerAmnt",0).toString()
+            }
+            else
+            {
+                priceInfo.visibility= View.GONE
+            }
+
 
         }
         adapter.setProducts(productList.toList())
@@ -91,8 +98,7 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
     override fun onPaymentSuccess(p0: String?) {
         ToastUtils().giveToast("Order Placed", this)
         productCheckoutViewModel.addToOrders(
-            productList,
-            activityProductCheckoutBinding.editTextAddress.text.toString()
+            productList, activityProductCheckoutBinding.editTextAddress.text.toString()
         )
         productCheckoutViewModel.removeAllFromCart(productList)
         val intent = Intent(this, HomeActivity::class.java)

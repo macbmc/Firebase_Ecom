@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.CartViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.asMap
 
 class ProductCartAdapter(
@@ -17,12 +18,13 @@ class ProductCartAdapter(
 ) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
-        fun navigateToDetails(productHomeModel: ProductHomeModel)
+        fun navigateToDetails(productHomeModel: ProductHomeModel, offersModelList: List<ProductOffersModel>)
         fun addTotalPrice(productList: List<ProductHomeModel>)
         fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int)
     }
 
     var productList: MutableList<ProductHomeModel> = mutableListOf()
+    private var offerDetails: List<ProductOffersModel>? = listOf()
     private lateinit var cartViewBinding: CartViewBinding
     override fun onCreateViewHolder(
 
@@ -43,7 +45,7 @@ class ProductCartAdapter(
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.productImage))
         holder.itemView.setOnClickListener {
-            activityFunctionClass.navigateToDetails(productHome)
+            activityFunctionClass.navigateToDetails(productHome,offerDetails!!)
         }
     }
 
@@ -51,9 +53,10 @@ class ProductCartAdapter(
         return productList.size
     }
 
-    fun setProduct(productList: List<ProductHomeModel>) {
+    fun setProduct(productList: List<ProductHomeModel>, offerData: List<ProductOffersModel>) {
         this.productList = productList.toMutableList()
         notifyDataSetChanged()
+        this.offerDetails = offerData
         activityFunctionClass.addTotalPrice(productList)
     }
 

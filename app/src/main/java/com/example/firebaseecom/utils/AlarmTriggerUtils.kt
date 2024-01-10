@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.example.firebaseecom.broadcastReciever.AlarmReciever
 import java.util.Calendar
 
@@ -25,10 +26,17 @@ class AlarmTriggerUtils {
             set(Calendar.SECOND, 0)
         }
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent
-        )
+        try{
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+            Log.d("ALARM","SET")
+        }
+        catch (e:Exception)
+        {
+            Log.d("ALARM",e.toString())
+        }
     }
 }

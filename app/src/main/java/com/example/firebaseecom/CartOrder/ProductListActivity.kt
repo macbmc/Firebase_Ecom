@@ -16,6 +16,7 @@ import com.example.firebaseecom.databinding.ActivityProductListBinding
 import com.example.firebaseecom.detailsPg.ProductDetailsActivity
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
+import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
@@ -30,6 +31,7 @@ class ProductListActivity : BaseActivity() {
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var cartAdapter: ProductCartAdapter
     private lateinit var orderAdapter: ProductOrderAdapter
+
     var productList = arrayListOf<ProductHomeModel>()
     private var dest = ""
 
@@ -97,27 +99,29 @@ class ProductListActivity : BaseActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (dest == getString(R.string.order)) {
                     productListViewModel.getProductFromOrder()
-                    productListViewModel.productOrderList.collect {
-                        when (it) {
+                    productListViewModel.productOrderList.collect { product ->
+                        when (product) {
                             is Resource.Loading -> {
                                 activityProductListBinding.progressBar.isVisible = true
                             }
 
                             is Resource.Success -> {
                                 activityProductListBinding.progressBar.isVisible = false
-                                Log.d("cartData", it.data.toString())
-                                orderAdapter.setProduct(it.data)
+                                Log.d("cartData", product.data.toString())
+                                orderAdapter.setProduct(product.data)
+
 
                             }
 
                             is Resource.Failed -> {
                                 activityProductListBinding.progressBar.isVisible = false
-                                ToastUtils().giveToast(it.message, this@ProductListActivity)
+                                ToastUtils().giveToast(product.message, this@ProductListActivity)
                             }
                         }
                     }
                 } else {
                     if (dest == getString(R.string.cart)) {
+                        productListViewModel.getOffers()
                         productListViewModel.getProductFromDest("cart")
                         productListViewModel.productCartList.collect {
                             when (it) {
@@ -128,9 +132,12 @@ class ProductListActivity : BaseActivity() {
                                 is Resource.Success -> {
                                     activityProductListBinding.progressBar.isVisible = false
                                     Log.d("cartData", it.data.toString())
-                                    cartAdapter.setProduct(it.data)
-                                    productList = ArrayList(it.data)
+                                    productListViewModel.offerData.observe(this@ProductListActivity) { offerList ->
+                                        Log.d("cartOffer",offerList.toString())
+                                        cartAdapter.setProduct(it.data,offerList)
+                                        productList = ArrayList(it.data)
 
+                                    }
                                 }
 
                                 is Resource.Failed -> {
@@ -150,9 +157,12 @@ class ProductListActivity : BaseActivity() {
     }
 
     inner class ActivityFunctionClass : ProductCartAdapter.ActivityFunctionInterface {
-        override fun navigateToDetails(productHomeModel: ProductHomeModel) {
+        override fun navigateToDetails(productHomeModel: ProductHomeModel, offersModelList: List<ProductOffersModel>) {
             val intent = Intent(this@ProductListActivity, ProductDetailsActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable("offers", offersModelList as Serializable)
             intent.putExtra("product", productHomeModel as Serializable)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
 

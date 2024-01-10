@@ -19,7 +19,8 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
 
-class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ {
+@Suppress("DEPRECATION")
+class OsmdroidUtils(val context: Context) {
     private lateinit var controller: IMapController
     private var endPoint = GeoPoint(0.00, 0.00)
 
@@ -34,7 +35,6 @@ class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ 
         mMap.setTileSource(TileSourceFactory.MAPNIK)
         mMap.mapCenter
         mMap.setMultiTouchControls(true)
-        mMap.setBuiltInZoomControls(true)
         mMap.getLocalVisibleRect(Rect())
 
 
@@ -59,6 +59,7 @@ class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ 
                 object : Geocoder.GeocodeListener {
                     override fun onGeocode(addresses: MutableList<Address>) {
                         endPoint = GeoPoint(addresses[0].latitude, addresses[0].longitude)
+                        drawPolyline(mMap, startPoint, endPoint)
                         Log.d("GPS_in", addresses.toString())
                         mapLoadingInfo.postValue("success")
                         val endMarker = Marker(mMap)
@@ -66,14 +67,9 @@ class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ 
                         endMarker.position = endPoint
                         endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                         mMap.overlays.add(endMarker)
-                        mMap.invalidate()
                         controller.setCenter(startPoint)
-
-                        val polyLine = Polyline(mMap)
-                        polyLine.addPoint(startPoint)
-                        polyLine.addPoint(endPoint)
-                        mMap.overlays.add(polyLine)
                         mMap.invalidate()
+
                     }
 
                     override fun onError(errorMessage: String?) {
@@ -82,7 +78,8 @@ class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ 
                         mapLoadingInfo.postValue(errorMessage.toString())
 
                     }
-                })
+                }
+            )
         } else {
             val address =
                 Geocoder(context).getFromLocationName(productOrder.deliveryLocation.toString(), 1)
@@ -98,16 +95,23 @@ class OsmdroidUtils(val context: Context) /*: MapListener, GpsStatus.Listener*/ 
             endMarker.position = endPoint
             endMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             mMap.overlays.add(endMarker)
-            mMap.invalidate()
             controller.setCenter(startPoint)
+            drawPolyline(mMap, startPoint, endPoint)
+            mMap.invalidate()
 
-            val polyLine = Polyline(mMap)
-            polyLine.addPoint(startPoint)
-            polyLine.addPoint(endPoint)
-            mMap.overlays.add(polyLine)
 
         }
         return mapLoadingInfo
+
+    }
+
+    private fun drawPolyline(mMap: MapView, startPoint: GeoPoint, endPoint: GeoPoint) {
+        Log.d("GPS-Polyline", "created")
+        val polyLine = Polyline(mMap)
+        polyLine.addPoint(startPoint)
+        polyLine.addPoint(endPoint)
+        mMap.overlays.add(polyLine)
+        mMap.invalidate()
 
     }
 

@@ -110,4 +110,6 @@
     <string name="track_order">Track Order</string>
     <string name="location_info">Your Product is at  %1$s</string>
     <string name="deliveryLocation">Delivery Location</string>
+    <string name="enter_valid_delivery_address">Enter valid address</string>
+    <string name="product_mrp">Product MRP</string>
 </resources>

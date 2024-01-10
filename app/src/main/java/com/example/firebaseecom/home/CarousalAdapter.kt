@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.AdCorousalViewBinding
 
-class CarousalAdapter(private val context: Context,val activityFunctionClass: HomeActivity.ActivityFunctionClass):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
+class CarousalAdapter(private val context: Context, private val activityFunctionClass: HomeActivity.ActivityFunctionClass):RecyclerView.Adapter<CarousalAdapter.CarousalViewHolder>() {
 
     private var imageList= emptyList<String?>()
     private var lastPosition=-1

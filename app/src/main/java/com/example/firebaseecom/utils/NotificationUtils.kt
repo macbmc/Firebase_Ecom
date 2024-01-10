@@ -17,8 +17,8 @@ class NotificationUtils(
     private val description = "Test notification"
     fun showNotification(pendingIntent: PendingIntent, msg: String) {
 
+
         try {
-            Log.d("Status Notification", "try")
             val nManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -3,7 +3,10 @@ package com.example.firebaseecom.home
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
@@ -15,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.category.ProductCategoryActivity
@@ -38,6 +42,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
+
 @AndroidEntryPoint
 
 
@@ -52,9 +57,15 @@ class HomeActivity : BaseActivity() {
     private lateinit var editor: SharedPreferences.Editor
     private var networkJob: Job? = null
     private var productJob: Job? = null
+    private lateinit var adLayoutManager: LinearLayoutManager
+    private lateinit var adView: RecyclerView
+    private val handler = Handler(Looper.getMainLooper())
+    private var autoScrollRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED)
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 100)
         sharedPreferences = getSharedPreferences("IN_APP_MESSAGING", MODE_PRIVATE)
         editor = sharedPreferences.edit()
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
@@ -63,13 +74,14 @@ class HomeActivity : BaseActivity() {
         checkForNewUser()
         observeNetwork()
         observeNewProducts()
-        val adView = homeBinding.carousalView
+        adView = homeBinding.carousalView
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
-        adView.layoutManager = LinearLayoutManager(
+        adLayoutManager = LinearLayoutManager(
             this@HomeActivity, LinearLayoutManager.HORIZONTAL,
             false
         )
+        adView.layoutManager = adLayoutManager
 
 
 
@@ -110,6 +122,11 @@ class HomeActivity : BaseActivity() {
         editor.putInt("userProfileDialog", 0)
         editor.apply()
         Log.d("userDialogChanged", sharedPreferences.getInt("userProfileDialog", 0).toString())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopAutoScroll()
     }
 
 
@@ -191,6 +208,39 @@ class HomeActivity : BaseActivity() {
             homeBinding.homeAdViewProgress.isVisible = false
             homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
 
+
+
+        }
+    }
+
+
+    private fun startAutoScroll() {
+        autoScrollRunnable = object :
+            Runnable {
+            override fun run() {
+                if (adLayoutManager.findLastCompletelyVisibleItemPosition() < carousalAdapter.itemCount - 1) {
+                    adLayoutManager.smoothScrollToPosition(
+                        adView,
+                        RecyclerView.State(),
+                        adLayoutManager.findLastCompletelyVisibleItemPosition() + 1
+                    )
+                } else if (adLayoutManager.findLastCompletelyVisibleItemPosition() == carousalAdapter.itemCount - 1) {
+                    adLayoutManager.smoothScrollToPosition(
+                        adView,
+                        RecyclerView.State(),
+                        0
+                    )
+                }
+                handler.postDelayed(this, 4000L)
+            }
+
+        }
+        handler.postDelayed(autoScrollRunnable!!, 4000L)
+    }
+
+    private fun stopAutoScroll() {
+        autoScrollRunnable?.let {
+            handler.removeCallbacks(it)
         }
     }
 
@@ -276,6 +326,11 @@ class HomeActivity : BaseActivity() {
     override fun onRestart() {
         super.onRestart()
         observeNetwork()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAutoScroll()
     }
 
 

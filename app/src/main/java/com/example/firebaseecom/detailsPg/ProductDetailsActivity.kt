@@ -47,7 +47,10 @@ class ProductDetailsActivity : BaseActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_product_details)
         productHome = intent.extras!!.get("product") as ProductHomeModel
         val bundle = intent.extras
-        offers = bundle?.getSerializable("offers") as List<ProductOffersModel>
+        offers = if (bundle?.getSerializable("offers") != null) {
+            bundle?.getSerializable("offers") as List<ProductOffersModel>
+        } else
+            listOf()
         val productView = activityProductDetailsBinding.productCarousalView
         snapHelper.attachToRecyclerView(productView)
         productView.adapter = carousalAdapter
@@ -91,9 +94,13 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun addToBuy() {
+        var offerDesc = ""
+        var offerAmnt = 0
         if (::selectedOffer.isInitialized) {
             when (activityProductDetailsBinding.editTextCoupon.text.toString()) {
                 selectedOffer.couponDiscount -> {
+                    offerDesc = selectedOffer.couponDiscount.toString()
+                    offerAmnt = selectedOffer.productDiscount!!.toInt()
                     val discount =
                         productHome.productPrice?.times(
                             selectedOffer.productDiscount?.toDouble()!!.div(100)
@@ -109,6 +116,12 @@ class ProductDetailsActivity : BaseActivity() {
             Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
         if (productList.isNotEmpty()) {
             intent.putExtra("productList", productList)
+            intent.putExtra("offerDesc", offerDesc)
+            intent.putExtra("offerAmnt", offerAmnt)
+            intent.putExtra(
+                "productMrp",
+                activityProductDetailsBinding.productPriceText.text.toString()
+            )
         }
         startActivity(intent)
     }
@@ -197,6 +210,7 @@ class ProductDetailsActivity : BaseActivity() {
                                     getLanguageMap(productDetails!!.productDescription)[langId].toString()
 
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
+
                             }
                         }
 
