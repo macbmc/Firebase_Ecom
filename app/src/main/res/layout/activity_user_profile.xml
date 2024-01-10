@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
-        tools:context=".profile.UserProfileActivity">
+        tools:context=".profile.UserProfileActivity"
+        android:layoutAnimation="@anim/anim_profile">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/homeToolBar"
@@ -149,49 +150,7 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <!--<LinearLayout
-                android:id="@+id/row2Layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/row1Layout"
-                android:layout_marginTop="20dp">
 
-                <RelativeLayout
-                    android:id="@+id/paymentsLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/buttonColor">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="sans-serif-black"
-                        android:text="@string/payments"
-                        android:textColor="@color/white"
-                        android:textSize="22sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/helplineLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/buttonColor">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="sans-serif-black"
-                        android:text="@string/helpline"
-                        android:textColor="@color/white"
-                        android:textSize="22sp" />
-                </RelativeLayout>
-            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -262,13 +221,38 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/account_settings"
                 android:textSize="22dp" />
+            <RelativeLayout
+                android:id="@+id/appPoints"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/accountText"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/ekart_review_points"
+                    android:textColor="@color/textInLayout"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_star" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/editProfile"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/accountText"
-                android:layout_marginTop="20dp"
+                android:layout_below="@+id/appPoints"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border">
 
                 <TextView

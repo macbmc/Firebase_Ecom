@@ -351,7 +351,7 @@ class HomeActivity : BaseActivity() {
 
 
     private fun showNewUserDialog() {
-        AlertDialogUtils().showAlertDialog(this, getString(R.string.enjoy_shopping))
+        AlertDialogUtils().showAlertDialogNotification(this, getString(R.string.enjoy_shopping))
     }
 
     private fun observeNewProducts() {
@@ -369,7 +369,7 @@ class HomeActivity : BaseActivity() {
     private fun showNewProductNotification() {
         val intent = Intent(this, OfferZoneActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        AlertDialogUtils().showAlertDialog(
+        AlertDialogUtils().showAlertDialogNotification(
             this@HomeActivity,
             getString(R.string.new_products)
         )

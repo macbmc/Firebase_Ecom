@@ -3,6 +3,7 @@ package com.example.firebaseecom.repositories
 import android.util.Log
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOrderModel
+import com.example.firebaseecom.model.ProductOrderReviews
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.utils.Resource
 import com.google.android.gms.tasks.Tasks
@@ -15,15 +16,21 @@ interface FirestoreRepository {
     val currentUser: FirebaseUser?
     suspend fun addToUsers(userModel: UserModel): Int
     suspend fun getFromUsers(): UserModel?
-    suspend fun addToDest(dest: String,productModel: ProductHomeModel)
+    suspend fun addToDest(dest: String, productModel: ProductHomeModel)
     suspend fun checkNumDest(dest: String): Int
-    suspend fun removeFromDest(dest: String,productModel: ProductHomeModel)
+    suspend fun removeFromDest(dest: String, productModel: ProductHomeModel)
     suspend fun getAd(): List<String>
-    suspend fun addToOrders(productList:List<ProductOrderModel>)
-    suspend fun getFromDest(dest: String):Resource<List<ProductHomeModel>>
-    suspend fun getFromOrders():Resource<List<ProductOrderModel>>
+    suspend fun addToOrders(productList: List<ProductOrderModel>)
+    suspend fun getFromDest(dest: String): Resource<List<ProductHomeModel>>
+    suspend fun getFromOrders(): Resource<List<ProductOrderModel>>
     suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>)
 
+    suspend fun addToReviews(productOrderReviews: ProductOrderReviews)
+
+    suspend fun getProductReview(productId: Int): Resource<List<ProductOrderReviews>>
+    suspend fun getReviewUsers(reviewData: List<ProductOrderReviews>): List<UserModel>
+
+    suspend fun getUserReviews():List<ProductOrderReviews>
 
 
 }
@@ -37,15 +44,15 @@ class FirestoreRepositoryImpl @Inject constructor(
         get() = firebaseAuth.currentUser
 
 
-    override  suspend fun addToUsers(userModel: UserModel): Int {
+    override suspend fun addToUsers(userModel: UserModel): Int {
         var status = 400
-        Log.d("currentUser",currentUser?.email.toString())
+        Log.d("currentUser", currentUser?.email.toString())
         try {
             val doc = firestore.collection("users").document(currentUser!!.uid).set(userModel)
             doc.addOnSuccessListener {
-                    status = 200
-                    Log.d("success", "$status")
-                }
+                status = 200
+                Log.d("success", "$status")
+            }
                 .addOnFailureListener {
                     Log.e("toUse", "${it.message}")
 
@@ -60,7 +67,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     override suspend fun getFromUsers(): UserModel {
         val uid = currentUser?.uid
-        Log.d("currentUser",currentUser?.email.toString())
+        Log.d("currentUser", currentUser?.email.toString())
         val db = firestore.collection("users").document(uid.toString())
         var userInfo = UserModel()
 
@@ -73,10 +80,10 @@ class FirestoreRepositoryImpl @Inject constructor(
                     }
             )
             val data = snapshot.data
-            data.let{
+            data.let {
 
             }
-            Log.d("userinforepoIN",snapshot.data.toString())
+            Log.d("userinforepoIN", snapshot.data.toString())
             userInfo = UserModel(
                 data?.get("userName").toString(), data?.get("userEmail").toString(),
                 data?.get("userImg").toString(), data?.get("phNo").toString(),
@@ -86,15 +93,14 @@ class FirestoreRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Log.d("exceptio", e.toString())
         }
-        Log.d("userinforepo",userInfo.toString())
+        Log.d("userinforepo", userInfo.toString())
 
         return userInfo
 
     }
 
 
-
-    override suspend fun addToDest(dest:String,productModel: ProductHomeModel) {
+    override suspend fun addToDest(dest: String, productModel: ProductHomeModel) {
         try {
             val db = firestore.collection("user-$dest").document(currentUser!!.uid)
                 .collection("items").document(productModel.productId.toString())
@@ -135,9 +141,8 @@ class FirestoreRepositoryImpl @Inject constructor(
         return adList
     }
 
-    override suspend fun addToOrders(productList:List<ProductOrderModel>) {
-        for(productModel in productList)
-        {
+    override suspend fun addToOrders(productList: List<ProductOrderModel>) {
+        for (productModel in productList) {
             try {
                 val db = firestore.collection("user-orders").document(currentUser!!.uid)
                     .collection("items").document(productModel.productId.toString())
@@ -160,7 +165,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         db.delete()
     }
 
-    override suspend fun checkNumDest(dest: String): Int{
+    override suspend fun checkNumDest(dest: String): Int {
         var count = 0
         val db = firestore.collection("user-$dest").document(currentUser!!.uid)
             .collection("items")
@@ -177,12 +182,10 @@ class FirestoreRepositoryImpl @Inject constructor(
                     count++
                 }
             }
+        } catch (e: Exception) {
+            Log.e("ErrorNumbCheck", e.toString())
         }
-        catch (e:Exception)
-        {
-            Log.e("ErrorNumbCheck",e.toString())
-        }
-        Log.d("cartNUmrepo",count.toString())
+        Log.d("cartNUmrepo", count.toString())
         return count
 
     }
@@ -214,7 +217,7 @@ class FirestoreRepositoryImpl @Inject constructor(
         if (response != 200) {
             return Resource.Failed("No Available Data")
         }
-        Log.d("cartdatarepo",productList.toString())
+        Log.d("cartdatarepo", productList.toString())
         return Resource.Success(productList)
     }
 
@@ -245,19 +248,157 @@ class FirestoreRepositoryImpl @Inject constructor(
         if (response != 200) {
             return Resource.Failed("No Available Data")
         }
-        Log.d("cartdatarepo",productList.toString())
+        Log.d("cartdatarepo", productList.toString())
         return Resource.Success(productList)
     }
 
     override suspend fun removeFromCartIfOrder(productList: List<ProductHomeModel>) {
-        val db=firestore.collection("user-cart").document(currentUser!!.uid).collection("items")
-        for(productModel in productList)
-        {
+        val db = firestore.collection("user-cart").document(currentUser!!.uid).collection("items")
+        for (productModel in productList) {
             db.document(productModel.productId.toString()).get().addOnSuccessListener {
-                if(it.exists())
+                if (it.exists())
                     db.document(productModel.productId.toString()).delete()
             }
         }
+
+    }
+
+    override suspend fun addToReviews(productOrderReviews: ProductOrderReviews) {
+        productOrderReviews.userId = currentUser!!.uid
+        val db =
+            firestore.collection("user-reviews").document(currentUser!!.uid).collection("items")
+                .document(productOrderReviews.productId.toString())
+        val dbProduct = firestore.collection("product-reviews")
+            .document(productOrderReviews.productId.toString()).collection("reviews")
+            .document(currentUser!!.uid)
+        try {
+            db.set(productOrderReviews)
+                .addOnSuccessListener {
+                    Log.d("review", "success")
+                }
+                .addOnFailureListener {
+                    Log.d("review", "failed")
+                }
+            dbProduct.set(productOrderReviews)
+                .addOnSuccessListener {
+                    Log.d("review", "success")
+                }
+                .addOnFailureListener {
+                    Log.d("review", "failed")
+                }
+        } catch (e: Exception) {
+            Log.d("review", e.toString())
+        }
+
+    }
+
+    override suspend fun getProductReview(productId: Int): Resource<List<ProductOrderReviews>> {
+        var reviewList = mutableListOf<ProductOrderReviews>()
+        var response = 0
+        val db = firestore.collection("product-reviews")
+            .document(productId.toString()).collection("reviews")
+
+        try {
+            val snapshot = Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result
+                    }
+                })
+            snapshot.let {
+                for (doc in it.documents) {
+                    val data = doc.toObject(ProductOrderReviews::class.java)
+                    if (data != null) {
+                        response = 200
+                        reviewList.add(data)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("exception", e.toString())
+        }
+        if (response != 200) {
+            return Resource.Failed("No Available Data")
+        }
+        Log.d("reviewdatarepo", reviewList.toString())
+        return Resource.Success(reviewList)
+    }
+
+    override suspend fun getReviewUsers(reviewData: List<ProductOrderReviews>): List<UserModel> {
+        var reviewUser = mutableListOf<UserModel>()
+        var userIdList = getUserId(reviewData)
+        Log.d("reviewUserID", userIdList.toString())
+
+        for (userId in userIdList) {
+            val db = firestore.collection("users").document(userId)
+            var userInfo = UserModel()
+            try {
+                val snapshot = Tasks.await(
+                    db.get()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful)
+                                it.result
+                        }
+                )
+                val data = snapshot.data
+                Log.d("userinforepoIN", snapshot.data.toString())
+                userInfo = UserModel(
+                    data?.get("userName").toString(), data?.get("userEmail").toString(),
+                    data?.get("userImg").toString(), data?.get("phNo").toString(),
+                    data?.get("address").toString()
+                )
+
+            } catch (e: Exception) {
+                Log.d("exception", e.toString())
+            }
+            reviewUser.add(userInfo)
+            Log.d("reviewUserListRepoIn", userIdList.toString())
+
+        }
+        Log.d("reviewUserListRepo", userIdList.toString())
+        return reviewUser
+
+    }
+
+    override suspend fun getUserReviews():List<ProductOrderReviews> {
+        var response = 0
+        val reviewList = mutableListOf<ProductOrderReviews>()
+        val db = firestore.collection("user-reviews")
+            .document(currentUser!!.uid).collection("items")
+
+        try {
+            val snapshot = Tasks.await(db.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result
+                    }
+                })
+            snapshot.let {
+                for (doc in it.documents) {
+                    val data = doc.toObject(ProductOrderReviews::class.java)
+                    if (data != null) {
+                        response = 200
+                        reviewList.add(data)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("exception", e.toString())
+        }
+        if (response != 200) {
+            return listOf()
+        }
+        Log.d("reviewdatarepo",reviewList.toString())
+        return reviewList
+
+    }
+
+    private fun getUserId(reviewData: List<ProductOrderReviews>): List<String> {
+        val userIdList = mutableListOf<String>()
+        for (review in reviewData) {
+            userIdList.add(review.userId.toString())
+        }
+        return userIdList
 
     }
 }

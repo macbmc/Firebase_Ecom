@@ -6,6 +6,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.local.ProductDao
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
+import com.example.firebaseecom.model.ProductOrderReviews
 import com.example.firebaseecom.utils.Resource
 import javax.inject.Inject
 
@@ -16,6 +17,9 @@ interface DatabaseRepository {
     suspend fun fetchFromLocal(): Resource<List<ProductHomeModel>>
     suspend fun searchForProducts(searchQuery: String): Resource<List<ProductHomeModel>>
     suspend fun fetchProductByCategory(category: String): Resource<List<ProductHomeModel>>
+    suspend fun getProducts(reviewList: List<ProductOrderReviews>):List<ProductHomeModel>
+
+
 }
 
 
@@ -86,5 +90,37 @@ class DatabaseRepositoryImpl @Inject constructor(
             return Resource.Failed("Database Error,Try Again")
         }
         return Resource.Success(productData)
+    }
+
+    override suspend fun getProducts(reviewList: List<ProductOrderReviews>): List<ProductHomeModel> {
+        val productIdList = getProductId(reviewList)
+        val productList = mutableListOf<ProductHomeModel>()
+          for(id in productIdList)
+            {
+                try{
+                    productList.add(productDao.getOfferProduct(id))
+                }
+                catch (e:Exception)
+                {
+                    Log.d("Exception",e.toString())
+                }
+
+            }
+        return productList
+
+
+
+    }
+
+    private fun getProductId(reviewList: List<ProductOrderReviews>): List<Int> {
+        val idList = mutableListOf<Int>()
+
+        for(review in reviewList)
+        {
+            idList.add(review.productId!!)
+        }
+
+        return idList
+
     }
 }

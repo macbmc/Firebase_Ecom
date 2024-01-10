@@ -94,7 +94,7 @@
     <string name="no_results_for_your_search">No results for your search</string>
     <string name="data_from_local_is_null">""</string>
     <string name="offerZone">Offer Zone</string>
-    <string name="con" >Continue</string>
+    <string name="con">Continue</string>
     <string name="enjoy_shopping">Enjoy Shopping</string>
     <string name="welcome_to_ekart">Welcome to EKart</string>
     <string name="new_products">"New Products Added\nCheck them out "</string>
@@ -112,4 +112,13 @@
     <string name="deliveryLocation">Delivery Location</string>
     <string name="enter_valid_delivery_address">Enter valid address</string>
     <string name="product_mrp">Product MRP</string>
+    <string name="location_not_updated">Location not updated</string>
+    <string name="grant_location_permission">Grant Location permission</string>
+    <string name="review_product">Review Product</string>
+    <string name="enter_your_delivery_experience">Enter your delivery experience</string>
+    <string name="enter_your_product_experience">Enter your product experience</string>
+    <string name="view_more">View More</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="ekart_review_points">Ekart Review History</string>
+    <string name="you_have_done_7_ekart_reviews">You have done %1$s EKart Reviews</string>
 </resources>

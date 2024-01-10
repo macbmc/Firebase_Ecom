@@ -110,4 +110,16 @@
     <string name="delivery_coupon_applied">Delivery coupon applied</string>
     <string name="track_order">Track Order</string>
     <string name="location_info">Your Product is at  %1$s</string>
+    <string name="deliveryLocation">Delivery Location</string>
+    <string name="enter_valid_delivery_address">Enter valid address</string>
+    <string name="product_mrp">Product MRP</string>
+    <string name="location_not_updated">Location not updated</string>
+    <string name="grant_location_permission">Grant Location permission</string>
+    <string name="review_product">Review Product</string>
+    <string name="enter_your_delivery_experience">Enter your delivery experience</string>
+    <string name="enter_your_product_experience">Enter your product experience</string>
+    <string name="view_more">View More</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="ekart_review_points">Ekart Review History</string>
+    <string name="you_have_done_7_ekart_reviews">You have done %1$s EKart Reviews</string>
 </resources>

@@ -81,7 +81,7 @@
                 android:layout_marginStart="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
-                android:text="@{Integer.toString(productOrderModel.component4())}"
+                android:text="@{Integer.toString(productOrderModel.component5())}"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:textSize="18sp"
@@ -108,11 +108,11 @@
             android:background="@color/buttonColor"
             android:layout_height="50dp"/>
         <TextView
-            android:id="@+id/outDelivery"
+            android:id="@+id/orderStatus"
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="@string/outdelivery"
+            android:textColor="@color/red"
             android:textSize="22dp"
             android:layout_below="@id/progressLine"
             />
@@ -121,7 +121,7 @@
             android:layout_width="2dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
-            android:layout_below="@id/outDelivery"
+            android:layout_below="@id/orderStatus"
             android:background="@color/black"
             android:layout_height="50dp"/>
         <TextView
@@ -143,6 +143,16 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/buttonColor"
             android:text="@string/track_order" />
+        <Button
+            android:id="@+id/reviewButton"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deliverDate"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/buttonColor"
+            android:text="@string/review_product" />
 
     </RelativeLayout>
 

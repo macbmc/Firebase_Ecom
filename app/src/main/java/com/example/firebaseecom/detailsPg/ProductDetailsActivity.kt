@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -20,12 +21,14 @@ import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductMultiLanguage
 import com.example.firebaseecom.model.ProductOffersModel
+import com.example.firebaseecom.model.ProductOrderReviews
 import com.example.firebaseecom.model.asMap
 import com.example.firebaseecom.payments.ProductCheckoutActivity
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 @AndroidEntryPoint
 
@@ -36,6 +39,7 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var selectedOffer: ProductOffersModel
     private lateinit var offers: List<ProductOffersModel>
     private val carousalAdapter = ProductDetailsAdapter()
+    private val reviewAdapter = ProductReviewAdapter()
     private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
 
@@ -88,6 +92,7 @@ class ProductDetailsActivity : BaseActivity() {
                     getString(R.string.added_to_cart), this@ProductDetailsActivity
                 )
             }
+
 
         }
 
@@ -189,6 +194,7 @@ class ProductDetailsActivity : BaseActivity() {
     private fun observeProductDetails() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productDetailsViewModel.getProductReview(productHome.productId!!)
                 productDetailsViewModel.getProductDetails(productHome.productId!!)
                 productDetailsViewModel.productDetails.collect {
                     when (it) {
@@ -204,12 +210,27 @@ class ProductDetailsActivity : BaseActivity() {
                                     list.productId == productHome.productId
                                 }
 
-                                productReviewText.text =
-                                    getLanguageMap(productDetails!!.productReviews)[langId].toString()
+
                                 productDescText.text =
                                     getLanguageMap(productDetails!!.productDescription)[langId].toString()
 
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
+                                productDetailsViewModel.reviewDetails.observe(this@ProductDetailsActivity) {reviewData->
+                                    Log.d("reviewAct",reviewData.toString())
+                                    if(reviewData.isNotEmpty())
+                                    {
+                                        reviewLayout.isVisible=true
+                                        reviewView.adapter=reviewAdapter
+
+                                        reviewView.layoutManager=LinearLayoutManager(this@ProductDetailsActivity,
+                                            LinearLayoutManager.VERTICAL,false)
+                                        reviewAdapter.setReview(reviewData)
+                                        viewMoreReview.setOnClickListener{
+                                            navToReview(reviewData)
+                                        }
+                                    }
+
+                                }
 
                             }
                         }
@@ -224,6 +245,15 @@ class ProductDetailsActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun navToReview(reviewData: List<ProductOrderReviews>?) {
+        val intent = Intent(this@ProductDetailsActivity,ProductReviewMainActivity::class.java)
+        val bundle = Bundle()
+        bundle.putSerializable("reviews", reviewData as Serializable)
+        intent.putExtras(bundle)
+        startActivity(intent)
+
     }
 
     private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

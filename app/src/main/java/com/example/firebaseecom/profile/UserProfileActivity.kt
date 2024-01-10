@@ -73,6 +73,10 @@ class UserProfileActivity : BaseActivity() {
                 changeLocale("en")
             }
 
+            appPoints.setOnClickListener {
+                startActivity(Intent(this@UserProfileActivity,UserReviewActivity::class.java))
+            }
+
         }
 
     }
@@ -143,7 +147,7 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun showProfileCompleteDialog() {
-        AlertDialogUtils().showAlertDialog(
+        AlertDialogUtils().showAlertDialogNotification(
             this@UserProfileActivity,
             getString(R.string.completeProfileMsg)
         )
