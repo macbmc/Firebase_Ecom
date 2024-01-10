@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="productReview"
+            type="com.example.firebaseecom.model.ProductOrderReviews" />
+
+        <variable
+            name="reviewUser"
+            type="com.example.firebaseecom.model.UserModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/checkout_page_layout"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/userImageLayout"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/border_edit_profile">
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/placeholder_image" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/reviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/userImageLayout"
+            android:text="@{productReview.component3()}"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reviewText"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/userName"
+            android:layout_marginBottom="30dp"
+            android:text="@{reviewUser.component1()}" />
+
+
+    </RelativeLayout>
+</layout>

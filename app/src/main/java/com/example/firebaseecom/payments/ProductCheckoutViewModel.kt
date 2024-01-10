@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,9 +30,10 @@ class ProductCheckoutViewModel @Inject constructor(val firestoreRepository: Fire
         val productOrderList = mutableListOf<ProductOrderModel>()
         for (productModel in productList) {
             val productOrderModel = ProductOrderModel(
+                UUID.randomUUID().toString(),
                 productModel.productCategory, productModel.productId, productModel.productImage,
                 productModel.productPrice, productModel.productTitle, today.toString(),address, dDay.toString(),
-                listOf(),""
+                listOf(),"",100
             )
             productOrderList.add(productOrderModel)
         }

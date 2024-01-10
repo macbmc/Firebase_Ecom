@@ -17,7 +17,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layoutAnimation="@anim/anim_detailscreen">
 
         <ScrollView
             android:id="@+id/layoutScrollView"
@@ -144,29 +145,47 @@
                         android:layout_marginTop="10dp"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/textReview"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/reviewLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/productDescText"
-                        android:layout_marginTop="10dp"
-                        android:freezesText="false"
-                        android:text="@string/product_review"
-                        android:textSize="20sp" />
+                        android:layout_below="@+id/productDescText">
+                        <TextView
+                            android:id="@+id/textReview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:freezesText="false"
+                            android:text="@string/product_review"
+                            android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/productReviewText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textReview"
-                        android:layout_marginTop="10dp"
-                        android:textSize="16sp" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@id/textReview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/reviewView"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/view_more"
+                            android:id="@+id/viewMoreReview"
+                            android:textSize="12sp"
+                            android:textColor="@color/linkTextColor"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/reviewView"/>
+
+                    </RelativeLayout>
+
+
+
 
                     <EditText
                         android:id="@+id/editTextCoupon"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_below="@id/productReviewText"
+                        android:layout_below="@id/reviewLayout"
                         android:layout_marginTop="30dp"
                         android:background="@drawable/edittext_layout"
                         android:ems="10"
@@ -181,7 +200,7 @@
                         android:id="@+id/couponButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/productReviewText"
+                        android:layout_below="@id/reviewLayout"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="30dp"
                         android:layout_toEndOf="@id/editTextCoupon"

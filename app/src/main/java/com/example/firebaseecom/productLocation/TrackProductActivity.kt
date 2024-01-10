@@ -10,6 +10,7 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityTrachProductBinding
 import com.example.firebaseecom.model.ProductOrderModel
 import com.example.firebaseecom.utils.OsmdroidUtils
+import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
@@ -37,8 +38,18 @@ class TrackProductActivity : AppCompatActivity() {
                 finish()
                 startActivity(recreateIntent)
             }
-            getCurrentLocation(productOrder)
-            getLocationMap(osmView, productOrder)
+            if(productOrder.currentGeoPoint.isNullOrEmpty())
+            {
+                ToastUtils().giveToast(getString(R.string.location_not_updated),this@TrackProductActivity)
+                finish()
+            }
+
+            else
+            {
+                getCurrentLocation(productOrder)
+                getLocationMap(osmView, productOrder)
+            }
+
 
         }
     }

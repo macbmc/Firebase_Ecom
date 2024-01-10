@@ -54,7 +54,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:textColor="@color/red"
-            android:text="@{Integer.toString(productHome.component4())}"
+            android:text="@{Integer.toString(productHome.component5())}"
             android:textSize="18sp"
             />
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="product"
+            type="com.example.firebaseecom.model.ProductHomeModel" />
+
+        <variable
+            name="review"
+            type="com.example.firebaseecom.model.ProductOrderReviews" />
+
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/checkout_page_layout"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:id="@+id/productImageLayout"
+        android:layout_width="70dp"
+        android:background="@drawable/border_edit_profile"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder_image" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@{product.component5().en}"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/productImageLayout"
+        />
+    <TextView
+        android:id="@+id/reviewText"
+        android:text="@{review.component3()}"
+        android:layout_below="@id/productName"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_toEndOf="@id/productImageLayout"
+        />
+
+    <RatingBar
+        android:id="@+id/productRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewText"
+        android:layout_centerInParent="true"
+        android:focusable="false"
+        android:isIndicator="true"
+        android:clickable="false"
+        android:layout_marginTop="20dp"
+        android:background="@color/bgColor"
+        android:progressTint="@color/buttonColor" />
+
+
+
+</RelativeLayout>
+</layout>
