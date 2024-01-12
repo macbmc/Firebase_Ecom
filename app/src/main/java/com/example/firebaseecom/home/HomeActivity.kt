@@ -206,8 +206,7 @@ class HomeActivity : BaseActivity() {
             homeBinding.homeAdViewProgress.isVisible = true
             carousalAdapter.setAd(it)
             homeBinding.homeAdViewProgress.isVisible = false
-            homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
-
+            //homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
 
 
         }

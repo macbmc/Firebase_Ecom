@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
-        tools:context=".profile.UserProfileActivity"
-        android:layoutAnimation="@anim/anim_profile">
+        android:layoutAnimation="@anim/anim_profile"
+        tools:context=".profile.UserProfileActivity">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/homeToolBar"
@@ -222,11 +222,36 @@
                 android:text="@string/account_settings"
                 android:textSize="22dp" />
             <RelativeLayout
-                android:id="@+id/appPoints"
+                android:id="@+id/chatQuery"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/accountText"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/customer_qeuries"
+                    android:textColor="@color/textInLayout"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_query" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/appPoints"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/chatQuery"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border">
 
                 <TextView

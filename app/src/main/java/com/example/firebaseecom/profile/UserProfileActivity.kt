@@ -11,6 +11,7 @@ import com.example.firebaseecom.CartOrder.ProductListActivity
 import com.example.firebaseecom.R
 import com.example.firebaseecom.auth.AuthViewModel
 import com.example.firebaseecom.auth.SignUpActivity
+import com.example.firebaseecom.customerChat.CustomerChatActivity
 import com.example.firebaseecom.databinding.ActivityUserProfileBinding
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.AlertDialogUtils
@@ -59,6 +60,9 @@ class UserProfileActivity : BaseActivity() {
             editProfile.setOnClickListener {
                 navToEditProfile()
             }
+            chatQuery.setOnClickListener{
+                navToChat()
+            }
             malayalamLanguageLayout.setOnClickListener {
 
                 ToastUtils().giveToast(getString(R.string.malayalam), this@UserProfileActivity)
@@ -79,6 +83,10 @@ class UserProfileActivity : BaseActivity() {
 
         }
 
+    }
+
+    private fun navToChat() {
+        startActivity(Intent(this,CustomerChatActivity::class.java))
     }
 
     private fun changeMode() {

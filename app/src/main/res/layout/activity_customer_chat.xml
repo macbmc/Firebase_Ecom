@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bgColor"
+        tools:context=".customerChat.CustomerChatActivity">
+
+        <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent">
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <com.google.android.material.appbar.MaterialToolbar
+                   android:id="@+id/homeToolBar"
+                   app:layout_constraintTop_toTopOf="parent"
+                   android:layout_width="match_parent"
+                   android:layout_height="60dp"
+                   android:background="@color/buttonColor"
+                   android:backgroundTint="@color/buttonColor"
+                   android:minHeight="?attr/actionBarSize"
+                   android:theme="?attr/actionBarTheme">
+
+                   <androidx.constraintlayout.widget.ConstraintLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       tools:layout_editor_absoluteX="1dp"
+                       tools:layout_editor_absoluteY="5dp">
+
+                       <ImageButton
+                           android:id="@+id/navPop"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginStart="16dp"
+                           android:layout_marginTop="8dp"
+                           android:background="@null"
+                           android:src="@drawable/baseline_arrow_back_ios_24"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toTopOf="parent" />
+
+
+                   </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+               </com.google.android.material.appbar.MaterialToolbar>
+               
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/chatView"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@id/homeToolBar"
+                   android:layout_marginTop="10dp"/>
+
+           </RelativeLayout>
+
+       </ScrollView>
+        
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            
+            
+            <EditText
+                android:id="@+id/chatQuery"
+                android:padding="15dp"
+                android:background="@drawable/edittext_layout"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_your_query"/>
+
+            <ImageButton
+                android:layout_marginStart="10dp"
+                android:id="@+id/sendQuery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/buttonColor"
+                android:src="@android:drawable/ic_menu_send"
+                app:tint="@color/white" />
+
+            
+            
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
