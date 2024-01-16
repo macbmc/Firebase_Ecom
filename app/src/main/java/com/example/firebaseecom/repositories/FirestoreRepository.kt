@@ -35,6 +35,7 @@ interface FirestoreRepository {
     suspend fun getOrderForChat(orderId: String): ProductOrderModel?
 
 
+
 }
 
 
@@ -400,7 +401,10 @@ class FirestoreRepositoryImpl @Inject constructor(
             is Resource.Success -> {
                 for (productOrder in productOrderList.data) {
                     if (productOrder.orderId == orderId)
+                    {
+                        Log.d("OrderforChat",productOrder.toString())
                         return productOrder
+                    }
                 }
             }
 
@@ -410,6 +414,8 @@ class FirestoreRepositoryImpl @Inject constructor(
         }
         return null
     }
+
+
 
 
     private fun getUserId(reviewData: List<ProductOrderReviews>): List<String> {

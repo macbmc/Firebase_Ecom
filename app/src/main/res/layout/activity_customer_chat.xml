@@ -59,11 +59,19 @@
                </com.google.android.material.appbar.MaterialToolbar>
                
                <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/chatView"
+                  android:id="@+id/chatView"
+                   android:nestedScrollingEnabled="false"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
+                   android:layout_marginBottom="60dp"
                    android:layout_below="@id/homeToolBar"
                    android:layout_marginTop="10dp"/>
+
+               <ProgressBar
+                   android:id="@+id/progressBar"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"/>
 
            </RelativeLayout>
 

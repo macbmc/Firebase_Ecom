@@ -86,7 +86,11 @@ class UserProfileActivity : BaseActivity() {
     }
 
     private fun navToChat() {
-        startActivity(Intent(this,CustomerChatActivity::class.java))
+        val bundle = Bundle()
+        bundle.putSerializable("userData", activityUserProfileBinding.userDetails as Serializable)
+        val intent = Intent(this,CustomerChatActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     private fun changeMode() {

@@ -9,8 +9,9 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.RecieverLayoutBinding
 import com.example.firebaseecom.databinding.SendLayoutBinding
 import com.example.firebaseecom.model.BrainShopModel
+import com.example.firebaseecom.model.UserModel
 
-class CustomerChatAdapter(private val brainList: List<BrainShopModel>) :
+class CustomerChatAdapter(private val brainList: List<BrainShopModel>,private val userData: UserModel?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var recieverLayoutBinding: RecieverLayoutBinding
@@ -47,7 +48,8 @@ class CustomerChatAdapter(private val brainList: List<BrainShopModel>) :
                 val user = holder as SendLayoutViewHolder
                 user.sendText.text = model.cnt
                 Glide.with(holder.itemView)
-                    .load(R.drawable.placeholder_image)
+                    .load(userData?.userImg)
+                    .error(R.drawable.placeholder_image)
                     .into(user.sendImage)
             }
 

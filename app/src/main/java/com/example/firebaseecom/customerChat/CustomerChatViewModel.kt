@@ -1,27 +1,33 @@
 package com.example.firebaseecom.customerChat
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firebaseecom.model.BrainShopModel
-import com.example.firebaseecom.model.ProductOrderModel
+import com.example.firebaseecom.api.ProductOrderDeliveryStatus
 import com.example.firebaseecom.repositories.BrainShopRepository
+import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 
-class CustomerChatViewModel @Inject constructor(private val brainRepository: BrainShopRepository,
-    val firestoreRepository: FirestoreRepository) :
-    ViewModel() {
+class CustomerChatViewModel @Inject constructor(
+    private val brainRepository: BrainShopRepository,
+    val firestoreRepository: FirestoreRepository,
+    val databaseRepository: DatabaseRepository
+) : ViewModel() {
 
- private val productOrderDetails = MutableLiveData<ProductOrderModel>()
+    companion object {
+        var ifSucessfullOrderStatusFetch = false
+        var ifSucessfullProductReviewFetch = false
+        var incorrectStatusCounter = 0
+        var incorrectReviewCounter = 0
+    }
+
 
     suspend fun getResponse(msg: String): String {
 
@@ -40,12 +46,65 @@ class CustomerChatViewModel @Inject constructor(private val brainRepository: Bra
 
         }
         return botMsg.await()
+
     }
 
-    fun getOrderDetails(orderId:String)
-    {
-        viewModelScope.launch(Dispatchers.IO){
-           productOrderDetails.postValue(firestoreRepository.getOrderForChat(orderId))
+    suspend fun getOrderStatus(orderId: String): String {
+        ifSucessfullOrderStatusFetch = false
+        val botResponse = viewModelScope.async(Dispatchers.IO) {
+            val orderModel = firestoreRepository.getOrderForChat(orderId)
+            Log.d("OrderforChatViewM", orderModel.toString())
+            if (orderModel != null) {
+                val orderStatusInt = orderModel?.productDeliveryStatusCode
+                ifSucessfullOrderStatusFetch = true
+                ProductOrderDeliveryStatus.values().first { it.statusCode == orderStatusInt }.msg
+
+
+            } else {
+                incorrectStatusCounter++
+                "Enter correct order id"
+            }
+
+
         }
+        Log.d("OrderforChatViewM1", botResponse.await())
+        return botResponse.await()
+    }
+
+    suspend fun getProductReviews(productName: String): String {
+        ifSucessfullProductReviewFetch = false
+        val botResponse = viewModelScope.async(Dispatchers.IO) {
+            val productId = databaseRepository.getProductId(productName)
+            Log.d("productId", productId.toString())
+            if (productId != null) {
+                when (val productReview = firestoreRepository.getProductReview(productId!!)) {
+                    is Resource.Success -> {
+                        ifSucessfullProductReviewFetch = true
+                        productReview.data[0].productReview
+                    }
+
+                    else -> {
+
+                        Log.d("productId", "failed")
+                        "No Review"
+                    }
+                }
+            } else {
+                incorrectReviewCounter++
+                "Not valid product"
+
+            }
+
+
+        }
+        return botResponse.await()!!
+    }
+
+    fun resetStatusCounter() {
+        incorrectStatusCounter = 0
+    }
+
+    fun resetReviewCounter() {
+        incorrectStatusCounter = 0
     }
 }

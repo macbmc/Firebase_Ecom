@@ -26,6 +26,7 @@ class AuthViewModel @Inject constructor(
     private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
     private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
 
+
     val currentUser: FirebaseUser?
         get() = authRepository.currentUser
 
