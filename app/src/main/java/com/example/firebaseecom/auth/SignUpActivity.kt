@@ -14,7 +14,6 @@ import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
-import com.example.firebaseecom.utils.AlarmTriggerUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +52,7 @@ class SignUpActivity : BaseActivity() {
     }
 
     private fun setAlarmTrigger() {
-        AlarmTriggerUtils().setAlarmTriggerForNotification(this)
+        authViewModel.setAlarmTrigger()
 
     }
 

@@ -63,6 +63,9 @@ class HomeActivity : BaseActivity() {
     private lateinit var adView: RecyclerView
     private val handler = Handler(Looper.getMainLooper())
     private var autoScrollRunnable: Runnable? = null
+    private var catLaptopString = "Laptop"
+    private var catPhoneString = "Phone"
+    private var catTabletString = "Tablet"
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,23 +105,24 @@ class HomeActivity : BaseActivity() {
                 startActivity(intent)
             }
             catLaptop.setOnClickListener {
-                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
-                intent.putExtra("category", "Laptop")
-                startActivity(intent)
+               navToCategory(catLaptopString)
             }
             catPhones.setOnClickListener {
-                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
-                intent.putExtra("category", "Phone")
-                startActivity(intent)
+                navToCategory(catPhoneString)
+
             }
             catTablet.setOnClickListener {
-                val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
-                intent.putExtra("category", "Tablet")
-                startActivity(intent)
+               navToCategory(catTabletString)
             }
         }
 
 
+    }
+
+    private fun navToCategory(category:String) {
+        val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
+        intent.putExtra("category", category)
+        startActivity(intent)
     }
 
     private fun changeUserDialog() {
@@ -133,7 +137,7 @@ class HomeActivity : BaseActivity() {
     }
 
 
-    private fun observeNetwork() {
+    /*private fun observeNetwork() {
         networkJob?.cancel()
         val network = NetworkUtil(this)
         homeBinding.networkProgress.visibility = View.VISIBLE
@@ -198,6 +202,71 @@ class HomeActivity : BaseActivity() {
                             )
                         }
                     }
+                }
+            }
+        }
+    }*/
+
+    private fun observeNetwork(){
+        homeBinding.networkProgress.visibility = View.VISIBLE
+        homeViewModel.getNetwork()
+        homeViewModel.networkFlow.observe(this@HomeActivity){
+            Log.d("networkState", it.toString())
+            when (it) {
+                NetworkState.AVAILABLE -> {
+                    homeBinding.apply {
+
+                        networkStatusLayout.visibility = View.GONE
+                        homeLayout.isVisible = true
+                        networkProgress.visibility = View.GONE
+
+                    }
+                    observeCarousal()
+                    observeCartNumber()
+                    observeProducts()
+                }
+
+                NetworkState.UNAVAILABLE -> {
+                    homeBinding.apply {
+
+                        networkText.text = getString(R.string.no_internet_connection)
+                        networkStatusLayout.isVisible = true
+                        homeLayout.isVisible = false
+                        networkProgress.isVisible = true
+
+
+                    }
+                    ToastUtils().giveToast(
+                        getString(R.string.connection_unavailable),
+                        this@HomeActivity
+                    )
+                }
+
+                NetworkState.LOSING -> {
+                    homeBinding.apply {
+
+                        networkText.text = getString(R.string.no_internet_connection)
+                        networkStatusLayout.isVisible = true
+
+                    }
+
+                    ToastUtils().giveToast(
+                        getString(R.string.connection_losing),
+                        this@HomeActivity
+                    )
+                }
+
+                NetworkState.LOST -> {
+                    homeBinding.apply {
+
+                        networkText.text = getString(R.string.no_internet_connection)
+                        networkStatusLayout.isVisible = true
+
+                    }
+                    ToastUtils().giveToast(
+                        getString(R.string.connection_lost),
+                        this@HomeActivity
+                    )
                 }
             }
         }

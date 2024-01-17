@@ -1,5 +1,6 @@
 package com.example.firebaseecom.home
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,18 +12,24 @@ import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
 import com.example.firebaseecom.repositories.ProductRepository
+import com.example.firebaseecom.utils.NetworkState
+import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    @ApplicationContext val applicationContext: Context,
     private val productRepository: ProductRepository,
     private val firestoreRepository: FirestoreRepository,
     private val authRepository: AuthRepository,
@@ -34,6 +41,8 @@ class HomeViewModel @Inject constructor(
     val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
     val offerData = MutableLiveData<List<ProductOffersModel>>()
+    private val networkUtil = NetworkUtil(applicationContext)
+    val networkFlow = MutableLiveData<NetworkState>()
 
     companion object {
         val getChange = MutableLiveData<Boolean>()
@@ -51,6 +60,18 @@ class HomeViewModel @Inject constructor(
     fun getAd() {
         viewModelScope.launch {
             getAdData()
+        }
+    }
+    fun getNetwork(){
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            getNetworkState()
+        }
+    }
+    suspend fun getNetworkState()
+    {
+        networkUtil.observeNetworkState().collect{networkState->
+            networkFlow.postValue(networkState)
         }
     }
 

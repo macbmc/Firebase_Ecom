@@ -11,6 +11,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.firebaseecom.R
 import com.example.firebaseecom.model.ProductOrderModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -24,8 +26,10 @@ class OsmdroidUtils(val context: Context) {
     private lateinit var controller: IMapController
     private var endPoint = GeoPoint(0.00, 0.00)
 
-    val locationLiveData = MutableLiveData<String>()
-    val mapLoadingInfo = MutableLiveData<String>()
+    private val _mapLoadingInfo:MutableStateFlow<String> = MutableStateFlow("")
+    val mapLoadingInfo :StateFlow<String> =_mapLoadingInfo
+    private val _locationFlow :MutableStateFlow<String> = MutableStateFlow("")
+    val locationFlow :StateFlow<String> = _locationFlow
 
 
     @SuppressLint("MissingPermission")
@@ -61,7 +65,7 @@ class OsmdroidUtils(val context: Context) {
                         endPoint = GeoPoint(addresses[0].latitude, addresses[0].longitude)
                         drawPolyline(mMap, startPoint, endPoint)
                         Log.d("GPS_in", addresses.toString())
-                        mapLoadingInfo.postValue("success")
+                        _mapLoadingInfo.value="success"
                         val endMarker = Marker(mMap)
                         Log.d("GPS_end", endPoint.toString())
                         endMarker.position = endPoint
@@ -75,7 +79,7 @@ class OsmdroidUtils(val context: Context) {
                     override fun onError(errorMessage: String?) {
                         super.onError(errorMessage)
                         Log.e("GPS-e", errorMessage.toString())
-                        mapLoadingInfo.postValue(errorMessage.toString())
+                        _mapLoadingInfo.value=errorMessage.toString()
 
                     }
                 }
@@ -84,9 +88,9 @@ class OsmdroidUtils(val context: Context) {
             val address =
                 Geocoder(context).getFromLocationName(productOrder.deliveryLocation.toString(), 1)
             if (address.isNullOrEmpty())
-                mapLoadingInfo.postValue("failed")
+                _mapLoadingInfo.value="failed"
             else
-                mapLoadingInfo.postValue("success")
+                _mapLoadingInfo.value="success"
             endPoint = GeoPoint(address?.get(0)!!.latitude, address[0]!!.longitude)
             Log.d("GPS_in", address.toString())
             val endMarker = Marker(mMap)
