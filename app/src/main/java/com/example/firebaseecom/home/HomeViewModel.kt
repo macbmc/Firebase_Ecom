@@ -27,13 +27,12 @@ class HomeViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository,
     private val authRepository: AuthRepository,
     private val networkRepository: NetworkRepository,
-    private val databaseRepository: DatabaseRepository
+    private val databaseRepository: DatabaseRepository,
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
     val adList = MutableLiveData<List<String>>()
     var products: StateFlow<Resource<List<ProductHomeModel>>> = _products
-
     val offerData = MutableLiveData<List<ProductOffersModel>>()
 
     companion object {

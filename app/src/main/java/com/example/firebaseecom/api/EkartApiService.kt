@@ -22,4 +22,5 @@ interface EkartApiService {
     suspend fun getSeasonalOffers(@Url url: String): Response<List<OfferModelClass>?>
 
 
+
 }

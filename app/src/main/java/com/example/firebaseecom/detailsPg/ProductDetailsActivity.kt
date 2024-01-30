@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -16,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.firebaseecom.R
+import com.example.firebaseecom.category.ProductCategoryActivity
 import com.example.firebaseecom.databinding.ActivityProductDetailsBinding
 import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductHomeModel
@@ -40,6 +40,7 @@ class ProductDetailsActivity : BaseActivity() {
     private lateinit var offers: List<ProductOffersModel>
     private val carousalAdapter = ProductDetailsAdapter()
     private val reviewAdapter = ProductReviewAdapter()
+    private val similarProductsAdapter = SimilarProductsAdapter(ActivityFunctionClass())
     private val snapHelper = LinearSnapHelper()
     var productList = arrayListOf<ProductHomeModel?>()
 
@@ -53,8 +54,7 @@ class ProductDetailsActivity : BaseActivity() {
         val bundle = intent.extras
         offers = if (bundle?.getSerializable("offers") != null) {
             bundle?.getSerializable("offers") as List<ProductOffersModel>
-        } else
-            listOf()
+        } else listOf()
         val productView = activityProductDetailsBinding.productCarousalView
         snapHelper.attachToRecyclerView(productView)
         productView.adapter = carousalAdapter
@@ -64,6 +64,7 @@ class ProductDetailsActivity : BaseActivity() {
         val productTitleMap = getLanguageMap(productHome.productTitle)
 
         observeProductDetails()
+        observeSimilarProducts(productHome.productCategory)
 
         activityProductDetailsBinding.apply {
             productTitleText.text = productTitleMap[langId].toString()
@@ -98,6 +99,24 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
 
+    private fun observeSimilarProducts(productCategory: String?) {
+        activityProductDetailsBinding.apply {
+            moreProd.adapter = similarProductsAdapter
+            moreProd.layoutManager = LinearLayoutManager(
+                this@ProductDetailsActivity, LinearLayoutManager.HORIZONTAL, false
+            )
+            productDetailsViewModel.apply {
+                getSimilarProducts(productCategory!!)
+                similarProducts.observe(this@ProductDetailsActivity) { productList ->
+                    similarProductsAdapter.setProducts(productList)
+
+                }
+            }
+        }
+
+
+    }
+
     private fun addToBuy() {
         var offerDesc = ""
         var offerAmnt = 0
@@ -106,10 +125,9 @@ class ProductDetailsActivity : BaseActivity() {
                 selectedOffer.couponDiscount -> {
                     offerDesc = selectedOffer.couponDiscount.toString()
                     offerAmnt = selectedOffer.productDiscount!!.toInt()
-                    val discount =
-                        productHome.productPrice?.times(
-                            selectedOffer.productDiscount?.toDouble()!!.div(100)
-                        )
+                    val discount = productHome.productPrice?.times(
+                        selectedOffer.productDiscount?.toDouble()!!.div(100)
+                    )
                     productHome.productPrice = productHome.productPrice?.minus(discount!!.toInt())
                 }
             }
@@ -117,15 +135,13 @@ class ProductDetailsActivity : BaseActivity() {
 
         productList.add(productHome)
         Log.d("productList", productList.toString())
-        val intent =
-            Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
+        val intent = Intent(this@ProductDetailsActivity, ProductCheckoutActivity::class.java)
         if (productList.isNotEmpty()) {
             intent.putExtra("productList", productList)
             intent.putExtra("offerDesc", offerDesc)
             intent.putExtra("offerAmnt", offerAmnt)
             intent.putExtra(
-                "productMrp",
-                activityProductDetailsBinding.productPriceText.text.toString()
+                "productMrp", activityProductDetailsBinding.productPriceText.text.toString()
             )
         }
         startActivity(intent)
@@ -138,16 +154,12 @@ class ProductDetailsActivity : BaseActivity() {
                 getString(R.string.select_a_coupon_first), this@ProductDetailsActivity
             )
             else {
-                if (editTextCoupon.text.toString() == selectedOffer.couponDiscount || editTextCoupon.text.toString() == selectedOffer.couponVouchers)
-                    ToastUtils().giveToast(
-                        getString(R.string.coupon_applied),
-                        this@ProductDetailsActivity
-                    )
-                else
-                    ToastUtils().giveToast(
-                        getString(R.string.select_a_coupon_first),
-                        this@ProductDetailsActivity
-                    )
+                if (editTextCoupon.text.toString() == selectedOffer.couponDiscount || editTextCoupon.text.toString() == selectedOffer.couponVouchers) ToastUtils().giveToast(
+                    getString(R.string.coupon_applied), this@ProductDetailsActivity
+                )
+                else ToastUtils().giveToast(
+                    getString(R.string.select_a_coupon_first), this@ProductDetailsActivity
+                )
 
             }
         }
@@ -174,11 +186,9 @@ class ProductDetailsActivity : BaseActivity() {
                 }
 
             }
-            if (!::selectedOffer.isInitialized)
-                ToastUtils().giveToast(
-                    getString(R.string.no_available_coupons),
-                    this@ProductDetailsActivity
-                )
+            if (!::selectedOffer.isInitialized) ToastUtils().giveToast(
+                getString(R.string.no_available_coupons), this@ProductDetailsActivity
+            )
             else {
                 Log.d("smoothScroll", "called")
                 layoutScrollView.post { layoutScrollView.smoothScrollTo(0, couponList.bottom) }
@@ -215,17 +225,19 @@ class ProductDetailsActivity : BaseActivity() {
                                     getLanguageMap(productDetails!!.productDescription)[langId].toString()
 
                                 carousalAdapter.setProduct(productDetails?.productImage!!)
-                                productDetailsViewModel.reviewDetails.observe(this@ProductDetailsActivity) {reviewData->
-                                    Log.d("reviewAct",reviewData.toString())
-                                    if(reviewData.isNotEmpty())
-                                    {
-                                        reviewLayout.isVisible=true
-                                        reviewView.adapter=reviewAdapter
+                                productDetailsViewModel.reviewDetails.observe(this@ProductDetailsActivity) { reviewData ->
+                                    Log.d("reviewAct", reviewData.toString())
+                                    if (reviewData.isNotEmpty()) {
+                                        reviewLayout.isVisible = true
+                                        reviewView.adapter = reviewAdapter
 
-                                        reviewView.layoutManager=LinearLayoutManager(this@ProductDetailsActivity,
-                                            LinearLayoutManager.VERTICAL,false)
+                                        reviewView.layoutManager = LinearLayoutManager(
+                                            this@ProductDetailsActivity,
+                                            LinearLayoutManager.VERTICAL,
+                                            false
+                                        )
                                         reviewAdapter.setReview(reviewData)
-                                        viewMoreReview.setOnClickListener{
+                                        viewMoreReview.setOnClickListener {
                                             navToReview(reviewData)
                                         }
                                     }
@@ -248,7 +260,7 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun navToReview(reviewData: List<ProductOrderReviews>?) {
-        val intent = Intent(this@ProductDetailsActivity,ProductReviewMainActivity::class.java)
+        val intent = Intent(this@ProductDetailsActivity, ProductReviewMainActivity::class.java)
         val bundle = Bundle()
         bundle.putSerializable("reviews", reviewData as Serializable)
         intent.putExtras(bundle)
@@ -264,6 +276,14 @@ class ProductDetailsActivity : BaseActivity() {
         activityProductDetailsBinding.editTextCoupon.text = null
         productHome = intent.extras!!.get("product") as ProductHomeModel
 
+    }
+
+    inner class ActivityFunctionClass:SimilarProductsAdapter.ActivityFunctionInterface {
+        override fun navToCategoryView(category: String) {
+            val intent = Intent(this@ProductDetailsActivity, ProductCategoryActivity::class.java)
+            intent.putExtra("category", category)
+            startActivity(intent)
+        }
     }
 
 }

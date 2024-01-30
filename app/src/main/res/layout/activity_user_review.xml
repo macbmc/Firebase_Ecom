@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bgColor"
         tools:context=".profile.UserReviewActivity">
 
 
@@ -49,7 +50,6 @@
             android:id="@+id/appPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/you_have_done_7_ekart_reviews"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:layout_below="@id/homeToolBar"
@@ -61,6 +61,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/reviewView"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 </layout>

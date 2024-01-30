@@ -3,6 +3,7 @@ package com.example.firebaseecom.profile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +44,7 @@ class UserReviewActivity : AppCompatActivity() {
                             productInfo.observe(this@UserReviewActivity){productInfo->
                                 reviewView.adapter=adapter
                                 reviewView.layoutManager=LinearLayoutManager(this@UserReviewActivity,LinearLayoutManager.VERTICAL,false)
+                                progressBar.visibility= View.GONE
                                 adapter.setReview(reviewInfo,productInfo)
                                 Log.d("ReviewAd",productInfo.toString())
                                 Log.d("ReviewAb",reviewInfo.toString())

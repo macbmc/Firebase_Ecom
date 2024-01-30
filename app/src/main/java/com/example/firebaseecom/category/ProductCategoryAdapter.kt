@@ -66,7 +66,7 @@ class ProductCategoryAdapter(val productCategoryClass: ProductCategoryActivity.P
     fun setProducts(productlist:List<ProductHomeModel>)
     {
         this.productList=productlist.toMutableList()
-        notifyDataSetChanged()
+        notifyItemChanged(productlist.size-1)
     }
 
 

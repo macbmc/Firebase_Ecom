@@ -18,6 +18,7 @@ interface DatabaseRepository {
     suspend fun searchForProducts(searchQuery: String): Resource<List<ProductHomeModel>>
     suspend fun fetchProductByCategory(category: String): Resource<List<ProductHomeModel>>
     suspend fun getProducts(reviewList: List<ProductOrderReviews>):List<ProductHomeModel>
+    suspend fun getProductId(name:String):Int?
 
 
 }
@@ -93,7 +94,7 @@ class DatabaseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getProducts(reviewList: List<ProductOrderReviews>): List<ProductHomeModel> {
-        val productIdList = getProductId(reviewList)
+        val productIdList = getId(reviewList)
         val productList = mutableListOf<ProductHomeModel>()
           for(id in productIdList)
             {
@@ -112,7 +113,20 @@ class DatabaseRepositoryImpl @Inject constructor(
 
     }
 
-    private fun getProductId(reviewList: List<ProductOrderReviews>): List<Int> {
+    override suspend fun getProductId(name: String): Int? {
+        var productId : Int? = null
+        try {
+            productId = productDao.getProductId(name)
+        } catch (e: Exception) {
+            Log.d("fetchFromLocal", e.toString())
+        }
+        if (productId==null) {
+            return null
+        }
+        return productId
+    }
+
+    private fun getId(reviewList: List<ProductOrderReviews>): List<Int> {
         val idList = mutableListOf<Int>()
 
         for(review in reviewList)

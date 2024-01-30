@@ -30,7 +30,10 @@ interface FirestoreRepository {
     suspend fun getProductReview(productId: Int): Resource<List<ProductOrderReviews>>
     suspend fun getReviewUsers(reviewData: List<ProductOrderReviews>): List<UserModel>
 
-    suspend fun getUserReviews():List<ProductOrderReviews>
+    suspend fun getUserReviews(): List<ProductOrderReviews>
+
+    suspend fun getOrderForChat(orderId: String): ProductOrderModel?
+
 
 
 }
@@ -360,7 +363,7 @@ class FirestoreRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getUserReviews():List<ProductOrderReviews> {
+    override suspend fun getUserReviews(): List<ProductOrderReviews> {
         var response = 0
         val reviewList = mutableListOf<ProductOrderReviews>()
         val db = firestore.collection("user-reviews")
@@ -388,10 +391,32 @@ class FirestoreRepositoryImpl @Inject constructor(
         if (response != 200) {
             return listOf()
         }
-        Log.d("reviewdatarepo",reviewList.toString())
+        Log.d("reviewdatarepo", reviewList.toString())
         return reviewList
 
     }
+
+    override suspend fun getOrderForChat(orderId: String): ProductOrderModel? {
+        when (val productOrderList = getFromOrders()) {
+            is Resource.Success -> {
+                for (productOrder in productOrderList.data) {
+                    if (productOrder.orderId == orderId)
+                    {
+                        Log.d("OrderforChat",productOrder.toString())
+                        return productOrder
+                    }
+                }
+            }
+
+            else -> {
+                return null
+            }
+        }
+        return null
+    }
+
+
+
 
     private fun getUserId(reviewData: List<ProductOrderReviews>): List<String> {
         val userIdList = mutableListOf<String>()

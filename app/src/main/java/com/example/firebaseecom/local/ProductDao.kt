@@ -29,4 +29,7 @@ interface ProductDao {
     @Query("DELETE FROM ProductTable")
     fun deleteAll()
 
+    @Query("SELECT productId FROM ProductTable WHERE en LIKE '%' || :productName || '%' OR ml LIKE '%' || :productName || '%'")
+    fun getProductId(productName:String):Int?
+
 }

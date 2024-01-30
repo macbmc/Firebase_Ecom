@@ -121,4 +121,7 @@
     <string name="anonymous">Anonymous</string>
     <string name="ekart_review_points">Ekart Review History</string>
     <string name="you_have_done_7_ekart_reviews">You have done %1$s EKart Reviews</string>
+    <string name="customer_qeuries">Customer Qeuries</string>
+    <string name="enter_your_query">Enter your query</string>
+    <string name="order_id">Order Id:</string>
 </resources>
