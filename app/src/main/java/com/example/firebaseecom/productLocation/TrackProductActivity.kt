@@ -2,8 +2,6 @@ package com.example.firebaseecom.productLocation
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -55,6 +53,7 @@ class TrackProductActivity : BaseActivity() {
     }
 
     private fun getCurrentLocation(productOrder: ProductOrderModel) {
+
         osmUtil.getLocationFromGeoPoint(productOrder)
         osmUtil.locationLiveData.observe(this) { locationInfo ->
             Log.d("Location", locationInfo)
@@ -66,10 +65,16 @@ class TrackProductActivity : BaseActivity() {
 
                 else -> {
 
-                    Handler(Looper.getMainLooper()).post(Runnable {
+                    this@TrackProductActivity.runOnUiThread {
                         activityTracKProductBinding.productLocation.text =
                             getString(R.string.location_info, locationInfo)
-                    })
+                    }
+
+
+                    /*Handler(Looper.getMainLooper()).post {
+                        activityTracKProductBinding.productLocation.text =
+                            getString(R.string.location_info, locationInfo)
+                    }*/
 
 
                 }
@@ -81,7 +86,7 @@ class TrackProductActivity : BaseActivity() {
     }
 
     private fun getLocationMap(osmView: MapView, productOrder: ProductOrderModel) {
-        osmUtil.showTrackProduct(osmView, productOrder).observe(this) { mapStatus ->
+        osmUtil.showTrackProductLocation(osmView, productOrder).observe(this) { mapStatus ->
             Log.d("mapLoaded", mapStatus)
             when (mapStatus) {
                 "success" -> {

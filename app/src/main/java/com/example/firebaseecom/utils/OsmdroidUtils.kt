@@ -7,6 +7,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.firebaseecom.R
@@ -24,12 +25,13 @@ class OsmdroidUtils(val context: Context) {
     private lateinit var controller: IMapController
     private var endPoint = GeoPoint(0.00, 0.00)
 
+
     val mapLoadingInfo = MutableLiveData<String>()
     val locationLiveData = MutableLiveData<String>()
 
 
     @SuppressLint("MissingPermission")
-    fun showTrackProduct(mMap: MapView, productOrder: ProductOrderModel): LiveData<String> {
+    fun showTrackProductLocation(mMap: MapView, productOrder: ProductOrderModel): LiveData<String> {
 
 
         mMap.setTileSource(TileSourceFactory.MAPNIK)
@@ -115,37 +117,19 @@ class OsmdroidUtils(val context: Context) {
 
     }
 
-    fun getLocationFromGeoPoint(productOrderModel: ProductOrderModel) {
-        val geocoder = Geocoder(context)
-        val location = ""
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            geocoder.getFromLocation(
-                productOrderModel.currentGeoPoint[0],
-                productOrderModel.currentGeoPoint[1],
-                1,
-                object : Geocoder.GeocodeListener {
-                    override fun onGeocode(addresses: MutableList<Address>) {
-                        Log.e("Location-in", addresses[0].locality.toString())
-                        locationLiveData.postValue(addresses[0].locality.toString())
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun getLocationFromGeoPoint(productOrder: ProductOrderModel) {
+        Log.d("Location-in", "called")
 
-                    }
-
-                    override fun onError(errorMessage: String?) {
-                        super.onError(errorMessage)
-                        Log.e("Location", errorMessage.toString())
-                        locationLiveData.postValue(location)
-
-                    }
-                })
-        } else {
-            val addressList = geocoder.getFromLocation(
-                productOrderModel.currentGeoPoint[0],
-                productOrderModel.currentGeoPoint[1],
-                1
-            )
-            locationLiveData.postValue(addressList?.get(0)!!.locality.toString())
-
+        Geocoder(context).getFromLocation(
+            productOrder.currentGeoPoint[0],
+            productOrder.currentGeoPoint[1],
+            1
+        ) { addresses ->
+            locationLiveData.postValue(addresses[0].locality.toString())
+            Log.d("Locationn", addresses[0].locality.toString())
         }
+
     }
 }
 

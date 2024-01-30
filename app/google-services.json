@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1077054970649:android:e73f0e14051e462dbb0388",
         "android_client_info": {
-          "package_name": "com.example.firebaseecom"
+          "package_name": "com.example.firebaseecom.production"
         }
       },
       "oauth_client": [],
