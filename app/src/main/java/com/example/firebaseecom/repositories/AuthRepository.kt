@@ -5,11 +5,15 @@ import android.util.Log
 import android.widget.Toast
 import com.example.firebaseecom.R
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.UserState
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -24,12 +28,15 @@ interface AuthRepository {
 
     fun checkForNewUser(): Boolean
 
+    suspend fun userDelete(password: String)
+
 }
 
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val context: Context
 ) : AuthRepository {
+
 
     interface AuthStateChange {
         fun navToSignUp()
@@ -38,8 +45,10 @@ class AuthRepositoryImpl @Inject constructor(
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
+
     companion object {
         private var isNewUser = false
+        val userStateFlow = MutableStateFlow<UserState>(UserState.LoggedIn)
     }
 
 
@@ -47,7 +56,9 @@ class AuthRepositoryImpl @Inject constructor(
 
         return try {
             val user = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            userStateFlow.value = UserState.LoggedIn
             Resource.Success(user.user!!)
+
         } catch (e: Exception) {
             Log.e("SignIn", "$e")
             Resource.Failed(context.getString(R.string.invalid_credentials_try_again))
@@ -66,6 +77,7 @@ class AuthRepositoryImpl @Inject constructor(
                 val user = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
                 isNewUser = user.additionalUserInfo!!.isNewUser
                 Log.d("userValueRepoOg", isNewUser.toString())
+                userStateFlow.value = UserState.SignedUp
                 Resource.Success(user?.user!!)
             } catch (e: FirebaseAuthException) {
                 Log.e("signUp", "$e")
@@ -94,6 +106,7 @@ class AuthRepositoryImpl @Inject constructor(
     override fun userSignOut() {
         try {
             firebaseAuth.signOut()
+            userStateFlow.value = UserState.LoggedOut
         } catch (e: Exception) {
             Log.e("signOut", "$e")
         }
@@ -135,6 +148,36 @@ class AuthRepositoryImpl @Inject constructor(
         return false
 
     }
+
+    override suspend fun userDelete(password: String) {
+
+        val user = firebaseAuth.currentUser
+        val credential = EmailAuthProvider.getCredential(currentUser?.email!!, password)
+        try {
+            Tasks.await(
+                user?.reauthenticate(credential)
+                !!.addOnCompleteListener { reAuth ->
+                    if (reAuth.isSuccessful) {
+                        user.delete().addOnCompleteListener { userDelete ->
+                            if (userDelete.isSuccessful) {
+                                Log.d("userDelete", "deleted")
+                                userStateFlow.value = UserState.Deleted("User Deleted")
+                            }
+                        }
+
+                    }
+                }
+
+
+            )
+        } catch (e: Exception) {
+            Log.d("userDeleteException", e.toString())
+            userStateFlow.value = UserState.DeleteFailure("Something went wrong Try Again later")
+        }
+
+
+    }
+
 
     private fun isValidated(password: String, phNum: String): String {
         var msg = ""

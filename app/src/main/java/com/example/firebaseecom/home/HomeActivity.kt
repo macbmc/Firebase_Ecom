@@ -1,3 +1,5 @@
+@file:Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+
 package com.example.firebaseecom.home
 
 import android.app.PendingIntent
@@ -35,7 +37,6 @@ import com.example.firebaseecom.productSearch.ProductSearchActivity
 import com.example.firebaseecom.profile.UserProfileActivity
 import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.NetworkState
-import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.NotificationUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
@@ -57,7 +58,6 @@ class HomeActivity : BaseActivity() {
     private val snapHelper = LinearSnapHelper()
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    private var networkJob: Job? = null
     private var productJob: Job? = null
     private lateinit var adLayoutManager: LinearLayoutManager
     private lateinit var adView: RecyclerView
@@ -105,21 +105,21 @@ class HomeActivity : BaseActivity() {
                 startActivity(intent)
             }
             catLaptop.setOnClickListener {
-               navToCategory(catLaptopString)
+                navToCategory(catLaptopString)
             }
             catPhones.setOnClickListener {
                 navToCategory(catPhoneString)
 
             }
             catTablet.setOnClickListener {
-               navToCategory(catTabletString)
+                navToCategory(catTabletString)
             }
         }
 
 
     }
 
-    private fun navToCategory(category:String) {
+    private fun navToCategory(category: String) {
         val intent = Intent(this@HomeActivity, ProductCategoryActivity::class.java)
         intent.putExtra("category", category)
         startActivity(intent)
@@ -136,81 +136,10 @@ class HomeActivity : BaseActivity() {
         stopAutoScroll()
     }
 
-
-    /*private fun observeNetwork() {
-        networkJob?.cancel()
-        val network = NetworkUtil(this)
-        homeBinding.networkProgress.visibility = View.VISIBLE
-        networkJob = lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                network.observeNetworkState().collect {
-                    Log.d("networkState", it.toString())
-                    when (it) {
-                        NetworkState.AVAILABLE -> {
-                            homeBinding.apply {
-
-                                networkStatusLayout.visibility = View.GONE
-                                homeLayout.isVisible = true
-                                networkProgress.visibility = View.GONE
-
-                            }
-                            observeCarousal()
-                            observeCartNumber()
-                            observeProducts()
-                        }
-
-                        NetworkState.UNAVAILABLE -> {
-                            homeBinding.apply {
-
-                                networkText.text = getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible = true
-                                homeLayout.isVisible = false
-                                networkProgress.isVisible = true
-
-
-                            }
-                            ToastUtils().giveToast(
-                                getString(R.string.connection_unavailable),
-                                this@HomeActivity
-                            )
-                        }
-
-                        NetworkState.LOSING -> {
-                            homeBinding.apply {
-
-                                networkText.text = getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible = true
-
-                            }
-
-                            ToastUtils().giveToast(
-                                getString(R.string.connection_losing),
-                                this@HomeActivity
-                            )
-                        }
-
-                        NetworkState.LOST -> {
-                            homeBinding.apply {
-
-                                networkText.text = getString(R.string.no_internet_connection)
-                                networkStatusLayout.isVisible = true
-
-                            }
-                            ToastUtils().giveToast(
-                                getString(R.string.connection_lost),
-                                this@HomeActivity
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
-    private fun observeNetwork(){
+    private fun observeNetwork() {
         homeBinding.networkProgress.visibility = View.VISIBLE
         homeViewModel.getNetwork()
-        homeViewModel.networkFlow.observe(this@HomeActivity){
+        homeViewModel.networkFlow.observe(this@HomeActivity) {
             Log.d("networkState", it.toString())
             when (it) {
                 NetworkState.AVAILABLE -> {
@@ -273,9 +202,9 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun observeCarousal() {
+        homeBinding.homeAdViewProgress.isVisible = true
         homeViewModel.getAd()
         homeViewModel.adList.observe(this@HomeActivity) {
-            homeBinding.homeAdViewProgress.isVisible = true
             carousalAdapter.setAd(it)
             homeBinding.homeAdViewProgress.isVisible = false
             //homeBinding.carousalView.scrollToPosition(Integer.MAX_VALUE / 2)
@@ -359,8 +288,8 @@ class HomeActivity : BaseActivity() {
                             is Resource.Failed -> {
                                 homeItemViewProgress.visibility = View.VISIBLE
                                 Log.d("itemViewLoader", "Failed")
-                                ToastUtils().giveToast(it.message, this@HomeActivity)
                             }
+                            else -> {}
 
 
                         }

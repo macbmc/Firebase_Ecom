@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepository
+import com.example.firebaseecom.repositories.AuthRepositoryImpl.Companion.userStateFlow
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.utils.AlarmTriggerUtils
 import com.example.firebaseecom.utils.Resource
+import com.example.firebaseecom.utils.UserState
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -81,6 +83,10 @@ class AuthViewModel @Inject constructor(
     fun setAlarmTrigger()
     {
         AlarmTriggerUtils().setAlarmTriggerForNotification(applicationContext)
+    }
+    fun setUserState()
+    {
+        userStateFlow.value = UserState.LoggedIn
     }
 
 

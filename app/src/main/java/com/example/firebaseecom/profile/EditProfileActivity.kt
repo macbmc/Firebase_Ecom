@@ -13,7 +13,6 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -24,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.example.firebaseecom.R
 import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.databinding.ActivityEditProfileBinding
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.UserModel
 import com.example.firebaseecom.repositories.AuthRepositoryImpl
 import com.example.firebaseecom.utils.ToastUtils
@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : BaseActivity() {
     private lateinit var activityEditProfileBinding: ActivityEditProfileBinding
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>

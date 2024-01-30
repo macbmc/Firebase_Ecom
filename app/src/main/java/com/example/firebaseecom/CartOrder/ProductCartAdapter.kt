@@ -18,7 +18,11 @@ class ProductCartAdapter(
 ) : RecyclerView.Adapter<ProductCartAdapter.MyViewHolder>() {
     interface ActivityFunctionInterface {
 
-        fun navigateToDetails(productHomeModel: ProductHomeModel, offersModelList: List<ProductOffersModel>)
+        fun navigateToDetails(
+            productHomeModel: ProductHomeModel,
+            offersModelList: List<ProductOffersModel>
+        )
+
         fun addTotalPrice(productList: List<ProductHomeModel>)
         fun deleteFromCart(productHomeModel: ProductHomeModel, position: Int)
     }
@@ -45,7 +49,7 @@ class ProductCartAdapter(
             .error(R.drawable.placeholder_image)
             .into(holder.itemView.findViewById(R.id.productImage))
         holder.itemView.setOnClickListener {
-            activityFunctionClass.navigateToDetails(productHome,offerDetails!!)
+            activityFunctionClass.navigateToDetails(productHome, offerDetails!!)
         }
     }
 

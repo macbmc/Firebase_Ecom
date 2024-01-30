@@ -19,13 +19,14 @@ import com.example.firebaseecom.customerChat.CustomerChatViewModel.Companion.ifS
 import com.example.firebaseecom.customerChat.CustomerChatViewModel.Companion.incorrectReviewCounter
 import com.example.firebaseecom.customerChat.CustomerChatViewModel.Companion.incorrectStatusCounter
 import com.example.firebaseecom.databinding.ActivityCustomerChatBinding
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.BrainShopModel
 import com.example.firebaseecom.model.UserModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CustomerChatActivity : AppCompatActivity() {
+class CustomerChatActivity : BaseActivity() {
 
     private lateinit var chatBinding: ActivityCustomerChatBinding
     private lateinit var chatViewModel: CustomerChatViewModel
@@ -71,7 +72,7 @@ class CustomerChatActivity : AppCompatActivity() {
     }
 
     private fun sendToBrain(msgQuery: String) {
-        chatBinding.progressBar.isVisible=true
+        chatBinding.progressBar.isVisible = true
         brainList.add(BrainShopModel(msgQuery, sendKey))
         adapter.notifyItemChanged(brainList.size - 1)
         chatBinding.chatQuery.text.clear()
@@ -84,9 +85,9 @@ class CustomerChatActivity : AppCompatActivity() {
                             receiveKey
                         )
                     )
-                    chatBinding.progressBar.visibility= View.GONE
+                    chatBinding.progressBar.visibility = View.GONE
                     adapter.notifyItemChanged(brainList.size - 1)
-                    if (ifSucessfullOrderStatusFetch|| incorrectStatusCounter>2) {
+                    if (ifSucessfullOrderStatusFetch || incorrectStatusCounter > 2) {
                         editor.putInt("orderStatus", 0)
                         editor.apply()
                         chatViewModel.resetStatusCounter()
@@ -100,9 +101,9 @@ class CustomerChatActivity : AppCompatActivity() {
                             receiveKey
                         )
                     )
-                    chatBinding.progressBar.visibility= View.GONE
+                    chatBinding.progressBar.visibility = View.GONE
                     adapter.notifyItemChanged(brainList.size - 1)
-                    if (ifSucessfullProductReviewFetch|| incorrectReviewCounter>2) {
+                    if (ifSucessfullProductReviewFetch || incorrectReviewCounter > 2) {
                         editor.putInt("productRating", 0)
                         editor.apply()
                         chatViewModel.resetReviewCounter()
@@ -113,19 +114,23 @@ class CustomerChatActivity : AppCompatActivity() {
                     val botResponse = chatViewModel.getResponse(msgQuery)
                     if (botResponse.contains("[1]")) {
                         brainList.add(BrainShopModel(botResponse, receiveKey))
-                        chatBinding.progressBar.visibility= View.GONE
+                        chatBinding.progressBar.visibility = View.GONE
                         adapter.notifyItemChanged(brainList.size - 1)
                         editor.putInt("orderStatus", 1)
                         editor.apply()
                     } else if (botResponse.contains("[2]")) {
                         brainList.add(BrainShopModel(botResponse, receiveKey))
-                        chatBinding.progressBar.visibility= View.GONE
+                        chatBinding.progressBar.visibility = View.GONE
                         adapter.notifyItemChanged(brainList.size - 1)
                         editor.putInt("productRating", 1)
                         editor.apply()
-                    } else {
+                    } /*else if (botResponse.contains("[3]")) {
+                        chatBinding.progressBar.visibility = View.VISIBLE
+                        chatViewModel.getTawkChat(chatBinding.tawkView)
+                        chatBinding.progressBar.visibility = View.GONE
+                    } */ else {
                         brainList.add(BrainShopModel(botResponse, receiveKey))
-                        chatBinding.progressBar.visibility= View.GONE
+                        chatBinding.progressBar.visibility = View.GONE
                         adapter.notifyItemChanged(brainList.size - 1)
                     }
 
@@ -141,3 +146,5 @@ class CustomerChatActivity : AppCompatActivity() {
 
 
 }
+
+

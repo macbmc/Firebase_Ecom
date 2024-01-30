@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -17,6 +19,7 @@ import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.utils.AlertDialogUtils
 import com.example.firebaseecom.utils.FirebaseEcomApp
 import com.example.firebaseecom.utils.ToastUtils
+import com.example.firebaseecom.utils.UserState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.Serializable
@@ -42,6 +45,7 @@ class UserProfileActivity : BaseActivity() {
         activityUserProfileBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_user_profile)
         getUserdata()
+        observeLoading()
 
         activityUserProfileBinding.apply {
 
@@ -60,7 +64,11 @@ class UserProfileActivity : BaseActivity() {
             editProfile.setOnClickListener {
                 navToEditProfile()
             }
-            chatQuery.setOnClickListener{
+            deleteText.setOnClickListener {
+                profileViewModel.showUserDeletePrompt(this@UserProfileActivity)
+                observeUserState()
+            }
+            chatQuery.setOnClickListener {
                 navToChat()
             }
             malayalamLanguageLayout.setOnClickListener {
@@ -78,17 +86,54 @@ class UserProfileActivity : BaseActivity() {
             }
 
             appPoints.setOnClickListener {
-                startActivity(Intent(this@UserProfileActivity,UserReviewActivity::class.java))
+                startActivity(Intent(this@UserProfileActivity, UserReviewActivity::class.java))
             }
 
         }
 
     }
 
+    private fun observeLoading() {
+        profileViewModel.showLoading.observe(this){show->
+            if(show)
+            {
+                activityUserProfileBinding.progressBar.isVisible = true
+            }
+        }
+    }
+
+    private fun observeUserState() {
+        profileViewModel.userState.observe(this@UserProfileActivity) { userState ->
+            Log.d("userDeleteView", userState.toString())
+            when (userState) {
+                is UserState.Deleted -> {
+                    activityUserProfileBinding.progressBar.visibility = View.GONE
+                    ToastUtils().giveToast(userState.message, this)
+                    val intent = Intent(this, SignUpActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    profileViewModel.userState.removeObservers(this)
+                    finish()
+                }
+
+                is UserState.DeleteFailure -> {
+                    ToastUtils().giveToast(userState.message, this)
+                    activityUserProfileBinding.progressBar.visibility = View.GONE
+                    profileViewModel.resetUserState()
+                }
+
+
+                else -> {}
+            }
+        }
+    }
+
     private fun navToChat() {
         val bundle = Bundle()
         bundle.putSerializable("userData", activityUserProfileBinding.userDetails as Serializable)
-        val intent = Intent(this,CustomerChatActivity::class.java)
+        val intent = Intent(this, CustomerChatActivity::class.java)
         intent.putExtras(bundle)
         startActivity(intent)
     }

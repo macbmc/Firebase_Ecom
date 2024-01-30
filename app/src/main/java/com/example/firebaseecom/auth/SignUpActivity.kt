@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity() {
     private lateinit var signUpBinding: ActivitySignUpBinding
@@ -27,13 +28,14 @@ class SignUpActivity : BaseActivity() {
     private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setAlarmTrigger()
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
+        setAlarmTrigger()
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
         Log.d("currentUserValue", authViewModel.currentUser.toString())
         if (authViewModel.currentUser != null) {
             Log.d("userId", authViewModel.currentUser!!.uid)
+            authViewModel.setUserState()
             val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
@@ -51,9 +53,20 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAndRemoveTask()
+    }
+
     private fun setAlarmTrigger() {
         authViewModel.setAlarmTrigger()
 
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
     }
 
     private fun authSignUp() {

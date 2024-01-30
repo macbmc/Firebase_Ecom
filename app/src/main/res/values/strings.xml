@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EKart</string>
+    <string name="app_name">EzKart</string>
     <string name="homeToolBar">homeToolBar</string>
     <string name="item_description">Item Description :</string>
     <string name="product_review">Product Review:</string>
@@ -124,4 +124,6 @@
     <string name="customer_qeuries">Customer Qeuries</string>
     <string name="enter_your_query">Enter your query</string>
     <string name="order_id">Order Id:</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_user">Delete Account</string>
 </resources>

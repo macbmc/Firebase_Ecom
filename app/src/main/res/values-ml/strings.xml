@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">EKart</string>
+    <string name="app_name">EzKart</string>
     <string name="homeToolBar">ഹോംടൂൾബാർ</string>
     <string name="item_description">ഇനത്തെ കുറിച്ചുള്ള വിശദീകരണം :</string>
     <string name="product_review">ഉൽപ്പന്ന അവലോകനം:</string>
@@ -122,4 +122,7 @@
     <string name="anonymous">Anonymous</string>
     <string name="ekart_review_points">Ekart Review History</string>
     <string name="you_have_done_7_ekart_reviews">You have done %1$s EKart Reviews</string>
+    <string name="customer_qeuries">Customer Qeuries</string>
+    <string name="enter_your_query">Enter your query</string>
+    <string name="order_id">Order Id:</string>
 </resources>

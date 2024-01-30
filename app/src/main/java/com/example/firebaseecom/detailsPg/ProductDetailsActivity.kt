@@ -278,7 +278,7 @@ class ProductDetailsActivity : BaseActivity() {
 
     }
 
-    inner class ActivityFunctionClass:SimilarProductsAdapter.ActivityFunctionInterface {
+    inner class ActivityFunctionClass : SimilarProductsAdapter.ActivityFunctionInterface {
         override fun navToCategoryView(category: String) {
             val intent = Intent(this@ProductDetailsActivity, ProductCategoryActivity::class.java)
             intent.putExtra("category", category)
