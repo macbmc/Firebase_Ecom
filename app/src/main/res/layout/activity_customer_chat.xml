@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,7 +8,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
@@ -23,7 +22,7 @@
 
            <RelativeLayout
                android:layout_width="match_parent"
-               android:layout_height="wrap_content">
+               android:layout_height="match_parent">
 
                <com.google.android.material.appbar.MaterialToolbar
                    android:id="@+id/homeToolBar"
@@ -59,13 +58,20 @@
                </com.google.android.material.appbar.MaterialToolbar>
                
                <androidx.recyclerview.widget.RecyclerView
-                  android:id="@+id/chatView"
+                   android:id="@+id/chatView"
                    android:nestedScrollingEnabled="false"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:layout_marginBottom="60dp"
                    android:layout_below="@id/homeToolBar"
                    android:layout_marginTop="10dp"/>
+             <WebView
+                 android:visibility="gone"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:id="@+id/tawkView"
+                 android:layout_marginTop="10dp"
+                 android:layout_below="@id/homeToolBar"/>
 
                <ProgressBar
                    android:id="@+id/progressBar"

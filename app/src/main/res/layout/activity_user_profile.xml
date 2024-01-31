@@ -9,6 +9,10 @@
             name="userDetails"
             type="com.example.firebaseecom.model.UserModel" />
 
+        <variable
+            name="viewModel"
+            type="com.example.firebaseecom.profile.ProfileViewModel" />
+
     </data>
 
 
@@ -17,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
-        android:layoutAnimation="@anim/anim_profile"
+
         tools:context=".profile.UserProfileActivity">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -327,6 +331,22 @@
                     android:background="@color/white"
                     android:src="@drawable/ic_logout" />
             </RelativeLayout>
+            <TextView
+                android:id="@+id/deleteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/userLogout"
+                android:layout_marginTop="30dp"
+                android:text="@string/delete_account"
+                android:textSize="16sp" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
 
         </RelativeLayout>
 

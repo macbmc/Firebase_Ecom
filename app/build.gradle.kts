@@ -42,6 +42,17 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    flavorDimensions += listOf("env")
+    productFlavors {
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+        }
+        create("production") {
+            dimension = "env"
+            applicationIdSuffix = ".production"
+        }
+    }
 }
 
 dependencies {

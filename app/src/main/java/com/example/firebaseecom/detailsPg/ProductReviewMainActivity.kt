@@ -12,13 +12,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebaseecom.R
 import com.example.firebaseecom.databinding.ActivityProductReviewMainBinding
+import com.example.firebaseecom.main.BaseActivity
 import com.example.firebaseecom.model.ProductOrderReviews
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @Suppress("DEPRECATION")
-class ProductReviewMainActivity : AppCompatActivity() {
+class ProductReviewMainActivity : BaseActivity() {
     private lateinit var productReviewMainBinding: ActivityProductReviewMainBinding
     private lateinit var reviewViewModel: ProductReviewViewModel
     val adapter = ProductReviewMainAdapter(this)

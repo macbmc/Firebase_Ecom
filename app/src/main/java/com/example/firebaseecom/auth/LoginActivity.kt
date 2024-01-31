@@ -47,6 +47,11 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        finish()
+    }
+
     private fun authForgotPassword() {
         val builder = AlertDialog.Builder(this)
         val editText = EditText(this)

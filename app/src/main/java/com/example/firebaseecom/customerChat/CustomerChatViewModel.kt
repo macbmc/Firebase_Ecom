@@ -107,4 +107,5 @@ class CustomerChatViewModel @Inject constructor(
     fun resetReviewCounter() {
         incorrectStatusCounter = 0
     }
+
 }

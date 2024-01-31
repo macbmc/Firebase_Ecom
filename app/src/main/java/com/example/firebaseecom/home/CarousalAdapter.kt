@@ -25,7 +25,7 @@ class CarousalAdapter(private val context: Context, private val activityFunction
     fun setAd(imageList: List<String>)
     {
         this.imageList=imageList
-        notifyDataSetChanged()
+        notifyItemChanged(imageList.size-1)
     }
     class CarousalViewHolder(adCorousalViewBinding: AdCorousalViewBinding):RecyclerView.ViewHolder(adCorousalViewBinding.root)
 

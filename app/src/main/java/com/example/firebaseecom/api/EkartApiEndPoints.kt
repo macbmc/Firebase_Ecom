@@ -8,3 +8,5 @@ enum class EkartApiEndPoints(val url: String) {
     END_POINT_PRODUCT_TESTING("/mac-bmc/mac-bmc.github.io/main/new-product-test.json"),
     END_POINT_OFFER_TYPES("/mac-bmc/mac-bmc.github.io/main/seasonal-offers.json")
 }
+
+//val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())

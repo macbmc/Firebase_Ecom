@@ -1,9 +1,5 @@
 package com.example.firebaseecom.auth
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,18 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.firebaseecom.R
-import com.example.firebaseecom.broadcastReciever.AlarmReciever
 import com.example.firebaseecom.databinding.ActivitySignUpBinding
 import com.example.firebaseecom.home.HomeActivity
 import com.example.firebaseecom.main.BaseActivity
-import com.example.firebaseecom.utils.AlarmTriggerUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity() {
     private lateinit var signUpBinding: ActivitySignUpBinding
@@ -34,13 +28,14 @@ class SignUpActivity : BaseActivity() {
     private var job: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setAlarmTrigger()
         authViewModel = ViewModelProvider(this@SignUpActivity)[AuthViewModel::class.java]
+        setAlarmTrigger()
         signUpBinding =
             DataBindingUtil.setContentView(this@SignUpActivity, R.layout.activity_sign_up)
         Log.d("currentUserValue", authViewModel.currentUser.toString())
         if (authViewModel.currentUser != null) {
             Log.d("userId", authViewModel.currentUser!!.uid)
+            authViewModel.setUserState()
             val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
@@ -58,9 +53,20 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    private fun setAlarmTrigger() {
-        AlarmTriggerUtils().setAlarmTriggerForNotification(this)
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAndRemoveTask()
+    }
 
+    private fun setAlarmTrigger() {
+        authViewModel.setAlarmTrigger()
+
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        finish()
     }
 
     private fun authSignUp() {
