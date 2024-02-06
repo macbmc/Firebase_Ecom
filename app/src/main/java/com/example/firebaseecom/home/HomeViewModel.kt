@@ -7,22 +7,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
+import com.example.firebaseecom.model.otp2FA.OtpSendRequestBody
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
+import com.example.firebaseecom.repositories.OtpRepository
 import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val networkRepository: NetworkRepository,
     private val databaseRepository: DatabaseRepository,
+    private val otpRepository: OtpRepository
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
@@ -129,6 +130,12 @@ class HomeViewModel @Inject constructor(
             val offer = networkRepository.fetchProductOffers()
             if (offer != null)
                 offerData.postValue(offer!!)
+        }
+    }
+    fun sendOtp(){
+        viewModelScope.launch(Dispatchers.IO){
+            val requestBody = OtpSendRequestBody("{}","text","EzKart","+919446862068","application/json")
+            otpRepository.sendOtp(requestBody)
         }
     }
 

@@ -3,12 +3,17 @@ package com.example.firebaseecom.auth
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firebaseecom.R
 import com.example.firebaseecom.model.UserModel
+import com.example.firebaseecom.model.otp2FA.OtpSendRequestBody
+import com.example.firebaseecom.otp2FA.OtpEndPoints
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.AuthRepositoryImpl.Companion.userStateFlow
 import com.example.firebaseecom.repositories.FirestoreRepository
+import com.example.firebaseecom.repositories.OtpRepository
 import com.example.firebaseecom.utils.AlarmTriggerUtils
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.UserState
@@ -26,11 +31,15 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     @ApplicationContext val applicationContext: Context,
     private val authRepository: AuthRepository,
-    private val firestoreRepository: FirestoreRepository
+    private val firestoreRepository: FirestoreRepository,
+    private val otpRepository: OtpRepository
 ) : ViewModel() {
 
     private val _loginAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
     private val _signUpAuth = MutableStateFlow<Resource<FirebaseUser>?>(Resource.Loading())
+
+    val otpStatus = MutableLiveData<Resource<Boolean>>()
+    val otpVerified = MutableLiveData<Resource<Boolean>>()
 
 
     val currentUser: FirebaseUser?
@@ -80,13 +89,43 @@ class AuthViewModel @Inject constructor(
         _signUpAuth.value = null
     }
 
-    fun setAlarmTrigger()
-    {
+    fun setAlarmTrigger() {
         AlarmTriggerUtils().setAlarmTriggerForNotification(applicationContext)
     }
-    fun setUserState()
-    {
+
+    fun setUserState() {
         userStateFlow.value = UserState.LoggedIn
+    }
+
+    fun sendOtp(recipient:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val requestBody =
+                OtpSendRequestBody("{}", "text", applicationContext.getString(R.string.app_name), recipient, OtpEndPoints.OTP_CONTENT_TYPE.url)
+            when (val response = otpRepository.sendOtp(requestBody)) {
+                is Resource.Success -> {
+                    otpStatus.postValue(Resource.Success(true))
+                }
+                is Resource.Failed -> {
+                    otpStatus.postValue(Resource.Failed(response.message))
+                }
+                else-> {
+                }
+            }
+        }
+    }
+    fun verifyOtp(otpCOde:String)
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            when (val response = otpRepository.verifyOtp(otpCOde)) {
+                is Resource.Success -> {
+                    otpVerified.postValue(Resource.Success(true))
+                }
+                is Resource.Failed ->{
+                    otpVerified.postValue(Resource.Failed(response.message))
+                }
+                else ->{}
+            }
+        }
     }
 
 

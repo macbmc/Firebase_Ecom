@@ -27,7 +27,7 @@
     <string name="letterMsg">Not enough letter in the password..Weak Password</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
-    <string name="phone_number">Phone Number</string>
+    <string name="phone_number">Ph Number with code</string>
     <string name="logout">Logout</string>
     <string name="usernameedit">Username:</string>
     <string name="emailedit">Email</string>
@@ -100,7 +100,7 @@
     <string name="new_products">"New Products Added\nCheck them out "</string>
     <string name="completeProfileMsg">Please complete\nyour\n User Profile</string>
     <string name="discountText">- %1$s %</string>
-    <string name="applyCoupon">Apply Coupon</string>
+    <string name="applyCoupon">Apply </string>
     <string name="view_available_coupons">View available coupons</string>
     <string name="no_available_coupons">No Available coupons</string>
     <string name="addCoupon">Add Coupon\n</string>
@@ -126,4 +126,7 @@
     <string name="order_id">Order Id:</string>
     <string name="delete_account">Delete account</string>
     <string name="delete_user">Delete Account</string>
+    <string name="sendOtp">Send Otp</string>
+    <string name="resendOtp">Resend Otp</string>
+    <string name="enterotp">Enter OTP</string>
 </resources>

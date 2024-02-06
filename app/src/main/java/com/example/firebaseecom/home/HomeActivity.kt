@@ -256,6 +256,7 @@ class HomeActivity : BaseActivity() {
 
 
     private fun observeProducts() {
+        homeBinding.homeItemViewProgress.visibility = View.VISIBLE
         productJob?.cancel()
         val homeItemView = homeBinding.homeItemView
         val adapter = ProductHomeAdapter(this, NavigateClass(), langId)

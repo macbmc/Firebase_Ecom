@@ -26,6 +26,7 @@ class BrainShopRepositoryImpl @Inject constructor(private val brainShopService: 
                 BrainShopApiEndPoints.BRAIN_SHOP_UID.url,
                 msg
             )
+            Log.d("BrainShop", brainResponse.raw().toString())
 
         } catch (e: Exception) {
             Log.d("BrainShop", e.toString())

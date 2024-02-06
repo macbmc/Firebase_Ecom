@@ -4,17 +4,25 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.firebaseecom.R
+import com.example.firebaseecom.auth.SignUpActivity
 import com.example.firebaseecom.utils.Resource
 import com.example.firebaseecom.utils.UserState
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
+import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -27,6 +35,8 @@ interface AuthRepository {
     fun forgotPassword(email: String)
 
     fun checkForNewUser(): Boolean
+
+    suspend fun sendOtpCode(number: String, activity: SignUpActivity)
 
     suspend fun userDelete(password: String)
 
@@ -44,6 +54,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
+
+    var phoneAuthId = ""
 
 
     companion object {
@@ -149,6 +161,41 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun sendOtpCode(number: String, activity: SignUpActivity) {
+        val options: PhoneAuthOptions = PhoneAuthOptions.newBuilder(firebaseAuth)
+            .setCallbacks(mCallBack)
+            .setPhoneNumber(number)
+            .setActivity(activity)// Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private val mCallBack: OnVerificationStateChangedCallbacks =
+        object : OnVerificationStateChangedCallbacks() {
+            override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
+                super.onCodeSent(s, forceResendingToken)
+                phoneAuthId = s
+            }
+
+
+            override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
+
+                val code = phoneAuthCredential.smsCode
+
+
+                if (code != null) {
+
+                }
+            }
+
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                // displaying error message with firebase exception.
+                Log.d("phoneAuth", e.toString())
+            }
+        }
+
     override suspend fun userDelete(password: String) {
 
         val user = firebaseAuth.currentUser
@@ -188,10 +235,6 @@ class AuthRepositoryImpl @Inject constructor(
             msg = context.getString(R.string.lengthMsg)
             return msg
 
-        }
-        if (phNum.length != 10) {
-            msg = context.getString(R.string.invalid_phone_number)
-            return msg
         }
         for (i in password.indices) {
             if (password[i].isDigit()) {

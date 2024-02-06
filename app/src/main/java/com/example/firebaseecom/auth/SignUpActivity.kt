@@ -44,12 +44,71 @@ class SignUpActivity : BaseActivity() {
 
         signUpBinding.apply {
             signUpButton.setOnClickListener {
-                authSignUp()
+                observeOtp()
+                //authSignUp()
+
             }
             toSignIn.setOnClickListener {
                 startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
 
             }
+            sendOtp.setOnClickListener {
+                sendOtp.text = getString(R.string.resendOtp)
+                if (editSignUpPhone.text.isEmpty()) {
+                    ToastUtils().giveToast(
+                        getString(R.string.invalid_phone_number),
+                        this@SignUpActivity
+                    )
+
+                } else {
+                    authViewModel.sendOtp(editSignUpPhone.text.toString())
+                }
+            }
+        }
+    }
+
+    private fun observeOtp() {
+        signUpBinding.progressBar.visibility = View.VISIBLE
+        authViewModel.otpStatus.observe(this) { otpStatus ->
+
+            when (otpStatus) {
+                is Resource.Success -> {
+                    if (signUpBinding.sendOtp.text.isNotEmpty()) {
+                        authViewModel.verifyOtp(signUpBinding.otpText.text.toString())
+                        authViewModel.otpVerified.observe(this) { otpVerified ->
+                            when (otpVerified) {
+                                is Resource.Success -> {
+                                    authSignUp()
+                                }
+
+                                is Resource.Failed -> {
+                                    ToastUtils().giveToast(otpVerified.message, this)
+                                }
+
+                                else -> {
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                is Resource.Failed -> {
+                    ToastUtils().giveToast(otpStatus.message, this)
+                }
+
+                else -> {}
+            }
+            /*if (otpStatus) {
+                if (signUpBinding.sendOtp.text.isNotEmpty()) {
+                    authViewModel.verifyOtp(signUpBinding.otpText.text.toString())
+                    authViewModel.otpVerified.observe(this) { otpVerified ->
+                        if (otpVerified)
+                            authSignUp()
+                    }
+                }
+
+            }*/
         }
     }
 

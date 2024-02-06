@@ -16,3 +16,6 @@ interface BrainShopService {
     ): Response<BrainShopModel>
 
 }
+
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoLWJhY2tlbmQ6YXBwIiwic3ViIjoiMzQ4YzVmZjAtNjc3OS00YWJhLTg3N2QtNWM2Y2M1NjAxNmE2In0.A4icTPL3wHSWjVOXZUMngVQOlib_3gacfl2ov5rSLxU

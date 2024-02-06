@@ -184,40 +184,40 @@
                         android:id="@+id/moreProd"
                         />
 
-
-
-
-                    <EditText
-                        android:id="@+id/editTextCoupon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/moreProd"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/edittext_layout"
-                        android:ems="10"
-                        android:hint="@string/applyCoupon"
-                        android:inputType="text"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@color/textInLayout"
-                        android:textColorHint="@color/textInLayout" />
-
-                    <Button
-                        android:id="@+id/couponButton"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/couponLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/moreProd"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_toEndOf="@id/editTextCoupon"
-                        android:backgroundTint="@color/buttonColor"
-                        android:text="@string/applyCoupon" />
+                        android:layout_below="@id/moreProd">
+                        <EditText
+                            android:id="@+id/editTextCoupon"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:background="@drawable/edittext_layout"
+                            android:ems="10"
+                            android:hint="@string/addCoupon"
+                            android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/textInLayout"
+                            android:textColorHint="@color/textInLayout" />
 
+                        <Button
+                            android:layout_weight="1"
+                            android:id="@+id/couponButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:backgroundTint="@color/buttonColor"
+                            android:text="@string/applyCoupon" />
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/viewCoupons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/editTextCoupon"
+                        android:layout_below="@id/couponLayout"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="50dp"
                         android:text="@string/view_available_coupons"
