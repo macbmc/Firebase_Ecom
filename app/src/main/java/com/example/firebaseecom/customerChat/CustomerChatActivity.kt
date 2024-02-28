@@ -5,7 +5,6 @@ package com.example.firebaseecom.customerChat
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
@@ -124,11 +123,7 @@ class CustomerChatActivity : BaseActivity() {
                         adapter.notifyItemChanged(brainList.size - 1)
                         editor.putInt("productRating", 1)
                         editor.apply()
-                    } /*else if (botResponse.contains("[3]")) {
-                        chatBinding.progressBar.visibility = View.VISIBLE
-                        chatViewModel.getTawkChat(chatBinding.tawkView)
-                        chatBinding.progressBar.visibility = View.GONE
-                    } */ else {
+                    } else {
                         brainList.add(BrainShopModel(botResponse, receiveKey))
                         chatBinding.progressBar.visibility = View.GONE
                         adapter.notifyItemChanged(brainList.size - 1)

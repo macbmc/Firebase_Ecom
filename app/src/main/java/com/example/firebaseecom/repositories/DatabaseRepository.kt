@@ -2,13 +2,23 @@ package com.example.firebaseecom.repositories
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.firebaseecom.R
 import com.example.firebaseecom.local.ProductDao
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.ProductOrderReviews
+import com.example.firebaseecom.pagination.ProductHomePagingSource
 import com.example.firebaseecom.utils.Resource
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+
 
 interface DatabaseRepository {
 
@@ -19,6 +29,8 @@ interface DatabaseRepository {
     suspend fun fetchProductByCategory(category: String): Resource<List<ProductHomeModel>>
     suspend fun getProducts(reviewList: List<ProductOrderReviews>):List<ProductHomeModel>
     suspend fun getProductId(name:String):Int?
+
+    suspend fun getProductByPage():Flow<PagingData<ProductHomeModel>>
 
 
 }
@@ -126,6 +138,18 @@ class DatabaseRepositoryImpl @Inject constructor(
         return productId
     }
 
+    override suspend fun getProductByPage(): Flow<PagingData<ProductHomeModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                ProductHomePagingSource(productDao)
+            }
+        ).flow
+    }
+
     private fun getId(reviewList: List<ProductOrderReviews>): List<Int> {
         val idList = mutableListOf<Int>()
 
@@ -137,4 +161,5 @@ class DatabaseRepositoryImpl @Inject constructor(
         return idList
 
     }
+
 }

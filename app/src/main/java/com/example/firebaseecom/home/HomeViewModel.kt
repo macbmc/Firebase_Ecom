@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
-import com.example.firebaseecom.model.otp2FA.OtpSendRequestBody
 import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
@@ -23,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -63,15 +63,16 @@ class HomeViewModel @Inject constructor(
             getAdData()
         }
     }
-    fun getNetwork(){
+
+    fun getNetwork() {
         viewModelScope.launch(Dispatchers.IO)
         {
             getNetworkState()
         }
     }
-    suspend fun getNetworkState()
-    {
-        networkUtil.observeNetworkState().collect{networkState->
+
+    suspend fun getNetworkState() {
+        networkUtil.observeNetworkState().collect { networkState ->
             networkFlow.postValue(networkState)
         }
     }
@@ -132,13 +133,15 @@ class HomeViewModel @Inject constructor(
                 offerData.postValue(offer!!)
         }
     }
-    fun sendOtp(){
-        viewModelScope.launch(Dispatchers.IO){
-            val requestBody = OtpSendRequestBody("{}","text","EzKart","+919446862068","application/json")
-            otpRepository.sendOtp(requestBody)
+    fun getProductByPage(){
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            databaseRepository.getProductByPage().collect{
+
+            }
+
         }
     }
-
 
 }
 

@@ -125,4 +125,9 @@
     <string name="customer_qeuries">Customer Qeuries</string>
     <string name="enter_your_query">Enter your query</string>
     <string name="order_id">Order Id:</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_user">Delete Account</string>
+    <string name="sendOtp">Send Otp</string>
+    <string name="resendOtp">Resend Otp</string>
+    <string name="enterotp">Enter OTP</string>
 </resources>

@@ -98,6 +98,7 @@ class ProductListActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 if (dest == getString(R.string.order)) {
+                    Log.d("cartData","called")
                     productListViewModel.getProductFromOrder()
                     productListViewModel.productOrderList.collect { product ->
                         when (product) {

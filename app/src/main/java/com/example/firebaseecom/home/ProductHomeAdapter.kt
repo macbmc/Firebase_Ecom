@@ -1,11 +1,9 @@
 package com.example.firebaseecom.home
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,9 +12,11 @@ import com.example.firebaseecom.databinding.ProductListViewBinding
 import com.example.firebaseecom.model.ProductHomeModel
 import com.example.firebaseecom.model.ProductOffersModel
 import com.example.firebaseecom.model.asMap
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ProductHomeAdapter(
-    private val context: Context,
+class ProductHomeAdapter @Inject constructor(
+    @ApplicationContext private val applicationContext: Context,
     private val navigateClass: HomeActivity.NavigateClass,
     private val langId: String
 ) : RecyclerView.Adapter<ProductHomeAdapter.ProductViewHolder>() {
@@ -26,7 +26,10 @@ class ProductHomeAdapter(
     private lateinit var productListViewBinding: ProductListViewBinding
 
     interface NavigationInterface {
-        fun navigateToDetails(productModel: ProductHomeModel, offersModelList: List<ProductOffersModel>)
+        fun navigateToDetails(
+            productModel: ProductHomeModel,
+            offersModelList: List<ProductOffersModel>
+        )
     }
 
     inner class ProductViewHolder(
@@ -40,7 +43,7 @@ class ProductHomeAdapter(
                 homeProductTitle.text = productTitleLang?.get(langId).toString()
                 for (offer in offerDetails!!) {
                     if (offer.productId == productModel?.productId) {
-                        Log.d("offerDatadiscount", productModel?.productId.toString())
+                        Log.d("offerDataDiscount", productModel?.productId.toString())
                         Glide.with(itemView)
                             .load(offer.offerImage)
                             .into(discountImage)

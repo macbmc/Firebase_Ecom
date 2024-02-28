@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -51,7 +52,6 @@ import java.io.Serializable
 
 class HomeActivity : BaseActivity() {
 
-
     private lateinit var homeBinding: ActivityHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private val carousalAdapter = CarousalAdapter(this@HomeActivity, ActivityFunctionClass())
@@ -80,6 +80,7 @@ class HomeActivity : BaseActivity() {
         checkForNewUser()
         observeNetwork()
         observeNewProducts()
+        productByPage()
         adView = homeBinding.carousalView
         adView.adapter = carousalAdapter
         snapHelper.attachToRecyclerView(adView)
@@ -375,6 +376,11 @@ class HomeActivity : BaseActivity() {
             getString(R.string.new_products)
         )
         NotificationUtils(this).showNotification(pendingIntent, getString(R.string.new_products))
+    }
+
+    fun productByPage()
+    {
+        homeViewModel.getProductByPage()
     }
 
 
