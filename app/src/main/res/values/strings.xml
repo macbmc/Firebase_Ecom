@@ -129,4 +129,5 @@
     <string name="sendOtp">Send Otp</string>
     <string name="resendOtp">Resend Otp</string>
     <string name="enterotp">Enter OTP</string>
+    <string name="talk_with_a_representative">Customer Care</string>
 </resources>

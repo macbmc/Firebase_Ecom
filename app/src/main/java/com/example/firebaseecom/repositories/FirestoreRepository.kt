@@ -33,7 +33,7 @@ interface FirestoreRepository {
     suspend fun getUserReviews(): List<ProductOrderReviews>
 
     suspend fun getOrderForChat(orderId: String): ProductOrderModel?
-
+    suspend fun sendMessages(message: String): Resource<Boolean>
 
 
 }
@@ -413,6 +413,32 @@ class FirestoreRepositoryImpl @Inject constructor(
             }
         }
         return null
+    }
+
+    override suspend fun sendMessages(message: String): Resource<Boolean> {
+        var status: Resource<Boolean> = Resource.Success(true)
+        Log.d("currentUser", currentUser?.email.toString())
+        val doc = firestore.collection("messages-executive").document(currentUser!!.uid)
+        try {
+            val send = Tasks.await(
+                doc.set(message)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful)
+                            Log.d("success", "$status")
+                    }
+                    .addOnFailureListener {
+                        Log.e("toMes", "${it.message}")
+                        status = Resource.Failed("DB ERROR")
+                    }
+            )
+            val x = send.hashCode()
+        } catch (e: Exception) {
+            Log.e("toUser", "$e")
+
+        }
+        return status
+
+
     }
 
 

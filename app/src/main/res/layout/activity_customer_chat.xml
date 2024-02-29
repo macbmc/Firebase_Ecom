@@ -1,120 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bgColor"
         tools:context=".customerChat.CustomerChatActivity">
 
-        <ScrollView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent">
-
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent">
-
-               <com.google.android.material.appbar.MaterialToolbar
-                   android:id="@+id/homeToolBar"
-                   app:layout_constraintTop_toTopOf="parent"
-                   android:layout_width="match_parent"
-                   android:layout_height="60dp"
-                   android:background="@color/buttonColor"
-                   android:backgroundTint="@color/buttonColor"
-                   android:minHeight="?attr/actionBarSize"
-                   android:theme="?attr/actionBarTheme">
-
-                   <androidx.constraintlayout.widget.ConstraintLayout
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       tools:layout_editor_absoluteX="1dp"
-                       tools:layout_editor_absoluteY="5dp">
-
-                       <ImageButton
-                           android:id="@+id/navPop"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginStart="16dp"
-                           android:layout_marginTop="8dp"
-                           android:background="@null"
-                           android:src="@drawable/baseline_arrow_back_ios_24"
-                           app:layout_constraintStart_toStartOf="parent"
-                           app:layout_constraintTop_toTopOf="parent" />
-
-
-                   </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-               </com.google.android.material.appbar.MaterialToolbar>
-               
-               <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/chatView"
-                   android:nestedScrollingEnabled="false"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginBottom="60dp"
-                   android:layout_below="@id/homeToolBar"
-                   android:layout_marginTop="10dp"/>
-             <WebView
-                 android:visibility="gone"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/tawkView"
-                 android:layout_marginTop="10dp"
-                 android:layout_below="@id/homeToolBar"/>
-
-               <ProgressBar
-                   android:id="@+id/progressBar"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerInParent="true"/>
-
-           </RelativeLayout>
-
-       </ScrollView>
-        
-        <LinearLayout
-            android:padding="10dp"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/homeToolBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-            
-            
-            <EditText
-                android:id="@+id/chatQuery"
-                android:padding="15dp"
-                android:background="@drawable/edittext_layout"
-                android:layout_weight="4"
-                android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@color/buttonColor"
+            android:backgroundTint="@color/buttonColor"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_your_query"/>
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="5dp">
 
-            <ImageButton
-                android:layout_marginStart="10dp"
-                android:id="@+id/sendQuery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="@color/buttonColor"
-                android:src="@android:drawable/ic_menu_send"
-                app:tint="@color/white" />
+                <ImageButton
+                    android:id="@+id/navPop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:src="@drawable/baseline_arrow_back_ios_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            
-            
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/toExecChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@null"
+                    android:src="@drawable/contact_care"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/homeToolBar" />
+
+
+    </RelativeLayout>
+
 </layout>
