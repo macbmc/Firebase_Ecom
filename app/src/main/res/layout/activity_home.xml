@@ -123,7 +123,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:background="@drawable/network_status_layout">
                     <TextView
@@ -234,8 +234,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
                                 android:layout_marginTop="10dp"
-                                android:backgroundTint="@color/bgColor"
-                                android:src="@drawable/ic_tablet" />
+                                android:src="@drawable/cell_phone_icon" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -263,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="60dp"
                         android:layout_centerHorizontal="true"
-                        android:visibility="invisible" />
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 </RelativeLayout>

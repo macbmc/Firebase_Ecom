@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomSplashStyle" parent="Theme.AppCompat">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+        <item name="android:windowSplashScreenBackground">@color/bgColor</item>
+        <item name="android:splashScreenTheme">@style/CustomSplashStyle</item>
+    </style>
+</resources>

@@ -1,5 +1,6 @@
 package com.example.firebaseecom.CartOrder
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,7 @@ class ProductListViewModel @Inject constructor(val firestoreRepository: Firestor
 
     fun getProductFromOrder() {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.d("cartData","VMcalled")
             val data = firestoreRepository.getFromOrders()
             if (data != null) {
                 _productOrderList.value = data

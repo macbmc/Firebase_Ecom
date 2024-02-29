@@ -11,7 +11,7 @@
     android:layout_height="wrap_content">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".payments.ProductCheckoutActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -97,27 +97,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
-            <TextView
-                android:id="@+id/couponText"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/mrpText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               />
-            <TextView
-                android:id="@+id/couponPrice"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/mrpPrice"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               />
-
-
         </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/couponInfo"
+                android:layout_below="@id/priceInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/couponText"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:id="@+id/couponPrice"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </RelativeLayout>
+
+
+
+
         <TextView
             android:id="@+id/totalPrice"
-            android:layout_below="@id/priceInfo"
+            android:layout_below="@id/couponInfo"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:textSize="22sp"

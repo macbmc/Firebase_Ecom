@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,7 +64,7 @@ class ProductCheckoutActivity : BaseActivity(), PaymentResultListener {
             }
             else
             {
-                priceInfo.visibility= View.GONE
+                couponInfo.visibility= View.GONE
             }
 
 

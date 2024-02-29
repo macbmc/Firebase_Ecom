@@ -67,6 +67,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
     implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -122,6 +123,11 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.17")
     //implementation("org.osmdroid:osmdroid-api:6.1.17")
     //implementation("org.osmdroid:osmdroid-routing:6.1.17")
+
+
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    testImplementation ("androidx.paging:paging-common-ktx:3.2.1")
 
 
 

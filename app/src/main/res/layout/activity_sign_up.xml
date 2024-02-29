@@ -42,7 +42,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_below="@+id/loginTitle"
-        android:layout_marginTop="109dp"
+        android:layout_marginTop="80dp"
         android:ems="10"
         android:textColor="@color/textInLayout"
         android:textColorHint="@color/textInLayout"
@@ -55,8 +55,8 @@
         android:id="@+id/editSignUpPassword"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@+id/editSignUpPhone"
-        android:layout_marginTop="54dp"
+        android:layout_below="@+id/otpLayout"
+        android:layout_marginTop="30dp"
         android:paddingLeft="10dp"
         android:textColor="@color/textInLayout"
         android:textColorHint="@color/textInLayout"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editSignUpPassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="@color/buttonColor"
         android:text="@string/signup" />
 
@@ -98,11 +98,46 @@
         android:textColorHint="@color/textInLayout"
         android:layout_below="@+id/editSignupEmail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/edittext_layout"
         android:ems="10"
         android:hint="@string/phone_number"
         android:inputType="phone" />
+
+
+    <LinearLayout
+        android:id="@+id/otpLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/editSignUpPhone">
+        <EditText
+            android:id="@+id/otpText"
+            android:layout_weight="1"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/textInLayout"
+            android:textColorHint="@color/textInLayout"
+            android:background="@drawable/edittext_layout"
+            android:ems="10"
+            android:layout_marginEnd="20dp"
+            android:hint="@string/enterotp"
+            android:inputType="phone" />
+
+        <Button
+            android:id="@+id/sendOtp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/buttonColor"
+            android:text="@string/sendOtp" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"

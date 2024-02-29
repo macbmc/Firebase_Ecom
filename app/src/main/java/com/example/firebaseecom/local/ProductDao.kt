@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.firebaseecom.model.ProductHomeModel
+import javax.sql.DataSource
 
 @Dao
 
@@ -15,21 +16,27 @@ interface ProductDao {
     suspend fun insertProduct(productList:List<ProductHomeModel>)
 
     @Query("SELECT * FROM ProductTable")
-    fun getProductFromDb():List<ProductHomeModel>
+    suspend fun getProductFromDb():List<ProductHomeModel>
 
     @Query("SELECT * FROM ProductTable WHERE productCategory=:category")
-    fun getProductByCategory(category:String):List<ProductHomeModel>
+    suspend fun getProductByCategory(category:String):List<ProductHomeModel>
 
     @Query("SELECT * FROM ProductTable WHERE en LIKE '%' || :searchQuery || '%' OR productCategory LIKE '%' || :searchQuery ||  '%' OR ml LIKE '%' || :searchQuery || '%'")
-    fun searchForProducts(searchQuery:String):List<ProductHomeModel>
+    suspend fun searchForProducts(searchQuery:String):List<ProductHomeModel>
 
     @Query("SELECT * FROM ProductTable WHERE productId =:productId")
-    fun getOfferProduct(productId:Int):ProductHomeModel
+    suspend fun getOfferProduct(productId:Int):ProductHomeModel
 
     @Query("DELETE FROM ProductTable")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT productId FROM ProductTable WHERE en LIKE '%' || :productName || '%' OR ml LIKE '%' || :productName || '%'")
-    fun getProductId(productName:String):Int?
+    suspend fun getProductId(productName:String):Int?
+
+    @Query("SELECT * FROM ProductTable ORDER BY productId ASC LIMIT :limit OFFSET :offset")
+    suspend fun getProductByPage(limit: Int, offset: Int):List<ProductHomeModel>
+
+    @Query("SELECT * FROM ProductTable")
+     fun getProductFromDbByPaging():androidx.paging.DataSource.Factory<Int,ProductHomeModel>
 
 }

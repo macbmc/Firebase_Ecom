@@ -53,8 +53,7 @@ class AlarmReciever : BroadcastReceiver() {
             PendingIntent.getActivity(context, 0, onClickIntent, PendingIntent.FLAG_IMMUTABLE)
         CoroutineScope(Dispatchers.IO).launch {
             activeOfferList = getOfferList()
-            val n = (0..activeOfferList.size.minus(1)).random()
-            val activeOffer = activeOfferList[n]
+            val activeOffer = activeOfferList.random()
             try {
                 Glide.with(context)
                     .asBitmap()

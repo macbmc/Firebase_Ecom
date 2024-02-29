@@ -11,12 +11,12 @@ import com.example.firebaseecom.repositories.AuthRepository
 import com.example.firebaseecom.repositories.DatabaseRepository
 import com.example.firebaseecom.repositories.FirestoreRepository
 import com.example.firebaseecom.repositories.NetworkRepository
+import com.example.firebaseecom.repositories.OtpRepository
 import com.example.firebaseecom.repositories.ProductRepository
 import com.example.firebaseecom.utils.NetworkState
 import com.example.firebaseecom.utils.NetworkUtil
 import com.example.firebaseecom.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val networkRepository: NetworkRepository,
     private val databaseRepository: DatabaseRepository,
+    private val otpRepository: OtpRepository
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<Resource<List<ProductHomeModel>>>(Resource.Loading())
@@ -62,15 +63,16 @@ class HomeViewModel @Inject constructor(
             getAdData()
         }
     }
-    fun getNetwork(){
+
+    fun getNetwork() {
         viewModelScope.launch(Dispatchers.IO)
         {
             getNetworkState()
         }
     }
-    suspend fun getNetworkState()
-    {
-        networkUtil.observeNetworkState().collect{networkState->
+
+    suspend fun getNetworkState() {
+        networkUtil.observeNetworkState().collect { networkState ->
             networkFlow.postValue(networkState)
         }
     }
@@ -131,7 +133,15 @@ class HomeViewModel @Inject constructor(
                 offerData.postValue(offer!!)
         }
     }
+    fun getProductByPage(){
+        viewModelScope.launch(Dispatchers.IO)
+        {
+            databaseRepository.getProductByPage().collect{
 
+            }
+
+        }
+    }
 
 }
 
